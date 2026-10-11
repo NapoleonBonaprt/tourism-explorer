@@ -1,0 +1,988 @@
+Destination Name,City,Country_dest,Latitude,Longitude,Type,Category,TCI,TCI_Category,spatial_cluster
+Cairo (Cairo),Cairo,Egypt,30.04444,31.23583,archaeological_site,Outdoor,70.0,Very Good,0
+Great Pyramid of Giza (Cairo),Cairo,Egypt,29.97915,31.13422,archaeological_site,Outdoor,70.0,Very Good,1
+Giza pyramid complex (Cairo),Cairo,Egypt,29.97611,31.13278,archaeological_site,Outdoor,70.0,Very Good,1
+Memphis (Cairo),Cairo,Egypt,29.84467,31.25092,archaeological_site,Outdoor,70.0,Very Good,2
+Giza Necropolis (Cairo),Cairo,Egypt,29.98333,31.13333,archaeological_site,Outdoor,70.0,Very Good,1
+The Great Sphinx (Cairo),Cairo,Egypt,29.97527,31.13768,archaeological_site,Outdoor,70.0,Very Good,1
+Egyptian pyramids (Cairo),Cairo,Egypt,29.9725,31.12833,archaeological_site,Outdoor,70.0,Very Good,1
+Saqqara (Cairo),Cairo,Egypt,29.85,31.23333,archaeological_site,Outdoor,70.0,Very Good,2
+Heliopolis (Cairo),Cairo,Egypt,30.12953,31.28889,archaeological_site,Outdoor,70.0,Very Good,-1
+Egyptian Museum (Cairo),Cairo,Egypt,30.04778,31.23333,museum,Indoor,70.0,Very Good,0
+Pyramid of Djoser (Cairo),Cairo,Egypt,29.87111,31.21667,archaeological_site,Outdoor,70.0,Very Good,2
+Pyramid of Khafre (Cairo),Cairo,Egypt,29.976,31.13097,archaeological_site,Outdoor,70.0,Very Good,1
+Dahshur (Cairo),Cairo,Egypt,29.8,31.23333,archaeological_site,Outdoor,70.0,Very Good,3
+Abusir (Cairo),Cairo,Egypt,29.89611,31.20361,archaeological_site,Outdoor,70.0,Very Good,2
+Grand Egyptian Museum (Cairo),Cairo,Egypt,29.99361,31.11972,museum,Indoor,70.0,Very Good,1
+Mosque of Ibn Tulun (Cairo),Cairo,Egypt,30.02882,31.24952,attraction,Indoor,70.0,Very Good,0
+Bent Pyramid (Cairo),Cairo,Egypt,29.79028,31.20917,archaeological_site,Outdoor,70.0,Very Good,3
+Red Pyramid (Cairo),Cairo,Egypt,29.80833,31.20583,archaeological_site,Outdoor,70.0,Very Good,3
+El-Fustat (Cairo),Cairo,Egypt,30.005,31.2375,archaeological_site,Outdoor,70.0,Very Good,0
+al-Azhar Mosque (Cairo),Cairo,Egypt,30.04573,31.2627,attraction,Indoor,70.0,Very Good,0
+Mosque of Amr ibn al-As (Cairo),Cairo,Egypt,30.01014,31.23316,attraction,Indoor,70.0,Very Good,0
+Muhammad Ali Mosque (Cairo),Cairo,Egypt,30.02861,31.25972,attraction,Indoor,70.0,Very Good,0
+Pyramid of Unas (Cairo),Cairo,Egypt,29.86833,31.21472,archaeological_site,Outdoor,70.0,Very Good,2
+Pyramid of Neferirkare (Cairo),Cairo,Egypt,29.89503,31.20244,archaeological_site,Outdoor,70.0,Very Good,2
+Abu Rawash (Cairo),Cairo,Egypt,30.03222,31.07472,archaeological_site,Outdoor,70.0,Very Good,-1
+Alexandria (Alexandria),Alexandria,Egypt,31.1975,29.8925,archaeological_site,Outdoor,62.0,Good,4
+Bibliotheca Alexandrina (Alexandria),Alexandria,Egypt,31.20889,29.90917,museum,Indoor,62.0,Good,4
+Canopus (Alexandria),Alexandria,Egypt,31.3,30.08333,archaeological_site,Outdoor,62.0,Good,-1
+El-Mursi Abul Abbas Mosque (Alexandria),Alexandria,Egypt,31.20561,29.88225,attraction,Indoor,62.0,Good,4
+Serapeum of Alexandria (Alexandria),Alexandria,Egypt,31.18194,29.89694,archaeological_site,Outdoor,62.0,Good,4
+Pompey's Pillar (Alexandria),Alexandria,Egypt,31.1825,29.89639,attraction,Outdoor,62.0,Good,4
+Catacombs of Kom el Shoqafa (Alexandria),Alexandria,Egypt,31.18694,29.90472,archaeological_site,Outdoor,62.0,Good,4
+Montaza Palace (Alexandria),Alexandria,Egypt,31.2886,30.0159,attraction,Indoor,62.0,Good,-1
+Pharos (Alexandria),Alexandria,Egypt,31.21417,29.885,archaeological_site,Outdoor,62.0,Good,4
+Saint Mark's Coptic Orthodox Cathedral (Alexandria),Alexandria,Egypt,31.19829,29.8994,attraction,Indoor,62.0,Good,4
+Alexandria National Museum (Alexandria),Alexandria,Egypt,31.2011,29.9132,museum,Indoor,62.0,Good,4
+Graeco-Roman Museum (Alexandria),Alexandria,Egypt,31.19925,29.90661,museum,Indoor,62.0,Good,4
+Caesareum of Alexandria (Alexandria),Alexandria,Egypt,31.2009,29.8994,archaeological_site,Outdoor,62.0,Good,4
+Ras el-Tin Palace (Alexandria),Alexandria,Egypt,31.19964,29.86883,attraction,Indoor,62.0,Good,4
+Rhacotis (Alexandria),Alexandria,Egypt,31.20072,29.88722,archaeological_site,Outdoor,62.0,Good,4
+Cathedral of Evangelismos (Alexandria),Alexandria,Egypt,31.1953,29.896,attraction,Indoor,62.0,Good,4
+Mahatet El Raml (Alexandria),Alexandria,Egypt,31.20154,29.90135,attraction,Outdoor,62.0,Good,4
+Cavafy Museum (Alexandria),Alexandria,Egypt,31.19761,29.90123,museum,Indoor,62.0,Good,4
+Museum of Fine Arts (Alexandria),Alexandria,Egypt,31.19509,29.9135,museum,Indoor,62.0,Good,4
+Tombs of Anfouchy (Alexandria),Alexandria,Egypt,31.20214,29.87404,archaeological_site,Outdoor,62.0,Good,4
+Kom el Deka (Roman stairs) (Alexandria),Alexandria,Egypt,31.19516,29.90425,archaeological_site,Outdoor,62.0,Good,4
+Planetarium Science Center (Alexandria),Alexandria,Egypt,31.20897,29.90814,museum,Indoor,62.0,Good,4
+Chatby Necropolis (Alexandria),Alexandria,Egypt,31.21138,29.91698,archaeological_site,Outdoor,62.0,Good,4
+Royal Jewellery Museum (Alexandria),Alexandria,Egypt,31.24079,29.96313,museum,Indoor,62.0,Good,-1
+Ancient Town Wall of Alexandria (Alexandria),Alexandria,Egypt,31.2026,29.91387,attraction,Outdoor,62.0,Good,4
+Valley of the Kings (Luxor),Luxor,Egypt,25.74025,32.60236,archaeological_site,Outdoor,73.0,Very Good,5
+Thebes (Luxor),Luxor,Egypt,25.72056,32.61028,archaeological_site,Outdoor,73.0,Very Good,5
+Karnak Temple Complex (Luxor),Luxor,Egypt,25.71833,32.65833,archaeological_site,Outdoor,73.0,Very Good,5
+Luxor Temple (Luxor),Luxor,Egypt,25.7,32.63917,archaeological_site,Outdoor,73.0,Very Good,5
+Valley of the Queens (Luxor),Luxor,Egypt,25.7275,32.59306,archaeological_site,Outdoor,73.0,Very Good,5
+tomb of Tutankhamun (Luxor),Luxor,Egypt,25.74036,32.60144,attraction,Outdoor,73.0,Very Good,5
+Deir el-Bahari (Luxor),Luxor,Egypt,25.7375,32.6075,archaeological_site,Outdoor,73.0,Very Good,5
+Colossi of Memnon (Luxor),Luxor,Egypt,25.72056,32.61056,archaeological_site,Outdoor,73.0,Very Good,5
+Theban Necropolis (Luxor),Luxor,Egypt,25.73333,32.6,archaeological_site,Outdoor,73.0,Very Good,5
+Ramesseum (Luxor),Luxor,Egypt,25.72778,32.61056,archaeological_site,Outdoor,73.0,Very Good,5
+Deir el-Medina (Luxor),Luxor,Egypt,25.72833,32.60139,archaeological_site,Outdoor,73.0,Very Good,5
+Merneptah Stele (Luxor),Luxor,Egypt,25.72,32.61,attraction,Outdoor,73.0,Very Good,5
+mortuary temple of Hatshepsut (Luxor),Luxor,Egypt,25.73806,32.60694,attraction,Indoor,73.0,Very Good,5
+KV1 (Luxor),Luxor,Egypt,25.7425,32.60194,attraction,Outdoor,73.0,Very Good,5
+KV5 (Luxor),Luxor,Egypt,25.74071,32.60206,attraction,Outdoor,73.0,Very Good,5
+KV8 (Luxor),Luxor,Egypt,25.74083,32.60111,attraction,Outdoor,73.0,Very Good,5
+Medinet Habu (Luxor),Luxor,Egypt,25.72,32.60083,archaeological_site,Outdoor,73.0,Very Good,5
+KV3 (Luxor),Luxor,Egypt,25.74105,32.60269,attraction,Outdoor,73.0,Very Good,5
+Hermonthis (Luxor),Luxor,Egypt,25.6167,32.5333,archaeological_site,Outdoor,73.0,Very Good,-1
+KV17 (Luxor),Luxor,Egypt,25.75,32.6143,archaeological_site,Outdoor,73.0,Very Good,5
+Luxor Museum (Luxor),Luxor,Egypt,25.70772,32.64449,museum,Indoor,73.0,Very Good,5
+Mortuary Temple of Seti I (Luxor),Luxor,Egypt,25.73278,32.62806,archaeological_site,Outdoor,73.0,Very Good,5
+Malkata (Luxor),Luxor,Egypt,25.71528,32.59111,archaeological_site,Outdoor,73.0,Very Good,5
+Dra' Abu el-Naga (Luxor),Luxor,Egypt,25.73528,32.62056,archaeological_site,Outdoor,73.0,Very Good,5
+KV33 (Luxor),Luxor,Egypt,25.73806,32.60083,attraction,Outdoor,73.0,Very Good,5
+Sehel Island (Aswan),Aswan,Egypt,24.06,32.87111,archaeological_site,Outdoor,82.0,Excellent,6
+Famine Stela (Aswan),Aswan,Egypt,24.05751,32.874,attraction,Outdoor,82.0,Excellent,6
+unfinished obelisk (Aswan),Aswan,Egypt,24.07689,32.89544,attraction,Outdoor,82.0,Excellent,6
+New Kalabsha (Aswan),Aswan,Egypt,23.96101,32.86669,archaeological_site,Outdoor,82.0,Excellent,-1
+Temple of Isis in Philae (Aswan),Aswan,Egypt,24.02576,32.8842,archaeological_site,Outdoor,82.0,Excellent,6
+Agilkia island (Aswan),Aswan,Egypt,24.02521,32.88427,archaeological_site,Outdoor,82.0,Excellent,6
+Qubbet el-Hawa (Aswan),Aswan,Egypt,24.103,32.8903,archaeological_site,Outdoor,82.0,Excellent,6
+Trajan's Kiosk (Aswan),Aswan,Egypt,24.0251,32.8846,attraction,Outdoor,82.0,Excellent,6
+International Museum of Nubia (Aswan),Aswan,Egypt,24.07958,32.88931,museum,Indoor,82.0,Excellent,6
+Temple of Beit el-Wali (Aswan),Aswan,Egypt,23.96194,32.86639,attraction,Indoor,82.0,Excellent,-1
+Wadi el-Hudi (Aswan),Aswan,Egypt,23.96153,33.13133,archaeological_site,Outdoor,82.0,Excellent,-1
+Agha Khan Tomb (Aswan),Aswan,Egypt,24.08828,32.87884,attraction,Outdoor,82.0,Excellent,6
+Philae (Aswan),Aswan,Egypt,24.02097,32.88963,attraction,Outdoor,82.0,Excellent,6
+Aswan Botanical Garden (Aswan),Aswan,Egypt,24.09377,32.88703,attraction,Outdoor,82.0,Excellent,6
+Saint Simeon Monastery (Aswan),Aswan,Egypt,24.09471,32.87577,attraction,Outdoor,82.0,Excellent,6
+Archangel Michael Cathedral for Coptic Orthodox (Aswan),Aswan,Egypt,24.0829,32.89051,attraction,Outdoor,82.0,Excellent,6
+Pyramid of Elefantine (Aswan),Aswan,Egypt,24.08566,32.88558,archaeological_site,Outdoor,82.0,Excellent,6
+Aswan Museum (Aswan),Aswan,Egypt,24.08498,32.88699,museum,Indoor,82.0,Excellent,6
+Burj Khalifa (Dubai),Dubai,UAE,25.19722,55.27417,attraction,Outdoor,93.0,Ideal,0
+Dubai Museum (Dubai),Dubai,UAE,25.26306,55.29722,museum,Indoor,93.0,Ideal,0
+The Dubai Fountain (Dubai),Dubai,UAE,25.19519,55.27506,attraction,Outdoor,93.0,Ideal,0
+Dubailand (Dubai),Dubai,UAE,25.075,55.36389,attraction,Outdoor,93.0,Ideal,-1
+Dubai Creek Tower (Dubai),Dubai,UAE,25.19762,55.35519,attraction,Outdoor,93.0,Ideal,0
+Museum of the Future (Dubai),Dubai,UAE,25.21912,55.2821,museum,Indoor,93.0,Ideal,0
+Wild Wadi Water Park (Dubai),Dubai,UAE,25.13944,55.18917,attraction,Outdoor,93.0,Ideal,1
+Dubai Miracle Garden (Dubai),Dubai,UAE,25.05981,55.24454,attraction,Outdoor,93.0,Ideal,-1
+Grand Mosque (Dubai),Dubai,UAE,25.26444,55.29667,attraction,Indoor,93.0,Ideal,0
+Jumeirah Mosque (Dubai),Dubai,UAE,25.23397,55.2655,attraction,Indoor,93.0,Ideal,0
+Al Bastakiya (Dubai),Dubai,UAE,25.26389,55.3,museum,Indoor,93.0,Ideal,0
+Deira Clocktower (Dubai),Dubai,UAE,25.25865,55.32645,attraction,Outdoor,93.0,Ideal,0
+Hindu Temple (Dubai),Dubai,UAE,25.26482,55.29683,attraction,Outdoor,93.0,Ideal,0
+Barjeel Art Foundation (Dubai),Dubai,UAE,25.32179,55.37659,museum,Indoor,93.0,Ideal,-1
+Dubai Moving Image Museum (Dubai),Dubai,UAE,25.09714,55.1789,museum,Indoor,93.0,Ideal,1
+Women's museum (Dubai),Dubai,UAE,25.27182,55.2987,museum,Indoor,93.0,Ideal,0
+Dubai Textile Souk (Dubai),Dubai,UAE,25.26414,55.29621,attraction,Outdoor,93.0,Ideal,0
+Ras al Khor Wildlife Sanctuary (Dubai),Dubai,UAE,25.1918,55.32208,attraction,Outdoor,93.0,Ideal,0
+Etihad Museum (Dubai),Dubai,UAE,25.24143,55.26933,museum,Indoor,93.0,Ideal,0
+Dubai Design District (Dubai),Dubai,UAE,25.18915,55.29814,attraction,Outdoor,93.0,Ideal,0
+Coins Museum (Dubai),Dubai,UAE,25.26458,55.29979,museum,Indoor,93.0,Ideal,0
+Dubai Municipality (Dubai),Dubai,UAE,25.26453,55.31173,attraction,Outdoor,93.0,Ideal,0
+Al Mamzar Park (Dubai),Dubai,UAE,25.32186,55.34968,attraction,Outdoor,93.0,Ideal,-1
+Jumeirah Beach (Dubai),Dubai,UAE,25.1848,55.22417,attraction,Outdoor,93.0,Ideal,-1
+Ski Dubai (Dubai),Dubai,UAE,25.11734,55.19861,attraction,Outdoor,93.0,Ideal,1
+Hagia Sophia (Istanbul),Istanbul,Turkey,41.00833,28.98,museum,Indoor,24.0,Very Unfavorable,0
+Constantinople (Istanbul),Istanbul,Turkey,41.01224,28.97602,archaeological_site,Outdoor,24.0,Very Unfavorable,0
+Sultan Ahmed Mosque (Istanbul),Istanbul,Turkey,41.00539,28.97682,attraction,Indoor,24.0,Very Unfavorable,0
+Topkapı Palace (Istanbul),Istanbul,Turkey,41.013,28.984,museum,Indoor,24.0,Very Unfavorable,0
+Süleymaniye Mosque (Istanbul),Istanbul,Turkey,41.01611,28.96389,attraction,Indoor,24.0,Very Unfavorable,0
+Bosphorus Bridge (Istanbul),Istanbul,Turkey,41.04556,29.03403,attraction,Outdoor,24.0,Very Unfavorable,0
+Galata Tower (Istanbul),Istanbul,Turkey,41.02563,28.97415,museum,Indoor,24.0,Very Unfavorable,0
+Dolmabahçe Palace (Istanbul),Istanbul,Turkey,41.03944,29.00167,attraction,Indoor,24.0,Very Unfavorable,0
+Taksim Square (Istanbul),Istanbul,Turkey,41.03694,28.98583,attraction,Outdoor,24.0,Very Unfavorable,0
+Maiden's Tower (Istanbul),Istanbul,Turkey,41.02111,29.00417,attraction,Outdoor,24.0,Very Unfavorable,0
+Chora Church (Istanbul),Istanbul,Turkey,41.03111,28.93917,museum,Indoor,24.0,Very Unfavorable,0
+Chalcedon (Istanbul),Istanbul,Turkey,40.98333,29.03333,archaeological_site,Outdoor,24.0,Very Unfavorable,0
+Şehzade Mosque (Istanbul),Istanbul,Turkey,41.01379,28.95717,attraction,Indoor,24.0,Very Unfavorable,0
+Fatih Sultan Mehmet Bridge (Istanbul),Istanbul,Turkey,41.09111,29.06139,attraction,Outdoor,24.0,Very Unfavorable,0
+Basilica Cistern (Istanbul),Istanbul,Turkey,41.0084,28.97792,archaeological_site,Outdoor,24.0,Very Unfavorable,0
+New Mosque (Istanbul),Istanbul,Turkey,41.01687,28.97214,attraction,Indoor,24.0,Very Unfavorable,0
+Hagia Irene (Istanbul),Istanbul,Turkey,41.00972,28.98111,attraction,Indoor,24.0,Very Unfavorable,0
+Galata Bridge (Istanbul),Istanbul,Turkey,41.02,28.97306,attraction,Outdoor,24.0,Very Unfavorable,0
+Ortaköy Mosque (Istanbul),Istanbul,Turkey,41.04733,29.02681,attraction,Indoor,24.0,Very Unfavorable,0
+Fatih Istanbul Mosque (Istanbul),Istanbul,Turkey,41.01972,28.94972,attraction,Indoor,24.0,Very Unfavorable,0
+Little Hagia Sophia (Istanbul),Istanbul,Turkey,41.00278,28.97194,attraction,Indoor,24.0,Very Unfavorable,0
+Istanbul Archaeology Museums (Istanbul),Istanbul,Turkey,41.01167,28.98139,museum,Indoor,24.0,Very Unfavorable,0
+Rumeli Hisarı (Istanbul),Istanbul,Turkey,41.08472,29.05611,museum,Indoor,24.0,Very Unfavorable,0
+Rüstem Pasha Mosque (Istanbul),Istanbul,Turkey,41.01759,28.96875,attraction,Indoor,24.0,Very Unfavorable,0
+Sokollu Mehmed Pasha I Mosque (Istanbul),Istanbul,Turkey,41.00472,28.97194,attraction,Indoor,24.0,Very Unfavorable,0
+Eiffel Tower (Paris),Paris,France,48.8583,2.29448,attraction,Outdoor,28.0,Very Unfavorable,0
+Louvre Museum (Paris),Paris,France,48.86111,2.33583,museum,Indoor,28.0,Very Unfavorable,0
+Notre-Dame de Paris (Paris),Paris,France,48.853,2.3498,attraction,Indoor,28.0,Very Unfavorable,0
+Musée d'Orsay (Paris),Paris,France,48.85997,2.32653,museum,Indoor,28.0,Very Unfavorable,0
+Palace of Versailles (Paris),Paris,France,48.80472,2.12028,museum,Indoor,28.0,Very Unfavorable,-1
+Arc de Triomphe (Paris),Paris,France,48.87378,2.29504,attraction,Outdoor,28.0,Very Unfavorable,0
+Bastille (Paris),Paris,France,48.85333,2.36917,attraction,Outdoor,28.0,Very Unfavorable,0
+Élysée Palace (Paris),Paris,France,48.87028,2.31639,attraction,Indoor,28.0,Very Unfavorable,0
+Centre Georges Pompidou (Paris),Paris,France,48.86064,2.35224,museum,Indoor,28.0,Very Unfavorable,0
+place de la Concorde (Paris),Paris,France,48.86563,2.32124,attraction,Outdoor,28.0,Very Unfavorable,0
+Panthéon (Paris),Paris,France,48.8462,2.34611,attraction,Indoor,28.0,Very Unfavorable,0
+Sacré-Cœur (Paris),Paris,France,48.88665,2.34295,attraction,Indoor,28.0,Very Unfavorable,0
+Basilica of Saint-Denis (Paris),Paris,France,48.93556,2.35972,attraction,Indoor,28.0,Very Unfavorable,-1
+Tuileries Palace (Paris),Paris,France,48.86222,2.33111,attraction,Indoor,28.0,Very Unfavorable,0
+Sainte Chapelle (Paris),Paris,France,48.85537,2.34503,attraction,Indoor,28.0,Very Unfavorable,0
+Champ de Mars (Paris),Paris,France,48.85613,2.29803,attraction,Outdoor,28.0,Very Unfavorable,0
+Musée des Arts et Métiers (Paris),Paris,France,48.86611,2.35528,museum,Indoor,28.0,Very Unfavorable,0
+Luxembourg Palace (Paris),Paris,France,48.84833,2.3375,attraction,Indoor,28.0,Very Unfavorable,0
+Jardin du Luxembourg (Paris),Paris,France,48.84694,2.33722,attraction,Outdoor,28.0,Very Unfavorable,0
+Grande Arche (Paris),Paris,France,48.8928,2.23583,attraction,Outdoor,28.0,Very Unfavorable,0
+Palais-Royal (Paris),Paris,France,48.86333,2.33694,attraction,Indoor,28.0,Very Unfavorable,0
+bois de Boulogne (Paris),Paris,France,48.86472,2.25083,attraction,Outdoor,28.0,Very Unfavorable,0
+Tuileries Garden (Paris),Paris,France,48.86389,2.32611,attraction,Outdoor,28.0,Very Unfavorable,0
+Petit Palais (Paris),Paris,France,48.86603,2.31456,museum,Indoor,28.0,Very Unfavorable,0
+La Madeleine (Paris),Paris,France,48.87,2.32444,attraction,Indoor,28.0,Very Unfavorable,0
+British Museum (London),London,UK,51.51944,-0.12694,museum,Indoor,26.0,Very Unfavorable,0
+Buckingham Palace (London),London,UK,51.501,-0.142,museum,Indoor,26.0,Very Unfavorable,0
+Westminster Abbey (London),London,UK,51.4994,-0.12737,attraction,Indoor,26.0,Very Unfavorable,0
+Big Ben (London),London,UK,51.50067,-0.12457,attraction,Outdoor,26.0,Very Unfavorable,0
+Tower of London (London),London,UK,51.5082,-0.0762,museum,Indoor,26.0,Very Unfavorable,0
+Tower Bridge (London),London,UK,51.50556,-0.07528,attraction,Outdoor,26.0,Very Unfavorable,0
+London Bridge (London),London,UK,51.50806,-0.08778,attraction,Outdoor,26.0,Very Unfavorable,0
+London Eye (London),London,UK,51.50333,-0.11972,attraction,Outdoor,26.0,Very Unfavorable,0
+St Paul's Cathedral (London),London,UK,51.51378,-0.09831,attraction,Indoor,26.0,Very Unfavorable,0
+Trafalgar Square (London),London,UK,51.50806,-0.12806,attraction,Outdoor,26.0,Very Unfavorable,0
+National Gallery (London),London,UK,51.50889,-0.12833,museum,Indoor,26.0,Very Unfavorable,0
+Madame Tussauds (London),London,UK,51.52279,-0.15517,museum,Indoor,26.0,Very Unfavorable,0
+Hyde Park (London),London,UK,51.50861,-0.16361,attraction,Outdoor,26.0,Very Unfavorable,0
+Tate Modern (London),London,UK,51.50778,-0.09944,museum,Indoor,26.0,Very Unfavorable,0
+Victoria and Albert Museum (London),London,UK,51.49685,-0.17162,museum,Indoor,26.0,Very Unfavorable,0
+Royal Observatory (London),London,UK,51.47783,-0.00139,museum,Indoor,26.0,Very Unfavorable,-1
+Natural History Museum (London),London,UK,51.49611,-0.17611,museum,Indoor,26.0,Very Unfavorable,0
+Kensington Palace (London),London,UK,51.50528,-0.18833,museum,Indoor,26.0,Very Unfavorable,0
+Hampton Court Palace (London),London,UK,51.4034,-0.3375,museum,Indoor,26.0,Very Unfavorable,-1
+Kew Gardens (London),London,UK,51.47889,-0.29361,attraction,Outdoor,26.0,Very Unfavorable,-1
+The Crystal Palace (London),London,UK,51.42229,-0.07579,attraction,Indoor,26.0,Very Unfavorable,-1
+St James's Palace (London),London,UK,51.50472,-0.13778,attraction,Indoor,26.0,Very Unfavorable,0
+Westminster Bridge (London),London,UK,51.50083,-0.12194,attraction,Outdoor,26.0,Very Unfavorable,0
+Millennium Bridge (London),London,UK,51.51017,-0.09844,attraction,Outdoor,26.0,Very Unfavorable,0
+Londinium (London),London,UK,51.51422,-0.08846,archaeological_site,Outdoor,26.0,Very Unfavorable,0
+Colosseum (Rome),Rome,Italy,41.89028,12.49222,museum,Indoor,31.0,Unfavorable,0
+St. Peter's Basilica (Rome),Rome,Italy,41.90222,12.45342,attraction,Indoor,31.0,Unfavorable,0
+Sistine Chapel (Rome),Rome,Italy,41.90296,12.45443,attraction,Indoor,31.0,Unfavorable,0
+Pantheon (Rome),Rome,Italy,41.89861,12.47694,museum,Indoor,31.0,Unfavorable,0
+Roman Forum (Rome),Rome,Italy,41.8922,12.4852,archaeological_site,Outdoor,31.0,Unfavorable,0
+Trevi Fountain (Rome),Rome,Italy,41.90093,12.48331,attraction,Outdoor,31.0,Unfavorable,0
+Saint Peter's Square (Rome),Rome,Italy,41.90218,12.45724,attraction,Outdoor,31.0,Unfavorable,0
+Vatican Museums (Rome),Rome,Italy,41.90639,12.45444,museum,Indoor,31.0,Unfavorable,0
+Archbasilica of St. John Lateran (Rome),Rome,Italy,41.88591,12.50616,attraction,Indoor,31.0,Unfavorable,0
+Palatine Hill (Rome),Rome,Italy,41.88833,12.48694,museum,Indoor,31.0,Unfavorable,0
+Apostolic Palace (Rome),Rome,Italy,41.90361,12.45639,attraction,Indoor,31.0,Unfavorable,0
+Castel Sant'Angelo (Rome),Rome,Italy,41.90304,12.46631,museum,Indoor,31.0,Unfavorable,0
+Basilica di Santa Maria Maggiore (Rome),Rome,Italy,41.8975,12.49861,attraction,Indoor,31.0,Unfavorable,0
+Basilica of Saint Paul outside the Walls (Rome),Rome,Italy,41.85861,12.47722,attraction,Indoor,31.0,Unfavorable,0
+Trajan's Column (Rome),Rome,Italy,41.89583,12.48417,archaeological_site,Outdoor,31.0,Unfavorable,0
+Quirinal Palace (Rome),Rome,Italy,41.9,12.4875,attraction,Indoor,31.0,Unfavorable,0
+Circus Maximus (Rome),Rome,Italy,41.8859,12.4857,archaeological_site,Outdoor,31.0,Unfavorable,0
+Arch of Constantine (Rome),Rome,Italy,41.88983,12.49061,archaeological_site,Outdoor,31.0,Unfavorable,0
+Aurelian Walls (Rome),Rome,Italy,41.87329,12.49896,archaeological_site,Outdoor,31.0,Unfavorable,0
+Galleria Borghese (Rome),Rome,Italy,41.91421,12.49214,museum,Indoor,31.0,Unfavorable,0
+Trajan's Forum (Rome),Rome,Italy,41.89542,12.48587,archaeological_site,Outdoor,31.0,Unfavorable,0
+Piazza Navona (Rome),Rome,Italy,41.89871,12.47316,attraction,Outdoor,31.0,Unfavorable,0
+Capitoline Museums (Rome),Rome,Italy,41.89306,12.48278,museum,Indoor,31.0,Unfavorable,0
+Arch of Titus (Rome),Rome,Italy,41.89072,12.48859,archaeological_site,Outdoor,31.0,Unfavorable,0
+Baths of Caracalla (Rome),Rome,Italy,41.88026,12.49276,museum,Indoor,31.0,Unfavorable,0
+Mode Gakuen Cocoon Tower (Tokyo),Tokyo,Japan,35.69167,139.69694,attraction,Outdoor,30.0,Unfavorable,0
+Tokyo Skytree (Tokyo),Tokyo,Japan,35.71006,139.81072,attraction,Outdoor,30.0,Unfavorable,0
+Tokyo Tower (Tokyo),Tokyo,Japan,35.65861,139.74556,attraction,Outdoor,30.0,Unfavorable,0
+Tokyo National Museum (Tokyo),Tokyo,Japan,35.71889,139.77639,museum,Indoor,30.0,Unfavorable,0
+Yasukuni Shrine (Tokyo),Tokyo,Japan,35.69396,139.74269,attraction,Outdoor,30.0,Unfavorable,0
+Tokyo Imperial Palace (Tokyo),Tokyo,Japan,35.6825,139.7521,attraction,Indoor,30.0,Unfavorable,0
+Edo Castle (Tokyo),Tokyo,Japan,35.68832,139.75439,attraction,Outdoor,30.0,Unfavorable,0
+Ueno Imperial Grant Park (Tokyo),Tokyo,Japan,35.71222,139.77111,attraction,Outdoor,30.0,Unfavorable,0
+National Museum of Western Art (Tokyo),Tokyo,Japan,35.71536,139.77585,museum,Indoor,30.0,Unfavorable,0
+Sensō-ji Temple (Tokyo),Tokyo,Japan,35.71456,139.79664,attraction,Indoor,30.0,Unfavorable,0
+Rainbow Bridge (Tokyo),Tokyo,Japan,35.63639,139.76361,attraction,Outdoor,30.0,Unfavorable,0
+Tokyo Mosque (Tokyo),Tokyo,Japan,35.66814,139.6765,attraction,Indoor,30.0,Unfavorable,0
+St. Mary's Cathedral (Tokyo),Tokyo,Japan,35.71417,139.72667,attraction,Indoor,30.0,Unfavorable,0
+"National Art Center, Tokyo (Tokyo)",Tokyo,Japan,35.66528,139.72634,museum,Indoor,30.0,Unfavorable,0
+Yoyogi Park (Tokyo),Tokyo,Japan,35.67198,139.69769,attraction,Outdoor,30.0,Unfavorable,0
+Ueno Zoo (Tokyo),Tokyo,Japan,35.7175,139.77139,attraction,Outdoor,30.0,Unfavorable,0
+Ghibli Museum (Tokyo),Tokyo,Japan,35.69623,139.57043,museum,Indoor,30.0,Unfavorable,-1
+Akasaka Palace (Tokyo),Tokyo,Japan,35.68,139.72861,attraction,Indoor,30.0,Unfavorable,0
+National Museum of Nature and Science (Tokyo),Tokyo,Japan,35.71632,139.77654,museum,Indoor,30.0,Unfavorable,0
+Shinjuku Gyoen (Tokyo),Tokyo,Japan,35.68717,139.71064,attraction,Outdoor,30.0,Unfavorable,0
+The National Museum of Modern Art (Tokyo),Tokyo,Japan,35.69055,139.75464,museum,Indoor,30.0,Unfavorable,0
+NTT Docomo Yoyogi Building (Tokyo),Tokyo,Japan,35.68436,139.70325,attraction,Outdoor,30.0,Unfavorable,0
+Kasai Rinkai Park (Tokyo),Tokyo,Japan,35.64286,139.86257,attraction,Outdoor,30.0,Unfavorable,-1
+Hamarikyu Gardens (Tokyo),Tokyo,Japan,35.66,139.762,attraction,Indoor,30.0,Unfavorable,0
+Inokashira Park (Tokyo),Tokyo,Japan,35.69829,139.57147,attraction,Outdoor,30.0,Unfavorable,-1
+Statue of Liberty (New York),New York,USA,40.68921,-74.04443,attraction,Outdoor,24.0,Very Unfavorable,0
+Metropolitan Museum of Art (New York),New York,USA,40.77944,-73.96333,museum,Indoor,24.0,Very Unfavorable,0
+Central Park (New York),New York,USA,40.7825,-73.96611,attraction,Outdoor,24.0,Very Unfavorable,0
+Brooklyn Bridge (New York),New York,USA,40.70567,-73.99633,attraction,Outdoor,24.0,Very Unfavorable,0
+Times Square (New York),New York,USA,40.7575,-73.98583,attraction,Outdoor,24.0,Very Unfavorable,0
+Museum of Modern Art (New York),New York,USA,40.76167,-73.9775,museum,Indoor,24.0,Very Unfavorable,0
+Solomon R. Guggenheim Museum (New York),New York,USA,40.78306,-73.95889,museum,Indoor,24.0,Very Unfavorable,0
+American Museum of Natural History (New York),New York,USA,40.78083,-73.97444,museum,Indoor,24.0,Very Unfavorable,0
+Verrazzano-Narrows Bridge (New York),New York,USA,40.60639,-74.04556,attraction,Outdoor,24.0,Very Unfavorable,-1
+George Washington Bridge (New York),New York,USA,40.85167,-73.9525,attraction,Outdoor,24.0,Very Unfavorable,-1
+Brooklyn Museum (New York),New York,USA,40.67121,-73.96363,museum,Indoor,24.0,Very Unfavorable,0
+Manhattan Bridge (New York),New York,USA,40.70722,-73.99083,attraction,Outdoor,24.0,Very Unfavorable,0
+St. Patrick's Cathedral (New York),New York,USA,40.75861,-73.97639,attraction,Indoor,24.0,Very Unfavorable,0
+Bronx Zoo (New York),New York,USA,40.85028,-73.87833,attraction,Outdoor,24.0,Very Unfavorable,-1
+Williamsburg Bridge (New York),New York,USA,40.713,-73.97,attraction,Outdoor,24.0,Very Unfavorable,0
+Flushing Meadows–Corona Park (New York),New York,USA,40.74375,-73.84479,attraction,Outdoor,24.0,Very Unfavorable,-1
+National September 11 Memorial & Museum (New York),New York,USA,40.71139,-74.01361,museum,Indoor,24.0,Very Unfavorable,0
+The Battery (New York),New York,USA,40.70361,-74.01611,attraction,Outdoor,24.0,Very Unfavorable,0
+Trinity Church (New York),New York,USA,40.70801,-74.01221,attraction,Indoor,24.0,Very Unfavorable,0
+Madison Square and Madison Square Park (New York),New York,USA,40.74222,-73.98806,attraction,Outdoor,24.0,Very Unfavorable,0
+Prospect Park (New York),New York,USA,40.66143,-73.97035,attraction,Outdoor,24.0,Very Unfavorable,0
+Queensboro Bridge (New York),New York,USA,40.75694,-73.95472,attraction,Outdoor,24.0,Very Unfavorable,0
+High Line (New York),New York,USA,40.7483,-74.005,attraction,Outdoor,24.0,Very Unfavorable,0
+Whitney Museum of American Art (New York),New York,USA,40.7396,-74.0089,museum,Indoor,24.0,Very Unfavorable,0
+Federal Hall (New York),New York,USA,40.7072,-74.0103,attraction,Outdoor,24.0,Very Unfavorable,0
+Museo del Prado (Madrid),Madrid,Spain,40.41389,-3.69222,museum,Indoor,42.0,Marginal,0
+Museo Nacional Centro de Arte Reina Sofía (Madrid),Madrid,Spain,40.40857,-3.694,museum,Indoor,42.0,Marginal,0
+Royal Palace of Madrid (Madrid),Madrid,Spain,40.41795,-3.71431,museum,Indoor,42.0,Marginal,0
+Royal Spanish Academy (Madrid),Madrid,Spain,40.41502,-3.69091,museum,Indoor,42.0,Marginal,0
+Almudena Cathedral (Madrid),Madrid,Spain,40.41556,-3.71444,attraction,Indoor,42.0,Marginal,0
+Thyssen-Bornemisza Museum (Madrid),Madrid,Spain,40.41604,-3.69493,museum,Indoor,42.0,Marginal,0
+Main Square (Madrid),Madrid,Spain,40.41546,-3.70738,attraction,Outdoor,42.0,Marginal,0
+El Retiro Park (Madrid),Madrid,Spain,40.415,-3.68389,attraction,Outdoor,42.0,Marginal,0
+Puerta del Sol (Madrid),Madrid,Spain,40.41694,-3.70361,attraction,Outdoor,42.0,Marginal,0
+National Museum of Archaeology (Madrid),Madrid,Spain,40.42365,-3.68942,museum,Indoor,42.0,Marginal,0
+Palace of Moncloa (Madrid),Madrid,Spain,40.44361,-3.73694,attraction,Indoor,42.0,Marginal,0
+Temple of Debod (Madrid),Madrid,Spain,40.42405,-3.71778,museum,Indoor,42.0,Marginal,0
+Teatro Real (Madrid),Madrid,Spain,40.41824,-3.71037,attraction,Outdoor,42.0,Marginal,0
+Las Ventas (Madrid),Madrid,Spain,40.43208,-3.66328,attraction,Outdoor,42.0,Marginal,0
+Royal Academy of Fine Arts of San Fernando (Madrid),Madrid,Spain,40.4178,-3.7007,museum,Indoor,42.0,Marginal,0
+plaza de España (Madrid),Madrid,Spain,40.42339,-3.71223,attraction,Outdoor,42.0,Marginal,0
+Palace of Zarzuela (Madrid),Madrid,Spain,40.48278,-3.80143,attraction,Indoor,42.0,Marginal,-1
+Alcalá Gate (Madrid),Madrid,Spain,40.42002,-3.68873,attraction,Outdoor,42.0,Marginal,0
+Forest of Remembrance (Madrid),Madrid,Spain,40.41194,-3.68694,attraction,Outdoor,42.0,Marginal,0
+plaza de Cibeles (Madrid),Madrid,Spain,40.41917,-3.69306,attraction,Outdoor,42.0,Marginal,0
+Royal Botanic Garden of Madrid (Madrid),Madrid,Spain,40.41087,-3.6914,museum,Indoor,42.0,Marginal,0
+Sorolla Museum (Madrid),Madrid,Spain,40.4354,-3.69254,museum,Indoor,42.0,Marginal,0
+Casa de Campo Park (Madrid),Madrid,Spain,40.42291,-3.75595,attraction,Outdoor,42.0,Marginal,0
+Royal Palace of El Pardo (Madrid),Madrid,Spain,40.52129,-3.77506,museum,Indoor,42.0,Marginal,-1
+plaza de Colón (Madrid),Madrid,Spain,40.42493,-3.68944,attraction,Outdoor,42.0,Marginal,0
+Basilica and Expiatory Church of the Holy Family (Barcelona),Barcelona,Spain,41.40369,2.17433,attraction,Indoor,51.0,Acceptable,1
+Park Güell (Barcelona),Barcelona,Spain,41.41361,2.15278,museum,Indoor,51.0,Acceptable,1
+Cathedral of the Holy Cross and Saint Eulalia (Barcelona),Barcelona,Spain,41.38389,2.17639,attraction,Indoor,51.0,Acceptable,1
+Plaça de Catalunya (Barcelona),Barcelona,Spain,41.38703,2.17008,attraction,Outdoor,51.0,Acceptable,1
+Palau Güell (Barcelona),Barcelona,Spain,41.37882,2.17439,attraction,Indoor,51.0,Acceptable,1
+Casa Vicens (Barcelona),Barcelona,Spain,41.40349,2.15064,museum,Indoor,51.0,Acceptable,1
+Museu Nacional d'Art de Catalunya (Barcelona),Barcelona,Spain,41.36833,2.15331,museum,Indoor,51.0,Acceptable,1
+Museu Picasso (Barcelona),Barcelona,Spain,41.38522,2.18089,museum,Indoor,51.0,Acceptable,1
+Fundació Joan Miró (Barcelona),Barcelona,Spain,41.36861,2.16,museum,Indoor,51.0,Acceptable,1
+Basilica of Our Lady of the Sea (Barcelona),Barcelona,Spain,41.38361,2.18194,attraction,Indoor,51.0,Acceptable,1
+Arc de Triomf (Barcelona),Barcelona,Spain,41.39111,2.18056,attraction,Outdoor,51.0,Acceptable,1
+MACBA Barcelona Museum of Contemporary Art (Barcelona),Barcelona,Spain,41.38311,2.16679,museum,Indoor,51.0,Acceptable,1
+FC Barcelona Museum (Barcelona),Barcelona,Spain,41.38039,2.12064,museum,Indoor,51.0,Acceptable,1
+Parc de la Ciutadella (Barcelona),Barcelona,Spain,41.38811,2.18752,attraction,Outdoor,51.0,Acceptable,1
+Barcelona Zoo (Barcelona),Barcelona,Spain,41.38788,2.19119,attraction,Outdoor,51.0,Acceptable,1
+Magic Fountain of Montjuïc (Barcelona),Barcelona,Spain,41.37114,2.15173,attraction,Outdoor,51.0,Acceptable,1
+Columbus Monument (Barcelona),Barcelona,Spain,41.3758,2.17776,attraction,Outdoor,51.0,Acceptable,1
+Plaça d'Espanya (Barcelona),Barcelona,Spain,41.37504,2.14911,attraction,Outdoor,51.0,Acceptable,1
+Torre de Collserola (Barcelona),Barcelona,Spain,41.41722,2.11417,attraction,Outdoor,51.0,Acceptable,1
+Aquarium Barcelona (Barcelona),Barcelona,Spain,41.37667,2.18417,attraction,Outdoor,51.0,Acceptable,1
+Montjuïc Communications Tower (Barcelona),Barcelona,Spain,41.36417,2.15056,attraction,Outdoor,51.0,Acceptable,1
+Museu d'Història de Barcelona (Barcelona),Barcelona,Spain,41.3839,2.17769,museum,Indoor,51.0,Acceptable,1
+Church of Colònia Güell (Barcelona),Barcelona,Spain,41.3638,2.02785,attraction,Indoor,51.0,Acceptable,-1
+Basilica of Our Lady of the Pine Tree (Barcelona),Barcelona,Spain,41.38222,2.17389,attraction,Indoor,51.0,Acceptable,1
+National Expiatory Basilica of the Sacred Heart of Jesus (Barcelona),Barcelona,Spain,41.42207,2.11886,attraction,Indoor,51.0,Acceptable,1
+Brandenburg Gate (Berlin),Berlin,Germany,52.51627,13.37772,attraction,Outdoor,22.0,Very Unfavorable,0
+Pergamon Museum (Berlin),Berlin,Germany,52.521,13.396,museum,Indoor,22.0,Very Unfavorable,0
+Fernsehturm Berlin (Berlin),Berlin,Germany,52.52083,13.40944,attraction,Outdoor,22.0,Very Unfavorable,0
+Berlin Zoological Garden (Berlin),Berlin,Germany,52.50833,13.3375,attraction,Outdoor,22.0,Very Unfavorable,0
+Berlin Cathedral (Berlin),Berlin,Germany,52.51917,13.40111,attraction,Indoor,22.0,Very Unfavorable,0
+Potsdamer Platz (Berlin),Berlin,Germany,52.50894,13.37633,attraction,Outdoor,22.0,Very Unfavorable,0
+Charlottenburg Palace (Berlin),Berlin,Germany,52.52111,13.29583,museum,Indoor,22.0,Very Unfavorable,0
+Alexanderplatz (Berlin),Berlin,Germany,52.52167,13.41361,attraction,Outdoor,22.0,Very Unfavorable,0
+Neues Museum (Berlin),Berlin,Germany,52.5202,13.3976,museum,Indoor,22.0,Very Unfavorable,0
+Berlin Palace (Berlin),Berlin,Germany,52.5175,13.40278,attraction,Indoor,22.0,Very Unfavorable,0
+Bode Museum (Berlin),Berlin,Germany,52.52194,13.39472,museum,Indoor,22.0,Very Unfavorable,0
+Altes Museum (Berlin),Berlin,Germany,52.51944,13.39889,museum,Indoor,22.0,Very Unfavorable,0
+Siegessäule (Berlin),Berlin,Germany,52.51451,13.35011,attraction,Outdoor,22.0,Very Unfavorable,0
+Kaiser-Wilhelm-Gedächtniskirche (Berlin),Berlin,Germany,52.50472,13.33528,attraction,Indoor,22.0,Very Unfavorable,0
+Memorial to the Murdered Jews of Europe (Berlin),Berlin,Germany,52.51389,13.37889,attraction,Outdoor,22.0,Very Unfavorable,0
+Gemäldegalerie Berlin (Berlin),Berlin,Germany,52.50861,13.36472,museum,Indoor,22.0,Very Unfavorable,0
+Jewish Museum Berlin (Berlin),Berlin,Germany,52.50231,13.39545,museum,Indoor,22.0,Very Unfavorable,0
+Alte Nationalgalerie (Berlin),Berlin,Germany,52.52081,13.39835,museum,Indoor,22.0,Very Unfavorable,0
+Bellevue Palace (Berlin),Berlin,Germany,52.5175,13.35333,attraction,Indoor,22.0,Very Unfavorable,0
+Großer Tiergarten (Berlin),Berlin,Germany,52.51667,13.36667,attraction,Outdoor,22.0,Very Unfavorable,0
+St. Hedwig's Cathedral (Berlin),Berlin,Germany,52.51583,13.39472,attraction,Indoor,22.0,Very Unfavorable,0
+Pariser Platz (Berlin),Berlin,Germany,52.51639,13.37889,attraction,Outdoor,22.0,Very Unfavorable,0
+Museum für Naturkunde - Leibniz Institute for Evolution and Biodiversity Science (Berlin),Berlin,Germany,52.5302,13.3792,museum,Indoor,22.0,Very Unfavorable,0
+Soviet War Memorial (Berlin),Berlin,Germany,52.48611,13.47167,attraction,Outdoor,22.0,Very Unfavorable,-1
+Gendarmenmarkt (Berlin),Berlin,Germany,52.51361,13.39278,attraction,Outdoor,22.0,Very Unfavorable,0
+Deutsches Museum (Munich),Munich,Germany,48.13,11.58333,museum,Indoor,22.0,Very Unfavorable,1
+Nymphenburg Palace (Munich),Munich,Germany,48.15806,11.50361,museum,Indoor,22.0,Very Unfavorable,1
+Alte Pinakothek (Munich),Munich,Germany,48.14829,11.56999,museum,Indoor,22.0,Very Unfavorable,1
+Frauenkirche (Munich),Munich,Germany,48.13858,11.57362,attraction,Indoor,22.0,Very Unfavorable,1
+Englischer Garten (Munich),Munich,Germany,48.15278,11.59194,attraction,Outdoor,22.0,Very Unfavorable,1
+Glyptothek (Munich),Munich,Germany,48.14657,11.56582,museum,Indoor,22.0,Very Unfavorable,1
+Marienplatz (Munich),Munich,Germany,48.13722,11.57528,attraction,Outdoor,22.0,Very Unfavorable,1
+Neue Pinakothek (Munich),Munich,Germany,48.14989,11.57111,museum,Indoor,22.0,Very Unfavorable,1
+Munich Residence (Munich),Munich,Germany,48.14105,11.57871,attraction,Indoor,22.0,Very Unfavorable,1
+BMW Museum (Munich),Munich,Germany,48.17667,11.55917,museum,Indoor,22.0,Very Unfavorable,1
+Schleißheim palace complex (Munich),Munich,Germany,48.24861,11.56833,attraction,Indoor,22.0,Very Unfavorable,-1
+Theatine Church (Munich),Munich,Germany,48.14194,11.57639,attraction,Indoor,22.0,Very Unfavorable,1
+Theresienwiese (Munich),Munich,Germany,48.1333,11.55,attraction,Outdoor,22.0,Very Unfavorable,1
+Braunes Haus (Munich),Munich,Germany,48.1453,11.5675,attraction,Indoor,22.0,Very Unfavorable,1
+Bavaria (Munich),Munich,Germany,48.13069,11.54579,attraction,Outdoor,22.0,Very Unfavorable,1
+"St. Michael's Church, Munich (Munich)",Munich,Germany,48.13884,11.57038,attraction,Indoor,22.0,Very Unfavorable,1
+Asam Church (Munich),Munich,Germany,48.13521,11.56951,attraction,Indoor,22.0,Very Unfavorable,1
+Haus der Kunst (Munich),Munich,Germany,48.14411,11.58594,museum,Indoor,22.0,Very Unfavorable,1
+"St. Peter's Church, Munich (Munich)",Munich,Germany,48.13647,11.57601,attraction,Indoor,22.0,Very Unfavorable,1
+Bavarian National Museum (Munich),Munich,Germany,48.1432,11.591,museum,Indoor,22.0,Very Unfavorable,1
+Museum Witt (Munich),Munich,Germany,48.16467,11.48217,museum,Indoor,22.0,Very Unfavorable,1
+Pinakothek der Moderne (Munich),Munich,Germany,48.14716,11.5723,museum,Indoor,22.0,Very Unfavorable,1
+Olympiapark (Munich),Munich,Germany,48.17,11.55167,attraction,Outdoor,22.0,Very Unfavorable,1
+Odeonsplatz (Munich),Munich,Germany,48.14222,11.5775,attraction,Outdoor,22.0,Very Unfavorable,1
+Siegestor (Munich),Munich,Germany,48.15235,11.58214,attraction,Outdoor,22.0,Very Unfavorable,1
+Rijksmuseum (Amsterdam),Amsterdam,Netherlands,52.36,4.88528,museum,Indoor,20.0,Very Unfavorable,0
+Van Gogh Museum (Amsterdam),Amsterdam,Netherlands,52.35833,4.88111,museum,Indoor,20.0,Very Unfavorable,0
+Anne Frank House (Amsterdam),Amsterdam,Netherlands,52.37515,4.88404,museum,Indoor,20.0,Very Unfavorable,0
+Stedelijk Museum Amsterdam (Amsterdam),Amsterdam,Netherlands,52.35801,4.87976,museum,Indoor,20.0,Very Unfavorable,0
+Royal Palace of Amsterdam (Amsterdam),Amsterdam,Netherlands,52.37317,4.89136,attraction,Indoor,20.0,Very Unfavorable,0
+Dam Square (Amsterdam),Amsterdam,Netherlands,52.37306,4.89278,attraction,Outdoor,20.0,Very Unfavorable,0
+Natura Artis Magistra (Amsterdam),Amsterdam,Netherlands,52.36611,4.91667,museum,Indoor,20.0,Very Unfavorable,0
+Westerkerk (Amsterdam),Amsterdam,Netherlands,52.3745,4.8839,attraction,Indoor,20.0,Very Unfavorable,0
+Rembrandt House Museum (Amsterdam),Amsterdam,Netherlands,52.36944,4.90139,museum,Indoor,20.0,Very Unfavorable,0
+Zaanse Schans (Amsterdam),Amsterdam,Netherlands,52.47389,4.81639,museum,Indoor,20.0,Very Unfavorable,-1
+Wereldmuseum Amsterdam (Amsterdam),Amsterdam,Netherlands,52.3625,4.92111,museum,Indoor,20.0,Very Unfavorable,0
+Nieuwe Kerk (Amsterdam),Amsterdam,Netherlands,52.37389,4.89194,museum,Indoor,20.0,Very Unfavorable,0
+Vondelpark (Amsterdam),Amsterdam,Netherlands,52.35694,4.86639,attraction,Outdoor,20.0,Very Unfavorable,0
+NEMO Science Center (Amsterdam),Amsterdam,Netherlands,52.37411,4.91239,museum,Indoor,20.0,Very Unfavorable,0
+Homomonument (Amsterdam),Amsterdam,Netherlands,52.37444,4.88472,attraction,Outdoor,20.0,Very Unfavorable,0
+Museumplein (Amsterdam),Amsterdam,Netherlands,52.35761,4.88162,attraction,Outdoor,20.0,Very Unfavorable,0
+Oude Kerk (Amsterdam),Amsterdam,Netherlands,52.37417,4.89806,museum,Indoor,20.0,Very Unfavorable,0
+Magere Brug (Amsterdam),Amsterdam,Netherlands,52.36359,4.90236,attraction,Outdoor,20.0,Very Unfavorable,0
+Muiderslot (Amsterdam),Amsterdam,Netherlands,52.33423,5.07181,attraction,Outdoor,20.0,Very Unfavorable,-1
+Frans Hals Museum (Amsterdam),Amsterdam,Netherlands,52.37661,4.6336,museum,Indoor,20.0,Very Unfavorable,-1
+Teylers Museum (Amsterdam),Amsterdam,Netherlands,52.38056,4.64028,museum,Indoor,20.0,Very Unfavorable,-1
+Amsterdam Museum (Amsterdam),Amsterdam,Netherlands,52.37028,4.89083,museum,Indoor,20.0,Very Unfavorable,0
+Portuguese Synagogue (Amsterdam),Amsterdam,Netherlands,52.3675,4.90528,museum,Indoor,20.0,Very Unfavorable,0
+Allard Pierson (Amsterdam),Amsterdam,Netherlands,52.36883,4.89306,museum,Indoor,20.0,Very Unfavorable,0
+H'Art Museum (Amsterdam),Amsterdam,Netherlands,52.365,4.9025,museum,Indoor,20.0,Very Unfavorable,0
+Belvedere (Vienna),Vienna,Austria,48.1934,16.38052,attraction,Indoor,26.0,Very Unfavorable,0
+St. Stephen's Cathedral (Vienna),Vienna,Austria,48.20843,16.37326,attraction,Indoor,26.0,Very Unfavorable,0
+Hofburg Palace (Vienna),Vienna,Austria,48.20639,16.36528,museum,Indoor,26.0,Very Unfavorable,0
+Kunsthistorisches Museum (Vienna),Vienna,Austria,48.20388,16.3616,museum,Indoor,26.0,Very Unfavorable,0
+Albertina (Vienna),Vienna,Austria,48.20472,16.36833,museum,Indoor,26.0,Very Unfavorable,0
+"Natural History Museum, Vienna (Vienna)",Vienna,Austria,48.20513,16.35993,museum,Indoor,26.0,Very Unfavorable,0
+Austrian National Library (Vienna),Vienna,Austria,48.20614,16.36627,museum,Indoor,26.0,Very Unfavorable,0
+Karlskirche (Vienna),Vienna,Austria,48.19828,16.37188,attraction,Indoor,26.0,Very Unfavorable,0
+Academy of Fine Arts Vienna (Vienna),Vienna,Austria,48.20139,16.36528,museum,Indoor,26.0,Very Unfavorable,0
+Schönbrunn Zoo (Vienna),Vienna,Austria,48.18222,16.3025,attraction,Outdoor,26.0,Very Unfavorable,0
+Prater (Vienna),Vienna,Austria,48.21611,16.39556,attraction,Outdoor,26.0,Very Unfavorable,0
+Imperial Crypt (Vienna),Vienna,Austria,48.20556,16.36972,attraction,Outdoor,26.0,Very Unfavorable,0
+Votive Church (Vienna),Vienna,Austria,48.21545,16.3591,attraction,Indoor,26.0,Very Unfavorable,0
+Vindobona (Vienna),Vienna,Austria,48.21083,16.37028,archaeological_site,Outdoor,26.0,Very Unfavorable,0
+Liechtenstein Castle (Vienna),Vienna,Austria,48.0927,16.27036,museum,Indoor,26.0,Very Unfavorable,-1
+Heeresgeschichtliches Museum (Vienna),Vienna,Austria,48.18536,16.38739,museum,Indoor,26.0,Very Unfavorable,0
+Secession Building (Vienna),Vienna,Austria,48.2004,16.36593,museum,Indoor,26.0,Very Unfavorable,0
+Donauturm (Vienna),Vienna,Austria,48.24023,16.41003,attraction,Outdoor,26.0,Very Unfavorable,0
+MAK – Museum of Applied Arts (Vienna),Vienna,Austria,48.20767,16.38137,museum,Indoor,26.0,Very Unfavorable,0
+MuseumsQuartier (Vienna),Vienna,Austria,48.20333,16.35889,museum,Indoor,26.0,Very Unfavorable,0
+Reichsbrücke (Vienna),Vienna,Austria,48.2283,16.41,attraction,Outdoor,26.0,Very Unfavorable,0
+Heldenplatz (Vienna),Vienna,Austria,48.20628,16.36376,attraction,Outdoor,26.0,Very Unfavorable,0
+Karlsplatz (Vienna),Vienna,Austria,48.1992,16.37,attraction,Outdoor,26.0,Very Unfavorable,0
+Wiener Riesenrad (Vienna),Vienna,Austria,48.21683,16.39592,attraction,Outdoor,26.0,Very Unfavorable,0
+Pestsäule (Vienna),Vienna,Austria,48.20872,16.36981,attraction,Indoor,26.0,Very Unfavorable,0
+Prague Castle (Prague),Prague,Czechia,50.09,14.4,attraction,Outdoor,24.0,Very Unfavorable,0
+Charles Bridge (Prague),Prague,Czechia,50.08639,14.41194,attraction,Outdoor,24.0,Very Unfavorable,0
+St. Vitus Cathedral (Prague),Prague,Czechia,50.09083,14.40056,attraction,Indoor,24.0,Very Unfavorable,0
+Prague Astronomical Clock (Prague),Prague,Czechia,50.08699,14.4207,attraction,Outdoor,24.0,Very Unfavorable,0
+National Museum in Prague (Prague),Prague,Czechia,50.07984,14.43042,museum,Indoor,24.0,Very Unfavorable,0
+Wenceslas Square (Prague),Prague,Czechia,50.08231,14.42614,attraction,Outdoor,24.0,Very Unfavorable,0
+Church of Our Lady before Týn (Prague),Prague,Czechia,50.08771,14.4227,attraction,Indoor,24.0,Very Unfavorable,0
+National Gallery Prague (Prague),Prague,Czechia,50.10111,14.4325,museum,Indoor,24.0,Very Unfavorable,0
+Strahov Monastery (Prague),Prague,Czechia,50.08596,14.38928,attraction,Indoor,24.0,Very Unfavorable,0
+Žižkov Television Tower (Prague),Prague,Czechia,50.08083,14.45139,attraction,Outdoor,24.0,Very Unfavorable,0
+Powder Tower (Prague),Prague,Czechia,50.08722,14.42778,museum,Indoor,24.0,Very Unfavorable,0
+St. George's Basilica (Prague),Prague,Czechia,50.09111,14.40222,attraction,Indoor,24.0,Very Unfavorable,0
+Prague Zoo (Prague),Prague,Czechia,50.11694,14.40611,attraction,Outdoor,24.0,Very Unfavorable,0
+St. Nicholas Church (Prague),Prague,Czechia,50.08778,14.40361,attraction,Indoor,24.0,Very Unfavorable,0
+Bethlehem Chapel (Prague),Prague,Czechia,50.08431,14.4175,attraction,Indoor,24.0,Very Unfavorable,0
+Wallenstein Palace (Prague),Prague,Czechia,50.09,14.40667,attraction,Indoor,24.0,Very Unfavorable,0
+Ss. Cyril and Methodius Cathedral (Prague),Prague,Czechia,50.0759,14.417,attraction,Indoor,24.0,Very Unfavorable,0
+Infant Jesus of Prague (Prague),Prague,Czechia,50.08556,14.40333,attraction,Outdoor,24.0,Very Unfavorable,0
+Church of Saint Nicholas (Prague),Prague,Czechia,50.08778,14.41986,attraction,Indoor,24.0,Very Unfavorable,0
+Basilica of St Peter and St Paul (Prague),Prague,Czechia,50.06438,14.41784,attraction,Indoor,24.0,Very Unfavorable,0
+Kinsky Palace (Prague),Prague,Czechia,50.08806,14.42167,attraction,Indoor,24.0,Very Unfavorable,0
+Petřín Lookout Tower (Prague),Prague,Czechia,50.08354,14.39505,attraction,Outdoor,24.0,Very Unfavorable,0
+Basilika of St. Ludmila (Prague),Prague,Czechia,50.07528,14.43722,attraction,Indoor,24.0,Very Unfavorable,0
+Queen Anne's Summer Palace (Prague),Prague,Czechia,50.09361,14.40542,museum,Indoor,24.0,Very Unfavorable,0
+Stalin Monument (Prague),Prague,Czechia,50.09472,14.41599,attraction,Outdoor,24.0,Very Unfavorable,0
+Athens (Athens),Athens,Greece,37.98417,23.72806,archaeological_site,Outdoor,35.0,Unfavorable,0
+Parthenon (Athens),Athens,Greece,37.97153,23.7266,archaeological_site,Outdoor,35.0,Unfavorable,0
+Acropolis of Athens (Athens),Athens,Greece,37.97167,23.72611,archaeological_site,Outdoor,35.0,Unfavorable,0
+Platonic Academy (Athens),Athens,Greece,37.99236,23.70806,archaeological_site,Outdoor,35.0,Unfavorable,0
+Classical Athens (Athens),Athens,Greece,37.97222,23.72222,archaeological_site,Outdoor,35.0,Unfavorable,0
+Panathenaic Stadium (Athens),Athens,Greece,37.96833,23.74111,archaeological_site,Outdoor,35.0,Unfavorable,0
+Temple of Athena Nike (Athens),Athens,Greece,37.9715,23.7249,archaeological_site,Outdoor,35.0,Unfavorable,0
+Lyceum (Athens),Athens,Greece,37.97402,23.74334,archaeological_site,Outdoor,35.0,Unfavorable,0
+National Archaeological Museum of Athens (Athens),Athens,Greece,37.98917,23.73222,museum,Indoor,35.0,Unfavorable,0
+Temple of Olympian Zeus (Athens),Athens,Greece,37.96937,23.73308,archaeological_site,Outdoor,35.0,Unfavorable,0
+Temple of Hephaestus (Athens),Athens,Greece,37.97562,23.72139,archaeological_site,Outdoor,35.0,Unfavorable,0
+Acropolis Museum (Athens),Athens,Greece,37.96842,23.72847,museum,Indoor,35.0,Unfavorable,0
+Tower of the Winds (Athens),Athens,Greece,37.97418,23.727,attraction,Outdoor,35.0,Unfavorable,0
+Syntagma Square (Athens),Athens,Greece,37.97556,23.73472,attraction,Outdoor,35.0,Unfavorable,0
+Theatre of Dionysus (Athens),Athens,Greece,37.9704,23.72778,archaeological_site,Outdoor,35.0,Unfavorable,0
+Ancient Agora of Athens (Athens),Athens,Greece,37.975,23.7225,archaeological_site,Outdoor,35.0,Unfavorable,0
+Hadrian's Library (Athens),Athens,Greece,37.97556,23.72611,archaeological_site,Outdoor,35.0,Unfavorable,0
+Kerameikos (Athens),Athens,Greece,37.97833,23.71861,archaeological_site,Outdoor,35.0,Unfavorable,0
+Pnyx (Athens),Athens,Greece,37.97167,23.71944,archaeological_site,Outdoor,35.0,Unfavorable,0
+Benaki Museum (Athens),Athens,Greece,37.97594,23.74041,museum,Indoor,35.0,Unfavorable,0
+Metropolitan Cathedral of Athens (Athens),Athens,Greece,37.97528,23.73,attraction,Indoor,35.0,Unfavorable,0
+Choragic Monument of Lysicrates (Athens),Athens,Greece,37.97108,23.72995,archaeological_site,Outdoor,35.0,Unfavorable,0
+Philopappos Monument (Athens),Athens,Greece,37.96722,23.72139,archaeological_site,Outdoor,35.0,Unfavorable,0
+Monastiraki (Athens),Athens,Greece,37.97639,23.72361,attraction,Outdoor,35.0,Unfavorable,0
+National Garden of Athens (Athens),Athens,Greece,37.97417,23.73833,attraction,Outdoor,35.0,Unfavorable,0
+Belém Tower (Lisbon),Lisbon,Portugal,38.69139,-9.21583,attraction,Outdoor,46.0,Marginal,0
+Vasco da Gama Bridge (Lisbon),Lisbon,Portugal,38.76219,-9.04331,attraction,Outdoor,46.0,Marginal,-1
+25 de Abril Bridge (Lisbon),Lisbon,Portugal,38.69418,-9.17815,attraction,Outdoor,46.0,Marginal,0
+Padrão dos Descobrimentos (Lisbon),Lisbon,Portugal,38.69368,-9.20569,attraction,Outdoor,46.0,Marginal,0
+Lisbon Cathedral (Lisbon),Lisbon,Portugal,38.70985,-9.13298,attraction,Indoor,46.0,Marginal,0
+Praça do Comércio (Lisbon),Lisbon,Portugal,38.7075,-9.13639,attraction,Outdoor,46.0,Marginal,0
+Castle of Saint George (Lisbon),Lisbon,Portugal,38.71389,-9.13333,attraction,Outdoor,46.0,Marginal,0
+National Museum of Ancient Art (Lisbon),Lisbon,Portugal,38.7053,-9.16072,museum,Indoor,46.0,Marginal,0
+Palace of Queluz (Lisbon),Lisbon,Portugal,38.75045,-9.25822,attraction,Indoor,46.0,Marginal,-1
+Calouste Gulbenkian Museum (Lisbon),Lisbon,Portugal,38.73667,-9.15417,museum,Indoor,46.0,Marginal,0
+Church of Santa Engrácia (Lisbon),Lisbon,Portugal,38.715,-9.125,attraction,Indoor,46.0,Marginal,0
+Vasco da Gama Tower (Lisbon),Lisbon,Portugal,38.77472,-9.09139,attraction,Outdoor,46.0,Marginal,-1
+Belém Palace (Lisbon),Lisbon,Portugal,38.69799,-9.2006,attraction,Indoor,46.0,Marginal,0
+São Bento Palace (Lisbon),Lisbon,Portugal,38.7125,-9.15361,attraction,Indoor,46.0,Marginal,0
+Monastery of São Vicente de Fora (Lisbon),Lisbon,Portugal,38.71472,-9.12778,museum,Indoor,46.0,Marginal,0
+Águas Livres Aqueduct (Lisbon),Lisbon,Portugal,38.72667,-9.16667,attraction,Outdoor,46.0,Marginal,0
+Palace of Ajuda (Lisbon),Lisbon,Portugal,38.7075,-9.19778,attraction,Indoor,46.0,Marginal,0
+Lisbon Central Mosque (Lisbon),Lisbon,Portugal,38.73555,-9.15853,attraction,Indoor,46.0,Marginal,0
+Estrela Basilica (Lisbon),Lisbon,Portugal,38.71333,-9.16056,attraction,Indoor,46.0,Marginal,0
+Rua Augusta Arch (Lisbon),Lisbon,Portugal,38.7084,-9.1368,attraction,Outdoor,46.0,Marginal,0
+Carmo Convent (Lisbon),Lisbon,Portugal,38.71222,-9.14,archaeological_site,Outdoor,46.0,Marginal,0
+Rossio railway station (Lisbon),Lisbon,Portugal,38.71472,-9.14222,attraction,Outdoor,46.0,Marginal,0
+Sanctuary of Christ the King (Lisbon),Lisbon,Portugal,38.67861,-9.17139,attraction,Outdoor,46.0,Marginal,0
+Rossio Square (Lisbon),Lisbon,Portugal,38.71389,-9.13944,attraction,Outdoor,46.0,Marginal,0
+Igreja de São Roque (Lisbon),Lisbon,Portugal,38.71363,-9.14349,attraction,Indoor,46.0,Marginal,0
+Buda Castle (Budapest),Budapest,Hungary,47.49611,19.03972,attraction,Indoor,23.0,Very Unfavorable,0
+Széchenyi Chain Bridge (Budapest),Budapest,Hungary,47.49891,19.04353,attraction,Outdoor,23.0,Very Unfavorable,0
+Heroes' Square (Budapest),Budapest,Hungary,47.51528,19.07806,attraction,Outdoor,23.0,Very Unfavorable,0
+Aquincum (Budapest),Budapest,Hungary,47.56414,19.04947,archaeological_site,Outdoor,23.0,Very Unfavorable,0
+St. Stephen's Basilica (Budapest),Budapest,Hungary,47.50083,19.05389,attraction,Indoor,23.0,Very Unfavorable,0
+Matthias Church (Budapest),Budapest,Hungary,47.50194,19.03417,attraction,Indoor,23.0,Very Unfavorable,0
+"Museum of Fine Arts, Budapest (Budapest)",Budapest,Hungary,47.51587,19.07678,museum,Indoor,23.0,Very Unfavorable,0
+Liberty Bridge (Budapest),Budapest,Hungary,47.48556,19.055,attraction,Outdoor,23.0,Very Unfavorable,0
+Hungarian National Museum (Budapest),Budapest,Hungary,47.49111,19.06278,museum,Indoor,23.0,Very Unfavorable,0
+House of Terror Museum (Budapest),Budapest,Hungary,47.50683,19.06514,museum,Indoor,23.0,Very Unfavorable,0
+Sándor Palace (Budapest),Budapest,Hungary,47.4978,19.0382,attraction,Indoor,23.0,Very Unfavorable,0
+Elisabeth Bridge (Budapest),Budapest,Hungary,47.49083,19.04917,attraction,Outdoor,23.0,Very Unfavorable,0
+City Park (Budapest),Budapest,Hungary,47.51389,19.08472,attraction,Outdoor,23.0,Very Unfavorable,0
+Megyeri Bridge (Budapest),Budapest,Hungary,47.60694,19.09194,attraction,Outdoor,23.0,Very Unfavorable,-1
+Margaret Bridge (Budapest),Budapest,Hungary,47.51472,19.04361,attraction,Outdoor,23.0,Very Unfavorable,0
+Vajdahunyad Castle (Budapest),Budapest,Hungary,47.51528,19.08194,attraction,Outdoor,23.0,Very Unfavorable,0
+Memento Park (Budapest),Budapest,Hungary,47.4263,18.9989,museum,Indoor,23.0,Very Unfavorable,-1
+Museum of Applied Arts (Budapest),Budapest,Hungary,47.48611,19.06833,museum,Indoor,23.0,Very Unfavorable,0
+Hall of Arts (Budapest),Budapest,Hungary,47.51402,19.07868,museum,Indoor,23.0,Very Unfavorable,0
+Petőfi Bridge (Budapest),Budapest,Hungary,47.47889,19.06333,attraction,Outdoor,23.0,Very Unfavorable,0
+Vörösmarty tér (Budapest),Budapest,Hungary,47.49664,19.05062,attraction,Outdoor,23.0,Very Unfavorable,0
+Shoes on the Danube Bank (Budapest),Budapest,Hungary,47.5039,19.04478,attraction,Outdoor,23.0,Very Unfavorable,0
+Árpád Bridge (Budapest),Budapest,Hungary,47.5375,19.05417,attraction,Outdoor,23.0,Very Unfavorable,0
+Rákóczi Bridge (Budapest),Budapest,Hungary,47.46861,19.0675,attraction,Outdoor,23.0,Very Unfavorable,0
+Budapest Zoo & Botanical Garden (Budapest),Budapest,Hungary,47.5191,19.0783,attraction,Outdoor,23.0,Very Unfavorable,0
+St Mark's Basilica (Venice),Venice,Italy,45.43444,12.33972,attraction,Indoor,36.0,Unfavorable,1
+Piazza San Marco (Venice),Venice,Italy,45.434,12.338,attraction,Outdoor,36.0,Unfavorable,1
+Rialto Bridge (Venice),Venice,Italy,45.43801,12.33564,attraction,Outdoor,36.0,Unfavorable,1
+Bridge of Sighs (Venice),Venice,Italy,45.43406,12.34086,attraction,Outdoor,36.0,Unfavorable,1
+Santa Maria della Salute (Venice),Venice,Italy,45.43057,12.33473,attraction,Indoor,36.0,Unfavorable,1
+Gallerie dell'Accademia (Venice),Venice,Italy,45.43108,12.32814,museum,Indoor,36.0,Unfavorable,1
+St Mark's Campanile (Venice),Venice,Italy,45.43403,12.33903,attraction,Outdoor,36.0,Unfavorable,1
+Ca' d'Oro (Venice),Venice,Italy,45.44056,12.33389,museum,Indoor,36.0,Unfavorable,1
+Santa Maria Gloriosa dei Frari (Venice),Venice,Italy,45.43693,12.32649,attraction,Indoor,36.0,Unfavorable,1
+Il Redentore (Venice),Venice,Italy,45.42499,12.33245,attraction,Indoor,36.0,Unfavorable,1
+Church of San Giorgio Maggiore (Venice),Venice,Italy,45.4293,12.3433,attraction,Indoor,36.0,Unfavorable,1
+Santi Giovanni e Paolo (Venice),Venice,Italy,45.43922,12.3424,attraction,Indoor,36.0,Unfavorable,1
+Ponte dell'Accademia (Venice),Venice,Italy,45.43166,12.32899,attraction,Outdoor,36.0,Unfavorable,1
+Ca' Foscari (Venice),Venice,Italy,45.43446,12.3266,attraction,Indoor,36.0,Unfavorable,1
+San Zaccaria (Venice),Venice,Italy,45.43472,12.34333,attraction,Indoor,36.0,Unfavorable,1
+Ca' Rezzonico (Venice),Venice,Italy,45.43409,12.32435,museum,Indoor,36.0,Unfavorable,1
+Ca' Pesaro (Venice),Venice,Italy,45.441,12.33146,museum,Indoor,36.0,Unfavorable,1
+Ponte della Libertà (Venice),Venice,Italy,45.45449,12.29731,attraction,Outdoor,36.0,Unfavorable,1
+Palazzo Grassi (Venice),Venice,Italy,45.4338,12.32794,museum,Indoor,36.0,Unfavorable,1
+"Santa Maria dei Miracoli, Venice (Venice)",Venice,Italy,45.43943,12.3392,attraction,Indoor,36.0,Unfavorable,1
+ponte della Costituzione (Venice),Venice,Italy,45.43889,12.31944,attraction,Outdoor,36.0,Unfavorable,1
+Peggy Guggenheim Collection (Venice),Venice,Italy,45.43082,12.33154,museum,Indoor,36.0,Unfavorable,1
+Museo Correr (Venice),Venice,Italy,45.43393,12.33713,museum,Indoor,36.0,Unfavorable,1
+St Mark's Clocktower (Venice),Venice,Italy,45.43472,12.33889,museum,Indoor,36.0,Unfavorable,1
+Fondaco dei Turchi (Venice),Venice,Italy,45.442,12.32868,museum,Indoor,36.0,Unfavorable,1
+Uffizi Gallery (Florence),Florence,Italy,43.76833,11.25528,museum,Indoor,34.0,Unfavorable,2
+Florence Cathedral (Florence),Florence,Italy,43.77306,11.25694,museum,Indoor,34.0,Unfavorable,2
+Palazzo Pitti (Florence),Florence,Italy,43.76515,11.25001,museum,Indoor,34.0,Unfavorable,2
+Ponte Vecchio (Florence),Florence,Italy,43.76799,11.25319,attraction,Outdoor,34.0,Unfavorable,2
+Palazzo Vecchio (Florence),Florence,Italy,43.76944,11.25611,museum,Indoor,34.0,Unfavorable,2
+Basilica of Santa Croce (Florence),Florence,Italy,43.76845,11.26274,museum,Indoor,34.0,Unfavorable,2
+Florence Baptistery (Florence),Florence,Italy,43.77306,11.255,attraction,Indoor,34.0,Unfavorable,2
+Bargello National Museum (Florence),Florence,Italy,43.7704,11.25801,museum,Indoor,34.0,Unfavorable,2
+Basilica of Santa Maria Novella (Florence),Florence,Italy,43.7743,11.24937,museum,Indoor,34.0,Unfavorable,2
+Basilica of San Lorenzo (Florence),Florence,Italy,43.775,11.25389,museum,Indoor,34.0,Unfavorable,2
+piazza della Signoria (Florence),Florence,Italy,43.76972,11.25556,attraction,Outdoor,34.0,Unfavorable,2
+Boboli Gardens (Florence),Florence,Italy,43.7618,11.24661,museum,Indoor,34.0,Unfavorable,2
+Palazzo Strozzi (Florence),Florence,Italy,43.7713,11.25239,attraction,Indoor,34.0,Unfavorable,2
+Galleria dell'Accademia (Florence),Florence,Italy,43.77694,11.25889,museum,Indoor,34.0,Unfavorable,2
+Palazzo Medici Riccardi (Florence),Florence,Italy,43.77529,11.25599,museum,Indoor,34.0,Unfavorable,2
+San Miniato al Monte (Florence),Florence,Italy,43.75944,11.265,attraction,Indoor,34.0,Unfavorable,2
+Orsanmichele (Florence),Florence,Italy,43.77071,11.25505,attraction,Indoor,34.0,Unfavorable,2
+Pazzi Chapel (Florence),Florence,Italy,43.76738,11.26282,attraction,Indoor,34.0,Unfavorable,2
+Giotto's Campanile (Florence),Florence,Italy,43.77281,11.25581,attraction,Outdoor,34.0,Unfavorable,2
+Santo Spirito (Florence),Florence,Italy,43.76722,11.24778,attraction,Indoor,34.0,Unfavorable,2
+Santa Maria del Carmine (Florence),Florence,Italy,43.76778,11.24361,attraction,Indoor,34.0,Unfavorable,2
+Santissima Annunziata (Florence),Florence,Italy,43.7769,11.26128,attraction,Indoor,34.0,Unfavorable,2
+Palazzo Rucellai (Florence),Florence,Italy,43.77128,11.2496,attraction,Indoor,34.0,Unfavorable,2
+Basilica of the Holy Trinity (Florence),Florence,Italy,43.77015,11.25072,attraction,Indoor,34.0,Unfavorable,2
+National Archaeological Museum (Florence),Florence,Italy,43.77622,11.26225,museum,Indoor,34.0,Unfavorable,2
+Kiyomizu-dera (Kyoto),Kyoto,Japan,34.99483,135.785,attraction,Indoor,25.0,Very Unfavorable,1
+Kinkaku-ji Temple (Kyoto),Kyoto,Japan,35.0395,135.7285,attraction,Indoor,25.0,Very Unfavorable,1
+Byōdō-in Temple (Kyoto),Kyoto,Japan,34.88944,135.80778,attraction,Indoor,25.0,Very Unfavorable,-1
+Ginkaku-ji Temple (Kyoto),Kyoto,Japan,35.02667,135.79833,attraction,Indoor,25.0,Very Unfavorable,1
+Kyoto Imperial Palace (Kyoto),Kyoto,Japan,35.02528,135.76222,attraction,Indoor,25.0,Very Unfavorable,1
+Enryaku-ji Temple (Kyoto),Kyoto,Japan,35.07056,135.84111,attraction,Indoor,25.0,Very Unfavorable,-1
+Ryōan-ji Temple (Kyoto),Kyoto,Japan,35.03444,135.71833,attraction,Indoor,25.0,Very Unfavorable,1
+Tō-ji Temple (Kyoto),Kyoto,Japan,34.98056,135.74778,attraction,Indoor,25.0,Very Unfavorable,1
+Nijō Castle (Kyoto),Kyoto,Japan,35.01417,135.7475,attraction,Outdoor,25.0,Very Unfavorable,1
+Fushimi Castle (Kyoto),Kyoto,Japan,34.9395,135.77686,attraction,Outdoor,25.0,Very Unfavorable,1
+Ninna-ji Temple (Kyoto),Kyoto,Japan,35.03111,135.71389,attraction,Indoor,25.0,Very Unfavorable,1
+Kyoto National Museum (Kyoto),Kyoto,Japan,34.98999,135.77312,museum,Indoor,25.0,Very Unfavorable,1
+Heian Palace (Kyoto),Kyoto,Japan,35.01361,135.74222,attraction,Indoor,25.0,Very Unfavorable,1
+Nagaoka-kyō (Kyoto),Kyoto,Japan,34.9432,135.70323,archaeological_site,Outdoor,25.0,Very Unfavorable,-1
+Tōfuku-ji Temple (Kyoto),Kyoto,Japan,34.97571,135.77368,attraction,Indoor,25.0,Very Unfavorable,1
+Daigo-ji Temple (Kyoto),Kyoto,Japan,34.95111,135.81944,attraction,Indoor,25.0,Very Unfavorable,1
+Nanzen-ji Temple (Kyoto),Kyoto,Japan,35.01111,135.79417,attraction,Indoor,25.0,Very Unfavorable,1
+Saihō-ji Temple (Kyoto),Kyoto,Japan,34.9925,135.68417,attraction,Indoor,25.0,Very Unfavorable,1
+Kyoto Tower (Kyoto),Kyoto,Japan,34.9875,135.75917,attraction,Outdoor,25.0,Very Unfavorable,1
+Sanjūsangen-dō Temple (Kyoto),Kyoto,Japan,34.98788,135.77171,attraction,Indoor,25.0,Very Unfavorable,1
+Chion-in Temple (Kyoto),Kyoto,Japan,35.00521,135.7834,attraction,Indoor,25.0,Very Unfavorable,1
+Honnō-ji Temple (Kyoto),Kyoto,Japan,35.01029,135.76828,attraction,Indoor,25.0,Very Unfavorable,1
+Kōzan-ji Temple (Kyoto),Kyoto,Japan,35.06014,135.67856,attraction,Indoor,25.0,Very Unfavorable,1
+Daitoku-ji Temple (Kyoto),Kyoto,Japan,35.04389,135.74611,attraction,Indoor,25.0,Very Unfavorable,1
+Tenryū-ji Temple (Kyoto),Kyoto,Japan,35.01599,135.67379,attraction,Indoor,25.0,Very Unfavorable,1
+Forbidden City (Beijing),Beijing,China,39.91583,116.39083,museum,Indoor,44.0,Marginal,0
+Tiananmen Square (Beijing),Beijing,China,39.90457,116.39139,attraction,Outdoor,44.0,Marginal,0
+Temple of Heaven (Beijing),Beijing,China,39.8822,116.4066,attraction,Indoor,44.0,Marginal,0
+Summer Palace (Beijing),Beijing,China,39.9975,116.2689,attraction,Indoor,44.0,Marginal,-1
+National Museum of China (Beijing),Beijing,China,39.90361,116.395,museum,Indoor,44.0,Marginal,0
+Zhongnanhai (Beijing),Beijing,China,39.91139,116.38056,attraction,Indoor,44.0,Marginal,0
+Mausoleum of Mao Zedong (Beijing),Beijing,China,39.90102,116.39158,attraction,Outdoor,44.0,Marginal,0
+Old Summer Palace (Beijing),Beijing,China,40.01205,116.30679,attraction,Outdoor,44.0,Marginal,-1
+Niujie Mosque (Beijing),Beijing,China,39.88444,116.35806,attraction,Indoor,44.0,Marginal,0
+Jingshan Park (Beijing),Beijing,China,39.92361,116.39056,attraction,Outdoor,44.0,Marginal,0
+Khanbaliq (Beijing),Beijing,China,39.93333,116.4,archaeological_site,Outdoor,44.0,Marginal,0
+Beihai Park (Beijing),Beijing,China,39.92444,116.38306,attraction,Outdoor,44.0,Marginal,0
+Beijing Zoo (Beijing),Beijing,China,39.93861,116.33333,attraction,Outdoor,44.0,Marginal,0
+Lugou Bridge (Beijing),Beijing,China,39.84904,116.21289,attraction,Outdoor,44.0,Marginal,-1
+Monument to the People's Heroes (Beijing),Beijing,China,39.90306,116.39167,attraction,Outdoor,44.0,Marginal,0
+Yonghe Temple (Beijing),Beijing,China,39.94709,116.41092,attraction,Indoor,44.0,Marginal,0
+Olympic Green (Beijing),Beijing,China,40.00303,116.38667,attraction,Outdoor,44.0,Marginal,-1
+Central Radio & TV Tower (Beijing),Beijing,China,39.91809,116.30041,attraction,Outdoor,44.0,Marginal,0
+"St. Joseph's Church, Beijing (Beijing)",Beijing,China,39.91583,116.40583,attraction,Indoor,44.0,Marginal,0
+Cathedral of the Immaculate Conception (Beijing),Beijing,China,39.89946,116.36929,attraction,Indoor,44.0,Marginal,0
+Capital Museum (Beijing),Beijing,China,39.905,116.336,museum,Indoor,44.0,Marginal,0
+Temple of Earth (Beijing),Beijing,China,39.95139,116.40972,attraction,Indoor,44.0,Marginal,0
+National Art Museum of China (Beijing),Beijing,China,39.92382,116.40275,museum,Indoor,44.0,Marginal,0
+Church of the Saviour (Beijing),Beijing,China,39.92389,116.3725,attraction,Indoor,44.0,Marginal,0
+Fayuan Temple (Beijing),Beijing,China,39.88333,116.36361,attraction,Indoor,44.0,Marginal,0
+Oriental Pearl Tower (Shanghai),Shanghai,China,31.24167,121.49472,attraction,Outdoor,32.0,Unfavorable,1
+Shanghai Museum (Shanghai),Shanghai,China,31.23028,121.47056,museum,Indoor,32.0,Unfavorable,1
+Yu Garden (Shanghai),Shanghai,China,31.22917,121.4875,attraction,Outdoor,32.0,Unfavorable,1
+People's Square (Shanghai),Shanghai,China,31.2309,121.4703,attraction,Outdoor,32.0,Unfavorable,1
+Shanghai Disneyland Park (Shanghai),Shanghai,China,31.144,121.657,attraction,Outdoor,32.0,Unfavorable,2
+Saint Ignatius Cathedral (Shanghai),Shanghai,China,31.19306,121.43139,attraction,Indoor,32.0,Unfavorable,1
+Jade Buddha Temple (Shanghai),Shanghai,China,31.24333,121.44028,attraction,Indoor,32.0,Unfavorable,1
+Lupu Bridge (Shanghai),Shanghai,China,31.19139,121.47639,attraction,Outdoor,32.0,Unfavorable,1
+Yangpu Bridge (Shanghai),Shanghai,China,31.2575,121.54139,attraction,Outdoor,32.0,Unfavorable,1
+Jing'an Temple (Shanghai),Shanghai,China,31.225,121.44083,attraction,Indoor,32.0,Unfavorable,1
+City God Temple of Shanghai (Shanghai),Shanghai,China,31.22778,121.48806,attraction,Indoor,32.0,Unfavorable,1
+China Art Museum (Shanghai),Shanghai,China,31.18639,121.49,museum,Indoor,32.0,Unfavorable,1
+Shanghai Science and Technology Museum (Shanghai),Shanghai,China,31.22028,121.53778,museum,Indoor,32.0,Unfavorable,1
+Xiaotaoyuan Mosque (Shanghai),Shanghai,China,31.2207,121.48965,attraction,Indoor,32.0,Unfavorable,1
+Shanghai Zoo (Shanghai),Shanghai,China,31.19548,121.35876,attraction,Outdoor,32.0,Unfavorable,-1
+Shanghai Urban Planning Exhibition Center (Shanghai),Shanghai,China,31.23337,121.47048,museum,Indoor,32.0,Unfavorable,1
+Waibaidu Bridge (Shanghai),Shanghai,China,31.24519,121.4855,attraction,Outdoor,32.0,Unfavorable,1
+Longhua Temple (Shanghai),Shanghai,China,31.17695,121.44656,attraction,Indoor,32.0,Unfavorable,1
+Nanpu Bridge (Shanghai),Shanghai,China,31.20722,121.50111,attraction,Outdoor,32.0,Unfavorable,1
+Shanghai Railways Museum (Shanghai),Shanghai,China,31.25199,121.47179,museum,Indoor,32.0,Unfavorable,1
+Long Museum West Bund (Shanghai),Shanghai,China,31.18592,121.46019,museum,Indoor,32.0,Unfavorable,1
+Rockbund Art Museum (Shanghai),Shanghai,China,31.24318,121.48302,museum,Indoor,32.0,Unfavorable,1
+Shanghai Public Security Museum (Shanghai),Shanghai,China,31.20035,121.4638,museum,Indoor,32.0,Unfavorable,1
+Seven Dwarfs Mine Train (Shanghai),Shanghai,China,31.14764,121.65549,attraction,Outdoor,32.0,Unfavorable,2
+Voyage to the Crystal Grotto (Shanghai),Shanghai,China,31.1459,121.65424,attraction,Outdoor,32.0,Unfavorable,2
+Grand Palace (Bangkok),Bangkok,Thailand,13.75014,100.49203,museum,Indoor,98.0,Ideal,0
+Bangkok National Museum (Bangkok),Bangkok,Thailand,13.75783,100.49231,museum,Indoor,98.0,Ideal,0
+Lumphini Park (Bangkok),Bangkok,Thailand,13.73111,100.54167,attraction,Outdoor,98.0,Ideal,0
+Rama VIII Bridge (Bangkok),Bangkok,Thailand,13.76917,100.49681,attraction,Outdoor,98.0,Ideal,0
+Democracy Monument (Bangkok),Bangkok,Thailand,13.75667,100.50167,attraction,Outdoor,98.0,Ideal,0
+Erawan Shrine (Bangkok),Bangkok,Thailand,13.74436,100.54044,attraction,Indoor,98.0,Ideal,0
+Rama IX Bridge (Bangkok),Bangkok,Thailand,13.68237,100.51791,attraction,Outdoor,98.0,Ideal,0
+Dusit Palace (Bangkok),Bangkok,Thailand,13.77405,100.51246,attraction,Indoor,98.0,Ideal,0
+Vimanmek Mansion (Bangkok),Bangkok,Thailand,13.77389,100.51278,museum,Indoor,98.0,Ideal,0
+Sanam Luang (Bangkok),Bangkok,Thailand,13.755,100.49306,attraction,Outdoor,98.0,Ideal,0
+Bhumibol Bridge (Bangkok),Bangkok,Thailand,13.66071,100.53935,attraction,Outdoor,98.0,Ideal,0
+Assumption Cathedral (Bangkok),Bangkok,Thailand,13.7231,100.5152,attraction,Indoor,98.0,Ideal,0
+Chitralada Royal Villa (Bangkok),Bangkok,Thailand,13.76934,100.52067,attraction,Indoor,98.0,Ideal,0
+Victory Monument (Bangkok),Bangkok,Thailand,13.76492,100.53829,attraction,Outdoor,98.0,Ideal,0
+Krungthep Bridge (Bangkok),Bangkok,Thailand,13.70107,100.49166,attraction,Outdoor,98.0,Ideal,0
+Dusit Zoo (Bangkok),Bangkok,Thailand,13.7725,100.51639,attraction,Outdoor,98.0,Ideal,0
+Bangkok Art and Culture Centre (Bangkok),Bangkok,Thailand,13.7467,100.53022,museum,Indoor,98.0,Ideal,0
+Memorial Bridge (Bangkok),Bangkok,Thailand,13.73911,100.49819,attraction,Outdoor,98.0,Ideal,0
+Kanchanaphisek Bridge (Bangkok),Bangkok,Thailand,13.63333,100.53833,attraction,Outdoor,98.0,Ideal,0
+"Sri Maha Mariamman Temple, Bangkok (Bangkok)",Bangkok,Thailand,13.7242,100.5229,attraction,Indoor,98.0,Ideal,0
+National Art Gallery (Bangkok),Bangkok,Thailand,13.75895,100.49384,museum,Indoor,98.0,Ideal,0
+Sao Chingcha (Bangkok),Bangkok,Thailand,13.75183,100.50127,attraction,Outdoor,98.0,Ideal,0
+Chatuchak Park (Bangkok),Bangkok,Thailand,13.80806,100.55556,attraction,Outdoor,98.0,Ideal,-1
+Museum of Natural History (Bangkok),Bangkok,Thailand,13.73748,100.53008,museum,Indoor,98.0,Ideal,0
+King Taksin Monument (Bangkok),Bangkok,Thailand,13.72631,100.4931,attraction,Outdoor,98.0,Ideal,0
+Singapore Botanic Gardens (Singapore),Singapore,Singapore,1.3151,103.8162,attraction,Outdoor,76.0,Very Good,0
+Gardens by the Bay (Singapore),Singapore,Singapore,1.28332,103.86527,attraction,Outdoor,76.0,Very Good,0
+Singapore Flyer (Singapore),Singapore,Singapore,1.28939,103.86322,attraction,Outdoor,76.0,Very Good,0
+Singapore Zoo (Singapore),Singapore,Singapore,1.40471,103.79105,attraction,Outdoor,76.0,Very Good,-1
+The Helix Bridge (Singapore),Singapore,Singapore,1.28762,103.861,attraction,Outdoor,76.0,Very Good,0
+Jurong Bird Park (Singapore),Singapore,Singapore,1.32101,103.70703,attraction,Outdoor,76.0,Very Good,-1
+National Museum of Singapore (Singapore),Singapore,Singapore,1.29672,103.84864,museum,Indoor,76.0,Very Good,0
+Johor–Singapore Causeway (Singapore),Singapore,Singapore,1.45277,103.76915,attraction,Outdoor,76.0,Very Good,-1
+Masjid Sultan (Singapore),Singapore,Singapore,1.30214,103.859,attraction,Indoor,76.0,Very Good,0
+Universal Studios Singapore (Singapore),Singapore,Singapore,1.255,103.82167,attraction,Outdoor,76.0,Very Good,0
+Merlion Park (Singapore),Singapore,Singapore,1.28683,103.855,attraction,Outdoor,76.0,Very Good,0
+"Sri Mariamman Temple, Singapore (Singapore)",Singapore,Singapore,1.28261,103.845,attraction,Indoor,76.0,Very Good,0
+National Gallery Singapore (Singapore),Singapore,Singapore,1.29049,103.85186,museum,Indoor,76.0,Very Good,0
+Singapore Art Museum (Singapore),Singapore,Singapore,1.29734,103.8509,museum,Indoor,76.0,Very Good,0
+St Andrew's Cathedral (Singapore),Singapore,Singapore,1.29222,103.85222,attraction,Indoor,76.0,Very Good,0
+ArtScience Museum (Singapore),Singapore,Singapore,1.28611,103.859,museum,Indoor,76.0,Very Good,0
+Asian Civilisations Museum (Singapore),Singapore,Singapore,1.2875,103.85139,museum,Indoor,76.0,Very Good,0
+The Istana (Singapore),Singapore,Singapore,1.30686,103.84314,attraction,Indoor,76.0,Very Good,0
+East Coast Park (Singapore),Singapore,Singapore,1.30396,103.92637,attraction,Outdoor,76.0,Very Good,-1
+Sultan Abu Bakar Mosque (Singapore),Singapore,Singapore,1.45696,103.75105,attraction,Indoor,76.0,Very Good,-1
+Armenian Church of Saint Gregory the Illuminator (Singapore),Singapore,Singapore,1.29306,103.84931,attraction,Indoor,76.0,Very Good,0
+Masjid Hajjah Fatimah (Singapore),Singapore,Singapore,1.30289,103.863,attraction,Indoor,76.0,Very Good,0
+Masjid Malabar (Singapore),Singapore,Singapore,1.30556,103.85972,attraction,Indoor,76.0,Very Good,0
+Masjid Abdul Gaffoor (Singapore),Singapore,Singapore,1.30444,103.854,attraction,Indoor,76.0,Very Good,0
+Masjid Jamae (Singapore),Singapore,Singapore,1.28319,103.8455,attraction,Indoor,76.0,Very Good,0
+Changdeokgung (Seoul),Seoul,South Korea,37.57944,126.99167,attraction,Indoor,39.0,Unfavorable,0
+Gyeongbokgung (Seoul),Seoul,South Korea,37.57988,126.9768,attraction,Indoor,39.0,Unfavorable,0
+Blue House (Seoul),Seoul,South Korea,37.58669,126.97486,attraction,Indoor,39.0,Unfavorable,0
+National Museum of Korea (Seoul),Seoul,South Korea,37.52389,126.98028,museum,Indoor,39.0,Unfavorable,0
+Cheonggyecheon (Seoul),Seoul,South Korea,37.56902,126.97771,attraction,Outdoor,39.0,Unfavorable,0
+Namsan Seoul Tower (Seoul),Seoul,South Korea,37.55122,126.98828,attraction,Outdoor,39.0,Unfavorable,0
+Deoksugung (Seoul),Seoul,South Korea,37.56611,126.975,attraction,Indoor,39.0,Unfavorable,0
+Lotte World (Seoul),Seoul,South Korea,37.51119,127.09811,attraction,Outdoor,39.0,Unfavorable,1
+Changgyeonggung (Seoul),Seoul,South Korea,37.57843,126.99598,attraction,Indoor,39.0,Unfavorable,0
+National Folk Museum of Korea (Seoul),Seoul,South Korea,37.58163,126.97909,museum,Indoor,39.0,Unfavorable,0
+Gyeonghuigung (Seoul),Seoul,South Korea,37.57144,126.96814,attraction,Indoor,39.0,Unfavorable,0
+Yoido Full Gospel Church (Seoul),Seoul,South Korea,37.53104,126.92327,attraction,Indoor,39.0,Unfavorable,0
+Seoul Central Mosque (Seoul),Seoul,South Korea,37.53333,126.9975,attraction,Indoor,39.0,Unfavorable,0
+Banpo Bridge (Seoul),Seoul,South Korea,37.51568,126.99595,attraction,Outdoor,39.0,Unfavorable,0
+"National Museum of Modern and Contemporary Art, South Korea (Seoul)",Seoul,South Korea,37.5785,126.98,museum,Indoor,39.0,Unfavorable,0
+Myeongdong Cathedral (Seoul),Seoul,South Korea,37.56333,126.98722,attraction,Indoor,39.0,Unfavorable,0
+Seodaemun Prison (Seoul),Seoul,South Korea,37.57442,126.95663,museum,Indoor,39.0,Unfavorable,0
+Bukhansan National Park (Seoul),Seoul,South Korea,37.675,126.982,attraction,Outdoor,39.0,Unfavorable,-1
+Olympic Park (Seoul),Seoul,South Korea,37.52028,127.1225,attraction,Outdoor,39.0,Unfavorable,1
+Gwanghwamun Plaza (Seoul),Seoul,South Korea,37.57278,126.97667,attraction,Outdoor,39.0,Unfavorable,0
+Mapo Bridge (Seoul),Seoul,South Korea,37.53361,126.93639,attraction,Outdoor,39.0,Unfavorable,0
+War Memorial of Korea (Seoul),Seoul,South Korea,37.5365,126.9771,museum,Indoor,39.0,Unfavorable,0
+Wongaksa Pagoda (Seoul),Seoul,South Korea,37.5717,126.988,attraction,Outdoor,39.0,Unfavorable,0
+Amsa-dong (Seoul),Seoul,South Korea,37.56049,127.13021,archaeological_site,Outdoor,39.0,Unfavorable,1
+Bongeunsa (Seoul),Seoul,South Korea,37.51566,127.05729,attraction,Indoor,39.0,Unfavorable,1
+Batu Caves (Kuala Lumpur),Kuala Lumpur,Malaysia,3.2374,101.68391,attraction,Outdoor,77.0,Very Good,-1
+National Mosque of Malaysia (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14194,101.69167,attraction,Indoor,77.0,Very Good,0
+Sultan Abdul Samad Jamek Mosque (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14891,101.69596,attraction,Indoor,77.0,Very Good,0
+Sultan Salahuddin Abdul Aziz Mosque (Kuala Lumpur),Kuala Lumpur,Malaysia,3.07861,101.52056,attraction,Indoor,77.0,Very Good,-1
+National Museum of Malaysia (Kuala Lumpur),Kuala Lumpur,Malaysia,3.13758,101.68739,museum,Indoor,77.0,Very Good,0
+Independence Square (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14882,101.69367,attraction,Outdoor,77.0,Very Good,0
+Islamic Arts Museum Malaysia (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14292,101.689,museum,Indoor,77.0,Very Good,0
+Federal Territory Mosque (Kuala Lumpur),Kuala Lumpur,Malaysia,3.17194,101.67111,attraction,Indoor,77.0,Very Good,0
+Kuala Lumpur Bird Park (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14243,101.68847,attraction,Outdoor,77.0,Very Good,0
+Aquaria KLCC (Kuala Lumpur),Kuala Lumpur,Malaysia,3.15339,101.71308,attraction,Outdoor,77.0,Very Good,0
+National Zoo of Malaysia (Kuala Lumpur),Kuala Lumpur,Malaysia,3.20972,101.75778,attraction,Outdoor,77.0,Very Good,-1
+As Syakirin Mosque (Kuala Lumpur),Kuala Lumpur,Malaysia,3.15722,101.71611,attraction,Indoor,77.0,Very Good,0
+National Monument (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14886,101.68383,attraction,Outdoor,77.0,Very Good,0
+Perdana Botanical Gardens (Kuala Lumpur),Kuala Lumpur,Malaysia,3.143,101.685,attraction,Outdoor,77.0,Very Good,0
+Petaling Jaya Museum (Kuala Lumpur),Kuala Lumpur,Malaysia,3.10533,101.65036,museum,Indoor,77.0,Very Good,-1
+Kuala Lumpur City Gallery (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14724,101.69337,museum,Indoor,77.0,Very Good,0
+Royal Malaysia Police Museum (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14094,101.68891,museum,Indoor,77.0,Very Good,0
+Kuala Lumpur Tower (Kuala Lumpur),Kuala Lumpur,Malaysia,3.15286,101.70376,attraction,Outdoor,77.0,Very Good,0
+National Planetarium (Kuala Lumpur),Kuala Lumpur,Malaysia,3.13949,101.6893,museum,Indoor,77.0,Very Good,0
+Istana Bukit Kayangan (Kuala Lumpur),Kuala Lumpur,Malaysia,3.07179,101.53403,attraction,Outdoor,77.0,Very Good,-1
+Bank Negara Malaysia Museum and Art Gallery (Kuala Lumpur),Kuala Lumpur,Malaysia,3.15738,101.69071,museum,Indoor,77.0,Very Good,0
+National Textile Museum (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14655,101.69394,museum,Indoor,77.0,Very Good,0
+Galeria Sri Perdana (Kuala Lumpur),Kuala Lumpur,Malaysia,3.1444,101.67418,museum,Indoor,77.0,Very Good,0
+Telekom Museum (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14905,101.69928,museum,Indoor,77.0,Very Good,0
+Sin Sze Si Ya Temple (Kuala Lumpur),Kuala Lumpur,Malaysia,3.14565,101.69639,attraction,Outdoor,77.0,Very Good,0
+Sydney Opera House (Sydney),Sydney,Australia,-33.85706,151.2149,attraction,Outdoor,83.0,Excellent,0
+Sydney Harbour Bridge (Sydney),Sydney,Australia,-33.85223,151.21068,attraction,Outdoor,83.0,Excellent,0
+Sydney Tower (Sydney),Sydney,Australia,-33.87028,151.20889,attraction,Outdoor,83.0,Excellent,0
+Australian Museum (Sydney),Sydney,Australia,-33.8743,151.213,museum,Indoor,83.0,Excellent,0
+Taronga Zoo (Sydney),Sydney,Australia,-33.84333,151.24111,attraction,Outdoor,83.0,Excellent,0
+Art Gallery of New South Wales (Sydney),Sydney,Australia,-33.86861,151.21722,museum,Indoor,83.0,Excellent,0
+Museum of Contemporary Art Australia (Sydney),Sydney,Australia,-33.86,151.20889,museum,Indoor,83.0,Excellent,0
+"Royal Botanic Gardens, Sydney (Sydney)",Sydney,Australia,-33.86222,151.2175,attraction,Outdoor,83.0,Excellent,0
+Auburn Gallipoli Mosque (Sydney),Sydney,Australia,-33.86556,151.02361,attraction,Indoor,83.0,Excellent,-1
+St Mary’s Cathedral (Sydney),Sydney,Australia,-33.87111,151.21333,attraction,Indoor,83.0,Excellent,0
+Hyde Park (Sydney),Sydney,Australia,-33.87333,151.21139,attraction,Outdoor,83.0,Excellent,0
+Kamay Botany Bay National Park (Sydney),Sydney,Australia,-34.02056,151.22472,attraction,Outdoor,83.0,Excellent,-1
+Anzac Memorial (Sydney),Sydney,Australia,-33.87572,151.21094,museum,Indoor,83.0,Excellent,0
+ANZAC Bridge (Sydney),Sydney,Australia,-33.86933,151.18578,attraction,Outdoor,83.0,Excellent,0
+Sea Life Sydney Aquarium (Sydney),Sydney,Australia,-33.8694,151.202,attraction,Outdoor,83.0,Excellent,0
+Lane Cove National Park (Sydney),Sydney,Australia,-33.7836,151.139,attraction,Outdoor,83.0,Excellent,-1
+Sydney Observatory (Sydney),Sydney,Australia,-33.85956,151.20458,museum,Indoor,83.0,Excellent,0
+Hyde Park Barracks (Sydney),Sydney,Australia,-33.86961,151.21281,museum,Indoor,83.0,Excellent,0
+"St James’ Church, Sydney (Sydney)",Sydney,Australia,-33.8694,151.211,attraction,Indoor,83.0,Excellent,0
+Sydney Harbour National Park (Sydney),Sydney,Australia,-33.81306,151.29167,attraction,Outdoor,83.0,Excellent,-1
+Australian National Maritime Museum (Sydney),Sydney,Australia,-33.8692,151.199,museum,Indoor,83.0,Excellent,0
+Mrs Macquarie's Chair (Sydney),Sydney,Australia,-33.85971,151.22257,attraction,Outdoor,83.0,Excellent,0
+Captain Cook Memorial Obelisk (Sydney),Sydney,Australia,-34.00465,151.21757,attraction,Outdoor,83.0,Excellent,-1
+Justice & Police Museum (Sydney),Sydney,Australia,-33.86208,151.21228,museum,Indoor,83.0,Excellent,0
+Coca-Cola Billboard (Sydney),Sydney,Australia,-33.87531,151.22223,attraction,Outdoor,83.0,Excellent,0
+Table Mountain National Park (Cape Town),Cape Town,South Africa,-33.9667,18.425,attraction,Outdoor,94.0,Ideal,0
+Kirstenbosch National Botanical Garden (Cape Town),Cape Town,South Africa,-33.9875,18.4325,attraction,Outdoor,94.0,Ideal,0
+Iziko South African Museum (Cape Town),Cape Town,South Africa,-33.92864,18.41522,museum,Indoor,94.0,Ideal,0
+Zeitz Museum of Contemporary Art Africa (Cape Town),Cape Town,South Africa,-33.90833,18.42278,museum,Indoor,94.0,Ideal,0
+Two Oceans Aquarium (Cape Town),Cape Town,South Africa,-33.90806,18.41767,attraction,Outdoor,94.0,Ideal,0
+Rhodes Memorial (Cape Town),Cape Town,South Africa,-33.95235,18.45892,attraction,Outdoor,94.0,Ideal,0
+Hout Bay Museum (Cape Town),Cape Town,South Africa,-34.04024,18.36001,museum,Indoor,94.0,Ideal,1
+BOS 400 Shipwreck (Cape Town),Cape Town,South Africa,-34.03702,18.30841,attraction,Outdoor,94.0,Ideal,1
+Harvest Capella Shipwreck (Cape Town),Cape Town,South Africa,-34.02745,18.31247,attraction,Outdoor,94.0,Ideal,1
+Bartolomeu Dias (Cape Town),Cape Town,South Africa,-33.91752,18.428,attraction,Outdoor,94.0,Ideal,0
+Artillerymen's Memorial (Cape Town),Cape Town,South Africa,-33.9283,18.41624,attraction,Outdoor,94.0,Ideal,0
+Observatory War Memorial (Cape Town),Cape Town,South Africa,-33.93767,18.46973,attraction,Outdoor,94.0,Ideal,0
+Chavonnes Battery Museum (Cape Town),Cape Town,South Africa,-33.90711,18.4216,museum,Indoor,94.0,Ideal,0
+Cape Medical Museum (Cape Town),Cape Town,South Africa,-33.90718,18.41477,museum,Indoor,94.0,Ideal,0
+Heart of Cape Town Museum (Cape Town),Cape Town,South Africa,-33.94111,18.46139,museum,Indoor,94.0,Ideal,0
+Statue of Nelson Mandela (Cape Town),Cape Town,South Africa,-33.92523,18.42393,attraction,Outdoor,94.0,Ideal,0
+Noon Gun (Cape Town),Cape Town,South Africa,-33.91512,18.41154,attraction,Outdoor,94.0,Ideal,0
+Bishop Robert Gray Memorial (Cape Town),Cape Town,South Africa,-33.92427,18.41956,attraction,Outdoor,94.0,Ideal,0
+Greenmarket Square (Cape Town),Cape Town,South Africa,-33.92271,18.42008,attraction,Outdoor,94.0,Ideal,0
+Waterworks Museum (Cape Town),Cape Town,South Africa,-33.97488,18.40756,museum,Indoor,94.0,Ideal,0
+Groote Schuur (Cape Town),Cape Town,South Africa,-33.96373,18.46399,museum,Indoor,94.0,Ideal,0
+National Council of Provinces (Cape Town),Cape Town,South Africa,-33.9258,18.41973,attraction,Outdoor,94.0,Ideal,0
+Clock Tower (Cape Town),Cape Town,South Africa,-33.90648,18.42216,attraction,Outdoor,94.0,Ideal,0
+Cape Town Holocaust Centre (Cape Town),Cape Town,South Africa,-33.93028,18.41662,museum,Indoor,94.0,Ideal,0
+District Six Museum (Cape Town),Cape Town,South Africa,-33.92781,18.42375,museum,Indoor,94.0,Ideal,0
+Christ the Redeemer (Rio de Janeiro),Rio de Janeiro,Brazil,-22.95192,-43.21046,attraction,Outdoor,67.0,Good,0
+Museu Nacional (Rio de Janeiro),Rio de Janeiro,Brazil,-22.90583,-43.22611,museum,Indoor,67.0,Good,0
+Rio–Niterói Bridge (Rio de Janeiro),Rio de Janeiro,Brazil,-22.87111,-43.15669,attraction,Outdoor,67.0,Good,0
+Tijuca National Park (Rio de Janeiro),Rio de Janeiro,Brazil,-22.95944,-43.27778,attraction,Outdoor,67.0,Good,-1
+Valongo Wharf (Rio de Janeiro),Rio de Janeiro,Brazil,-22.89711,-43.18739,archaeological_site,Outdoor,67.0,Good,0
+Rio de Janeiro Cathedral (Rio de Janeiro),Rio de Janeiro,Brazil,-22.91092,-43.18071,attraction,Indoor,67.0,Good,0
+America Football Club (Rio de Janeiro),Rio de Janeiro,Brazil,-22.91646,-43.21729,attraction,Outdoor,67.0,Good,0
+Niterói Contemporary Art Museum (Rio de Janeiro),Rio de Janeiro,Brazil,-22.90778,-43.12611,museum,Indoor,67.0,Good,0
+Olaria Atlético Clube (Rio de Janeiro),Rio de Janeiro,Brazil,-22.84214,-43.267,attraction,Outdoor,67.0,Good,-1
+Rio de Janeiro Botanical Garden (Rio de Janeiro),Rio de Janeiro,Brazil,-22.9675,-43.22389,attraction,Outdoor,67.0,Good,0
+Candelária Church (Rio de Janeiro),Rio de Janeiro,Brazil,-22.90081,-43.17789,attraction,Indoor,67.0,Good,0
+Museu Nacional de Belas Artes (Rio de Janeiro),Rio de Janeiro,Brazil,-22.9088,-43.17573,museum,Indoor,67.0,Good,0
+Carioca Aqueduct (Rio de Janeiro),Rio de Janeiro,Brazil,-22.91259,-43.17985,attraction,Outdoor,67.0,Good,0
+Urca (Rio de Janeiro),Rio de Janeiro,Brazil,-22.9489,-43.1656,attraction,Outdoor,67.0,Good,0
+National Historical Museum (Rio de Janeiro),Rio de Janeiro,Brazil,-22.90591,-43.16952,museum,Indoor,67.0,Good,0
+Old Cathedral of Rio de Janeiro (Rio de Janeiro),Rio de Janeiro,Brazil,-22.90333,-43.17556,attraction,Indoor,67.0,Good,0
+Museum of Tomorrow (Rio de Janeiro),Rio de Janeiro,Brazil,-22.89413,-43.1794,museum,Indoor,67.0,Good,0
+"Museum of Modern Art, Rio de Janeiro (Rio de Janeiro)",Rio de Janeiro,Brazil,-22.91375,-43.17181,museum,Indoor,67.0,Good,0
+Quinta da Boa Vista (Rio de Janeiro),Rio de Janeiro,Brazil,-22.9058,-43.2244,attraction,Outdoor,67.0,Good,0
+Paço Imperial (Rio de Janeiro),Rio de Janeiro,Brazil,-22.90361,-43.17417,museum,Indoor,67.0,Good,0
+Flamengo Park (Rio de Janeiro),Rio de Janeiro,Brazil,-22.92028,-43.16972,attraction,Outdoor,67.0,Good,0
+Gustavo Capanema Palace (Rio de Janeiro),Rio de Janeiro,Brazil,-22.9092,-43.17383,attraction,Indoor,67.0,Good,0
+Sugarloaf (Rio de Janeiro),Rio de Janeiro,Brazil,-22.94949,-43.15616,attraction,Outdoor,67.0,Good,0
+Pedra da Gávea (Rio de Janeiro),Rio de Janeiro,Brazil,-22.99898,-43.28297,attraction,Outdoor,67.0,Good,-1
+Museu da República (Rio de Janeiro),Rio de Janeiro,Brazil,-22.9259,-43.17621,museum,Indoor,67.0,Good,0
+Plaza de Mayo (Buenos Aires),Buenos Aires,Argentina,-34.60833,-58.37194,attraction,Outdoor,82.0,Excellent,0
+Obelisco de Buenos Aires (Buenos Aires),Buenos Aires,Argentina,-34.60376,-58.38162,attraction,Outdoor,82.0,Excellent,0
+Buenos Aires Cathedral (Buenos Aires),Buenos Aires,Argentina,-34.60741,-58.37328,attraction,Indoor,82.0,Excellent,0
+"National Museum of Fine Arts, Argentina (Buenos Aires)",Buenos Aires,Argentina,-34.58399,-58.39297,museum,Indoor,82.0,Excellent,0
+Puente de la Mujer (Buenos Aires),Buenos Aires,Argentina,-34.60794,-58.36491,attraction,Outdoor,82.0,Excellent,0
+Buenos Aires Botanical Garden (Buenos Aires),Buenos Aires,Argentina,-34.58247,-58.4186,attraction,Outdoor,82.0,Excellent,0
+National Museum of Decorative Arts (Buenos Aires),Buenos Aires,Argentina,-34.582,-58.4015,museum,Indoor,82.0,Excellent,0
+Torre Monumental (Buenos Aires),Buenos Aires,Argentina,-34.59296,-58.37319,attraction,Outdoor,82.0,Excellent,0
+National Historical Museum (Buenos Aires),Buenos Aires,Argentina,-34.62694,-58.37056,museum,Indoor,82.0,Excellent,0
+King Fahd Islamic Cultural Center (Buenos Aires),Buenos Aires,Argentina,-34.57333,-58.42528,attraction,Indoor,82.0,Excellent,0
+Cabildo of Buenos Aires (Buenos Aires),Buenos Aires,Argentina,-34.60886,-58.37376,museum,Indoor,82.0,Excellent,0
+Museum of Latin American Art of Buenos Aires (Buenos Aires),Buenos Aires,Argentina,-34.57711,-58.40359,museum,Indoor,82.0,Excellent,0
+Pirámide de Mayo (Buenos Aires),Buenos Aires,Argentina,-34.60893,-58.37215,attraction,Outdoor,82.0,Excellent,0
+Parque Tres de Febrero (Buenos Aires),Buenos Aires,Argentina,-34.57333,-58.41472,attraction,Outdoor,82.0,Excellent,0
+Bernardino Rivadavia Natural Sciences Museum (Buenos Aires),Buenos Aires,Argentina,-34.6048,-58.4377,museum,Indoor,82.0,Excellent,0
+Plaza San Martín (Buenos Aires),Buenos Aires,Argentina,-34.59444,-58.375,attraction,Outdoor,82.0,Excellent,0
+Buenos Aires Museum of Modern Art (Buenos Aires),Buenos Aires,Argentina,-34.6218,-58.3705,museum,Indoor,82.0,Excellent,0
+Congressional Plaza (Buenos Aires),Buenos Aires,Argentina,-34.60967,-58.39017,attraction,Outdoor,82.0,Excellent,0
+Railway Museum (Buenos Aires),Buenos Aires,Argentina,-34.58982,-58.37876,museum,Indoor,82.0,Excellent,0
+El Ateneo Grand Splendid (Buenos Aires),Buenos Aires,Argentina,-34.59598,-58.39426,attraction,Outdoor,82.0,Excellent,0
+Monumento Guardacostas (Buenos Aires),Buenos Aires,Argentina,-34.61142,-58.35898,attraction,Outdoor,82.0,Excellent,0
+Monumento al General San Martín (Buenos Aires),Buenos Aires,Argentina,-34.59498,-58.3771,attraction,Outdoor,82.0,Excellent,0
+Club Español (Buenos Aires),Buenos Aires,Argentina,-34.61037,-58.38043,attraction,Outdoor,82.0,Excellent,0
+Museo de Arte Hispanoamericano (Buenos Aires),Buenos Aires,Argentina,-34.5908,-58.38012,museum,Indoor,82.0,Excellent,0
+Museo de Arte Popular José Hernández (Buenos Aires),Buenos Aires,Argentina,-34.57971,-58.40499,museum,Indoor,82.0,Excellent,0
+CN Tower (Toronto),Toronto,Canada,43.64275,-79.38715,attraction,Outdoor,34.0,Unfavorable,0
+Royal Ontario Museum (Toronto),Toronto,Canada,43.66757,-79.39468,museum,Indoor,34.0,Unfavorable,0
+Art Gallery of Ontario (Toronto),Toronto,Canada,43.65361,-79.39278,museum,Indoor,34.0,Unfavorable,0
+Yonge Dundas Square (Toronto),Toronto,Canada,43.65603,-79.38013,attraction,Outdoor,34.0,Unfavorable,0
+Casa Loma (Toronto),Toronto,Canada,43.67812,-79.40934,museum,Indoor,34.0,Unfavorable,0
+The Aga Khan Museum (Toronto),Toronto,Canada,43.7253,-79.33199,museum,Indoor,34.0,Unfavorable,-1
+Canada's Walk of Fame (Toronto),Toronto,Canada,43.6471,-79.38705,attraction,Outdoor,34.0,Unfavorable,0
+Bata Shoe Museum (Toronto),Toronto,Canada,43.66728,-79.40011,museum,Indoor,34.0,Unfavorable,0
+High Park (Toronto),Toronto,Canada,43.6468,-79.463,attraction,Outdoor,34.0,Unfavorable,0
+St. Michael's Cathedral (Toronto),Toronto,Canada,43.655,-79.377,attraction,Indoor,34.0,Unfavorable,0
+Nathan Phillips Square (Toronto),Toronto,Canada,43.6525,-79.38361,attraction,Outdoor,34.0,Unfavorable,0
+Colborne Lodge (Toronto),Toronto,Canada,43.64036,-79.46,attraction,Outdoor,34.0,Unfavorable,0
+No. 8 Hose Station (Toronto),Toronto,Canada,43.6569,-79.40472,attraction,Outdoor,34.0,Unfavorable,0
+Mackenzie House (Toronto),Toronto,Canada,43.65571,-79.37826,attraction,Outdoor,34.0,Unfavorable,0
+QEW Monument (Toronto),Toronto,Canada,43.63317,-79.47038,attraction,Outdoor,34.0,Unfavorable,0
+Spadina Museum (Toronto),Toronto,Canada,43.67893,-79.40811,museum,Indoor,34.0,Unfavorable,0
+Textile Museum Of Canada (Toronto),Toronto,Canada,43.65449,-79.38669,museum,Indoor,34.0,Unfavorable,0
+Fort Rouillé Monument (Toronto),Toronto,Canada,43.63066,-79.42352,attraction,Outdoor,34.0,Unfavorable,0
+Design Exchange (Toronto),Toronto,Canada,43.64774,-79.38011,museum,Indoor,34.0,Unfavorable,0
+Toronto Railway Museum (Toronto),Toronto,Canada,43.64065,-79.38596,museum,Indoor,34.0,Unfavorable,0
+Ned Hanlan ship (Toronto),Toronto,Canada,43.62797,-79.38939,attraction,Outdoor,34.0,Unfavorable,0
+The Market Gallery (Toronto),Toronto,Canada,43.64912,-79.37181,museum,Indoor,34.0,Unfavorable,0
+TD Gallery (Toronto),Toronto,Canada,43.67162,-79.38676,museum,Indoor,34.0,Unfavorable,0
+Little Canada (Toronto),Toronto,Canada,43.65671,-79.38091,museum,Indoor,34.0,Unfavorable,0
+The Unknown Student (Toronto),Toronto,Canada,43.66705,-79.40126,attraction,Outdoor,34.0,Unfavorable,0
+Hollywood Walk of Fame (Los Angeles),Los Angeles,USA,34.1014,-118.34497,attraction,Outdoor,79.0,Very Good,1
+Hollywood Sign (Los Angeles),Los Angeles,USA,34.1341,-118.32169,attraction,Outdoor,79.0,Very Good,1
+La Brea Tar Pits (Los Angeles),Los Angeles,USA,34.06306,-118.35583,museum,Indoor,79.0,Very Good,1
+Los Angeles County Museum of Art (Los Angeles),Los Angeles,USA,34.06333,-118.35917,museum,Indoor,79.0,Very Good,1
+"The Huntington Library, Art Museum, and Botanical Gardens (Los Angeles)",Los Angeles,USA,34.12917,-118.1125,museum,Indoor,79.0,Very Good,2
+"Museum of Contemporary Art, Los Angeles (Los Angeles)",Los Angeles,USA,34.05327,-118.25043,museum,Indoor,79.0,Very Good,1
+Aon Center (Los Angeles),Los Angeles,USA,34.04917,-118.25694,attraction,Outdoor,79.0,Very Good,1
+Norton Simon Museum (Los Angeles),Los Angeles,USA,34.14623,-118.15916,museum,Indoor,79.0,Very Good,2
+Los Angeles Zoo (Los Angeles),Los Angeles,USA,34.1481,-118.284,attraction,Outdoor,79.0,Very Good,1
+Griffith Park (Los Angeles),Los Angeles,USA,34.1333,-118.3,attraction,Outdoor,79.0,Very Good,1
+Petersen Automotive Museum (Los Angeles),Los Angeles,USA,34.06247,-118.36103,museum,Indoor,79.0,Very Good,1
+Cathedral of Our Lady of the Angels (Los Angeles),Los Angeles,USA,34.05833,-118.24583,attraction,Indoor,79.0,Very Good,1
+Universal Studios Hollywood (Los Angeles),Los Angeles,USA,34.13586,-118.3539,attraction,Outdoor,79.0,Very Good,1
+Hammer Museum (Los Angeles),Los Angeles,USA,34.05947,-118.44366,museum,Indoor,79.0,Very Good,-1
+Natural History Museum of Los Angeles County (Los Angeles),Los Angeles,USA,34.01699,-118.28878,museum,Indoor,79.0,Very Good,1
+Hollyhock House (Los Angeles),Los Angeles,USA,34.09996,-118.29431,museum,Indoor,79.0,Very Good,1
+Watts Towers (Los Angeles),Los Angeles,USA,33.93874,-118.24105,attraction,Outdoor,79.0,Very Good,-1
+The Broad (Los Angeles),Los Angeles,USA,34.05444,-118.25056,museum,Indoor,79.0,Very Good,1
+Koreatown (Los Angeles),Los Angeles,USA,34.06179,-118.30545,attraction,Outdoor,79.0,Very Good,1
+Autry Museum of the American West (Los Angeles),Los Angeles,USA,34.14838,-118.28171,museum,Indoor,79.0,Very Good,1
+Pasadena Museum of History (Los Angeles),Los Angeles,USA,34.14932,-118.16095,museum,Indoor,79.0,Very Good,2
+USC Pacific Asia Museum (Los Angeles),Los Angeles,USA,34.14675,-118.14104,museum,Indoor,79.0,Very Good,2
+Southwest Museum of the American Indian (Los Angeles),Los Angeles,USA,34.10046,-118.20581,museum,Indoor,79.0,Very Good,-1
+Kuruvungna Springs (Los Angeles),Los Angeles,USA,34.04494,-118.45777,archaeological_site,Outdoor,79.0,Very Good,-1
+Grammy Museum (Los Angeles),Los Angeles,USA,34.0447,-118.26461,museum,Indoor,79.0,Very Good,1
+Golden Gate Bridge (San Francisco),San Francisco,USA,37.81972,-122.47861,attraction,Outdoor,61.0,Good,3
+Golden Gate Park (San Francisco),San Francisco,USA,37.76972,-122.47694,attraction,Outdoor,61.0,Good,3
+San Francisco Museum of Modern Art (San Francisco),San Francisco,USA,37.78572,-122.40105,museum,Indoor,61.0,Good,3
+Alcatraz Federal Penitentiary (San Francisco),San Francisco,USA,37.8269,-122.423,museum,Indoor,61.0,Good,3
+Lombard Street (San Francisco),San Francisco,USA,37.80194,-122.41889,attraction,Outdoor,61.0,Good,3
+USS Hornet (San Francisco),San Francisco,USA,37.77278,-122.30278,museum,Indoor,61.0,Good,-1
+M. H. de Young Memorial Museum (San Francisco),San Francisco,USA,37.77147,-122.46868,museum,Indoor,61.0,Good,3
+California Academy of Sciences (San Francisco),San Francisco,USA,37.77,-122.46639,museum,Indoor,61.0,Good,3
+Presidio of San Francisco (San Francisco),San Francisco,USA,37.79887,-122.46619,attraction,Outdoor,61.0,Good,3
+Coit Tower (San Francisco),San Francisco,USA,37.8025,-122.40583,attraction,Outdoor,61.0,Good,3
+San Francisco Zoo (San Francisco),San Francisco,USA,37.73347,-122.50191,attraction,Outdoor,61.0,Good,3
+Fine Arts Museums of San Francisco (San Francisco),San Francisco,USA,37.7715,-122.46869,museum,Indoor,61.0,Good,3
+Muir Woods National Monument (San Francisco),San Francisco,USA,37.8919,-122.571,attraction,Outdoor,61.0,Good,-1
+Exploratorium (San Francisco),San Francisco,USA,37.8014,-122.3976,museum,Indoor,61.0,Good,3
+Asian Art Museum of San Francisco (San Francisco),San Francisco,USA,37.78016,-122.4162,museum,Indoor,61.0,Good,3
+Union Square (San Francisco),San Francisco,USA,37.78806,-122.4075,attraction,Outdoor,61.0,Good,3
+Alamo Square (San Francisco),San Francisco,USA,37.77638,-122.43471,attraction,Outdoor,61.0,Good,3
+Mission San Francisco de Asís (San Francisco),San Francisco,USA,37.7644,-122.427,attraction,Indoor,61.0,Good,3
+USS Pampanito (San Francisco),San Francisco,USA,37.81,-122.41639,museum,Indoor,61.0,Good,3
+Pink Triangle Park (San Francisco),San Francisco,USA,37.76235,-122.43622,attraction,Outdoor,61.0,Good,3
+Walk of Game (San Francisco),San Francisco,USA,37.78437,-122.40342,attraction,Outdoor,61.0,Good,3
+Cathedral of Saint Mary of the Assumption (San Francisco),San Francisco,USA,37.7842,-122.4253,attraction,Indoor,61.0,Good,3
+Dragon Gate (San Francisco),San Francisco,USA,37.79069,-122.40559,attraction,Outdoor,61.0,Good,3
+World War II Memorial (San Francisco),San Francisco,USA,37.79861,-122.47796,attraction,Outdoor,61.0,Good,3
+Sather Gate (San Francisco),San Francisco,USA,37.87024,-122.25951,attraction,Outdoor,61.0,Good,-1
+Mexico City Metropolitan Cathedral (Mexico City),Mexico City,Mexico,19.43439,-99.13308,attraction,Indoor,70.0,Very Good,0
+National Museum of Anthropology (Mexico City),Mexico City,Mexico,19.42611,-99.18611,museum,Indoor,70.0,Very Good,0
+National Palace (Mexico City),Mexico City,Mexico,19.4325,-99.13139,museum,Indoor,70.0,Very Good,0
+Templo Mayor (Mexico City),Mexico City,Mexico,19.435,-99.13139,archaeological_site,Outdoor,70.0,Very Good,0
+Frida Kahlo Museum (Mexico City),Mexico City,Mexico,19.35514,-99.16253,museum,Indoor,70.0,Very Good,1
+Zócalo (Mexico City),Mexico City,Mexico,19.43278,-99.13333,attraction,Outdoor,70.0,Very Good,0
+Chapultepec Castle (Mexico City),Mexico City,Mexico,19.42056,-99.18167,attraction,Indoor,70.0,Very Good,0
+Luis Barragán House and Studio (Mexico City),Mexico City,Mexico,19.41111,-99.1925,museum,Indoor,70.0,Very Good,0
+Basilica of Our Lady of Guadalupe (Mexico City),Mexico City,Mexico,19.48444,-99.11722,attraction,Indoor,70.0,Very Good,0
+Angel of Independence (Mexico City),Mexico City,Mexico,19.427,-99.16771,attraction,Outdoor,70.0,Very Good,0
+Cuicuilco (Mexico City),Mexico City,Mexico,19.30167,-99.18167,archaeological_site,Outdoor,70.0,Very Good,1
+Monumento a la Revolución (Mexico City),Mexico City,Mexico,19.43618,-99.15463,attraction,Outdoor,70.0,Very Good,0
+Plaza de las Tres Culturas (Mexico City),Mexico City,Mexico,19.45167,-99.13611,attraction,Outdoor,70.0,Very Good,0
+Museo Nacional de Arte (Mexico City),Mexico City,Mexico,19.43639,-99.13944,museum,Indoor,70.0,Very Good,0
+Alameda Central Park (Mexico City),Mexico City,Mexico,19.43556,-99.14389,attraction,Outdoor,70.0,Very Good,0
+Complejo Cultural Los Pinos (Mexico City),Mexico City,Mexico,19.41556,-99.19139,museum,Indoor,70.0,Very Good,0
+Academy of San Carlos (Mexico City),Mexico City,Mexico,19.43309,-99.12884,museum,Indoor,70.0,Very Good,0
+Palace of Iturbide (Mexico City),Mexico City,Mexico,19.43352,-99.13906,museum,Indoor,70.0,Very Good,0
+Tlatilco (Mexico City),Mexico City,Mexico,19.5,-99.25,archaeological_site,Outdoor,70.0,Very Good,-1
+Monumento Alvaro Obregón (Mexico City),Mexico City,Mexico,19.34718,-99.18592,attraction,Outdoor,70.0,Very Good,1
+Casa de Carranza (Mexico City),Mexico City,Mexico,19.43124,-99.16346,museum,Indoor,70.0,Very Good,0
+Museo Diego Rivera Anahuacalli (Mexico City),Mexico City,Mexico,19.32258,-99.14408,museum,Indoor,70.0,Very Good,1
+Monumental Flag (Mexico City),Mexico City,Mexico,19.47861,-99.23288,attraction,Outdoor,70.0,Very Good,-1
+MODO - Museo del Objeto del Objeto (Mexico City),Mexico City,Mexico,19.42021,-99.15907,museum,Indoor,70.0,Very Good,0
+Chinatown (Mexico City),Mexico City,Mexico,19.43302,-99.14305,attraction,Outdoor,70.0,Very Good,0
+King Abdullah I Mosque (Amman),Amman,Jordan,31.96158,35.91312,attraction,Indoor,45.0,Marginal,0
+Ayn Ghazal (Amman),Amman,Jordan,31.988,35.976,archaeological_site,Outdoor,45.0,Marginal,-1
+Heshbon (Amman),Amman,Jordan,31.81861,35.79889,archaeological_site,Outdoor,45.0,Marginal,-1
+Amman Citadel (Amman),Amman,Jordan,31.9547,35.9343,archaeological_site,Outdoor,45.0,Marginal,0
+Roman Theatre of Amman (Amman),Amman,Jordan,31.95167,35.93936,archaeological_site,Outdoor,45.0,Marginal,0
+The Jordan Museum (Amman),Amman,Jordan,31.94564,35.92652,museum,Indoor,45.0,Marginal,0
+Temple of Hercules (Amman),Amman,Jordan,31.95394,35.93487,archaeological_site,Outdoor,45.0,Marginal,0
+King Hussain Mosque (Amman),Amman,Jordan,31.98588,35.82292,attraction,Indoor,45.0,Marginal,-1
+Abdoun Bridge (Amman),Amman,Jordan,31.95133,35.89391,attraction,Outdoor,45.0,Marginal,0
+Jordan Archaeological Museum (Amman),Amman,Jordan,31.954,35.9343,museum,Indoor,45.0,Marginal,0
+Royal Tank Museum (Amman),Amman,Jordan,31.90861,35.92444,museum,Indoor,45.0,Marginal,0
+Jordan National Gallery of Fine Arts (Amman),Amman,Jordan,31.95888,35.91555,museum,Indoor,45.0,Marginal,0
+Al Husseini Mosque (Amman),Amman,Jordan,31.94972,35.93472,attraction,Indoor,45.0,Marginal,0
+Nymphaeum (Amman),Amman,Jordan,31.95015,35.93618,attraction,Outdoor,45.0,Marginal,0
+Ahl Al Kahf (Amman),Amman,Jordan,31.89888,35.9738,attraction,Outdoor,45.0,Marginal,0
+Khirbet Yajouz archaeological site (Amman),Amman,Jordan,32.03618,35.91499,archaeological_site,Outdoor,45.0,Marginal,-1
+Royal Automobile Museum (Amman),Amman,Jordan,31.98307,35.82633,museum,Indoor,45.0,Marginal,-1
+Umayyad Palace (Amman),Amman,Jordan,31.95589,35.93368,archaeological_site,Outdoor,45.0,Marginal,0
+Tall Jawa (Amman),Amman,Jordan,31.85759,35.9316,archaeological_site,Outdoor,45.0,Marginal,-1
+Tall al-Umayri (Amman),Amman,Jordan,31.86866,35.88797,archaeological_site,Outdoor,45.0,Marginal,-1
+Koutoubia Mosque (Marrakesh),Marrakesh,Morocco,31.62412,-7.99354,attraction,Indoor,54.0,Acceptable,0
+Jemaa el-Fnaa (Marrakesh),Marrakesh,Morocco,31.62597,-7.9891,attraction,Outdoor,54.0,Acceptable,0
+El Badi Palace (Marrakesh),Marrakesh,Morocco,31.61833,-7.98583,attraction,Indoor,54.0,Acceptable,0
+Bahia Palace (Marrakesh),Marrakesh,Morocco,31.62159,-7.98223,museum,Indoor,54.0,Acceptable,0
+Almoravid Koubba (Marrakesh),Marrakesh,Morocco,31.6315,-7.9872,attraction,Outdoor,54.0,Acceptable,0
+Saadian Tombs (Marrakesh),Marrakesh,Morocco,31.61722,-7.98861,attraction,Outdoor,54.0,Acceptable,0
+Ibn Yusuf Mosque (Marrakesh),Marrakesh,Morocco,31.63192,-7.98716,attraction,Indoor,54.0,Acceptable,0
+Al-Mansour Mosque (Marrakesh),Marrakesh,Morocco,31.61768,-7.98895,attraction,Indoor,54.0,Acceptable,0
+Museum of Music (Marrakesh),Marrakesh,Morocco,31.62936,-7.98878,museum,Indoor,54.0,Acceptable,0
+Synagogue Salat Al-Azama (Marrakesh),Marrakesh,Morocco,31.62007,-7.9823,museum,Indoor,54.0,Acceptable,0
+Dar El Bacha Museum (Marrakesh),Marrakesh,Morocco,31.63139,-7.99235,museum,Indoor,54.0,Acceptable,0
+The Burn Marrakech (Marrakesh),Marrakesh,Morocco,31.74176,-7.88849,attraction,Outdoor,54.0,Acceptable,-1
+Majorelle Garden (Marrakesh),Marrakesh,Morocco,31.64137,-8.00292,attraction,Outdoor,54.0,Acceptable,0
+Ben Youssef Madrasa (Marrakesh),Marrakesh,Morocco,31.63198,-7.98625,attraction,Outdoor,54.0,Acceptable,0
+Kingdom Centre (Riyadh),Riyadh,Saudi Arabia,24.71139,46.67444,attraction,Outdoor,70.0,Very Good,-1
+Al Faisaliah Centre (Riyadh),Riyadh,Saudi Arabia,24.69028,46.68528,attraction,Outdoor,70.0,Very Good,-1
+Masmak Fort (Riyadh),Riyadh,Saudi Arabia,24.6311,46.7133,museum,Indoor,70.0,Very Good,0
+Palace of Yamamah (Riyadh),Riyadh,Saudi Arabia,24.6647,46.64,attraction,Indoor,70.0,Very Good,-1
+Sakr al Jazeera Aviation Museum (Riyadh),Riyadh,Saudi Arabia,24.75405,46.7402,museum,Indoor,70.0,Very Good,-1
+Birthplace of the House of Saud (Riyadh),Riyadh,Saudi Arabia,24.73406,46.5758,museum,Indoor,70.0,Very Good,1
+At-Turaif District in ad-Dir'iyah (Riyadh),Riyadh,Saudi Arabia,24.73315,46.57274,archaeological_site,Outdoor,70.0,Very Good,1
+Boulevard Riyadh City (Riyadh),Riyadh,Saudi Arabia,24.76841,46.60481,attraction,Outdoor,70.0,Very Good,1
+Murraba Palace (Riyadh),Riyadh,Saudi Arabia,24.64649,46.70927,attraction,Outdoor,70.0,Very Good,0
+National Museum of Saudi Arabia (Riyadh),Riyadh,Saudi Arabia,24.64712,46.71074,museum,Indoor,70.0,Very Good,0
