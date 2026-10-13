@@ -104,21 +104,16 @@ Open the local URL displayed by Streamlit (typically `http://localhost:8501`), t
 
 `requirements.txt` covers the **Streamlit app**. Running the analysis notebook separately may require additional packages such as NumPy, Matplotlib, Seaborn, and Scikit-learn.
 
-## ⚠️ Scope and Limitations
+## 🔭 Future Enhancements
 
-- Recommendations reflect **climate suitability indicated by existing TCI data**, not attraction quality, travel safety, or personalized satisfaction.
-- The app does not retrieve live weather or make real-time climate forecasts.
-- Destinations may share the same climate index, so the top-five ranking does not necessarily differentiate attractions within the same city.
-- The optional city/governorate filter looks for matching values in the uploaded data; it is not a free-form geographic search engine.
-- The live app requires manual CSV uploads in its current version.
+- Load sample datasets automatically so visitors can explore the dashboard without uploading CSV files.
+- Integrate the notebook's machine-learning model into the Streamlit application for on-demand TCI predictions.
+- Expand recommendations with attraction types, traveler preferences, and additional suitability criteria.
+- Explore live weather integration to complement the historical climate analysis.
+- Improve model validation using location-based and time-based splits.
+- Add application screenshots, more EDA insights, and smoother performance with larger datasets.
 
-## 🔭 Possible Next Improvements
-
-- Load a small default sample dataset so visitors can try the live demo immediately.
-- Add richer recommendations using attraction categories and user preferences.
-- Evaluate the KNN model with country- or time-based held-out splits.
-- Add application screenshots and concise insights from the EDA.
-- Reduce app startup time and improve loading feedback for larger datasets.
+**Methodology note:** The current live dashboard ranks attractions using precomputed TCI values and visualizes existing DBSCAN cluster labels. The KNN experiment is available in the analysis notebook; the app does not yet use KNN for live predictions.
 
 ## 👤 Author
 
