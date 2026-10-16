@@ -86,7 +86,6 @@ body.is-home .only-results,body:not(.is-home) .only-home{display:none}
 .rhead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
 .rhead h2{font-size:clamp(30px,4.6vw,48px)}
 .sub{color:var(--mut);max-width:60ch;margin-top:8px;font-size:17px}
-.note{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;background:#FFF3D1;color:#7A5A00;padding:5px 12px;border-radius:8px}
 .units{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:12px;padding:3px}
 .units button{padding:6px 16px;border-radius:9px;font-weight:700;font-size:14px;color:var(--mut)}
 .units button[aria-pressed=true]{background:var(--moss);color:#fff}
@@ -218,7 +217,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
       <div>
         <h2 id="rTitle">Best time to visit</h2>
         <p class="sub" id="rSub">Loading climate data…</p>
-        <span class="note" id="rNote" hidden>Showing typical Lisbon averages. Start the server to load live data.</span>
       </div>
       <div class="units" role="group" aria-label="Temperature unit">
         <button data-unit="C" aria-pressed="true">°C</button>
@@ -244,7 +242,6 @@ const MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","D
 const MF = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const $ = id => document.getElementById(id);
 
-/* Comfort colours: green/teal = ideal, yellow = fine, orange/terracotta = hard going */
 const colorFor = t => t >= 80 ? "#6FA876" : t >= 70 ? "#A3BF7A" : t >= 60 ? "#E0B65A" : t >= 50 ? "#D98F4E" : t >= 40 ? "#B5593A" : "#7E3B2E";
 const lightText = c => c === "#B5593A" || c === "#7E3B2E";
 const labelFor = t => t >= 80 ? "Ideal" : t >= 70 ? "Very good" : t >= 60 ? "Good" : t >= 50 ? "Fair" : t >= 40 ? "Tough" : "Avoid";
@@ -256,7 +253,6 @@ let UNIT = "C", SEL = 0, STATE = null;
 const conv = c => UNIT === "F" ? c * 9 / 5 + 32 : c;
 const fT = v => typeof v === "number" && isFinite(v) ? Math.round(conv(v)) + "°" : "N/A";
 
-/* Country palettes: deep (dark text/shadow), main (hero + panels), sage (rain), ochre (sun/accents) */
 const T = (name, deep, main, sage, ochre) => ({ name, deep, main, sage, ochre });
 const THEMES = {
   default: T("", "#1E2B22", "#3F6B4A", "#5B8F94", "#E0B65A"),
@@ -281,13 +277,11 @@ const THEMES = {
   germany: T("Germany", "#1B222A", "#3B4A5A", "#6A8FA8", "#E8B85A"),
   china: T("China", "#3A1515", "#B02A2A", "#5E8FA3", "#F2C14E")
 };
-/* Country name (as the API sends it) -> palette */
 const COUNTRY = {};
 Object.entries(THEMES).forEach(([k, t]) => { if (t.name) COUNTRY[t.name.toLowerCase()] = k; });
 Object.assign(COUNTRY, { usa: "usa", "united states of america": "usa", england: "uk", "great britain": "uk", uae: "uae", "the netherlands": "netherlands", holland: "netherlands" });
 const themeKey = c => COUNTRY[String(c || "").toLowerCase()] || "default";
 
-/* Patterns, drawn in the country's colours: tile (azulejo), waves, zigzag, star */
 const PAT = { default: "tile", portugal: "tile", spain: "tile", egypt: "zigzag", mexico: "zigzag", australia: "zigzag", japan: "waves", china: "waves", greece: "waves", thailand: "waves", morocco: "star", turkey: "star", uae: "star", india: "star" };
 function patternSvg(kind, m, o) {
   const bg = `<rect width='40' height='40' fill='#fff'/>`;
@@ -314,7 +308,6 @@ const CITY_PHOTOS = {
   tokyo:  ["https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=1800&auto=format&fit=crop"],
   rome:   ["https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1800&auto=format&fit=crop"]
 };
-/* Uses a city photo (tinted with the country colour) if one loads; otherwise the painted scene stays */
 function setHero(key) {
   const hero = $("hero");
   hero.dataset.key = key; hero.classList.remove("has-photo"); hero.style.backgroundImage = "";
@@ -338,7 +331,6 @@ function goHome() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* Typical Lisbon averages, used only if the server can't be reached */
 const LISBON_SAMPLE = [
  [11.8,15.2,8.6,100,4.8,78,52],[12.8,16.5,9.2,89,5.6,75,56],[14.7,18.9,10.7,52,6.9,71,66],
  [15.9,19.8,12.0,68,7.9,69,76],[18.3,22.5,14.0,48,9.3,67,84],[21.5,26.0,17.0,17,10.5,64,82],
@@ -346,7 +338,6 @@ const LISBON_SAMPLE = [
  [19.0,22.5,15.5,87,6.9,73,80],[15.0,18.4,12.0,102,5.2,77,62],[12.5,15.7,9.5,115,4.6,79,52]
 ].map((a,i)=>({Month:i+1,Temp_Mean:a[0],Temp_Max_Mean:a[1],Temp_Min_Mean:a[2],Precip_Total_mm:a[3],Sunshine_h_per_day:a[4],RH_Mean:a[5],TCI:a[6]}));
 
-/* Places come from the API. Only if it can't be reached do the original five show. */
 const FALLBACK = [["Lisbon", "Portugal"], ["Cairo", "Egypt"], ["Paris", "France"], ["Tokyo", "Japan"], ["Rome", "Italy"]].map(([city, country]) => ({ city, country }));
 let PLACE_LIST = FALLBACK;
 function normalizePlaces(d) {
@@ -400,7 +391,6 @@ async function checkApi() {
 }
 checkApi();
 
-/* ---------- Advice ---------- */
 function packing(r) {
   const hi = typeof r.Temp_Max_Mean === "number" ? r.Temp_Max_Mean : r.Temp_Mean;
   const bits = [];
@@ -422,7 +412,6 @@ function plan(r) {
   return "Tough conditions. Expect to spend more time indoors and check the forecast.";
 }
 
-/* ---------- Charts ---------- */
 function polar(r, a) { return [160 + r * Math.cos(a), 160 + r * Math.sin(a)]; }
 function sector(i, r) {
   const a0 = (i * 30 - 90) * Math.PI / 180 + 0.02, a1 = ((i + 1) * 30 - 90) * Math.PI / 180 - 0.02, r0 = 36;
@@ -465,7 +454,6 @@ function trendChart(rows) {
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Average temperature line and monthly rainfall bars">${g}</svg>`;
 }
 
-/* ---------- Render ---------- */
 function render() {
   if (!STATE) return;
   const { rows, city } = STATE;
@@ -489,7 +477,6 @@ function render() {
   $("rSub").textContent = top.length
     ? `Comfort peaks in ${bestStr}. The year averages ${fT(avgT)} with about ${num(rain, 0)} mm of rain.`
     : `${rows.length} months of climate data.`;
-  $("rNote").hidden = !STATE.sample;
 
   const c = colorFor(cur.TCI);
   const cat = esc(cur.TCI_Category || labelFor(cur.TCI));
@@ -538,7 +525,7 @@ function render() {
         <button class="mt" data-m="${r._m}" aria-pressed="${r._m === SEL}" style="--c:${colorFor(r.TCI)}">
           <b>${MF[r._m]}</b>
           <em>${labelFor(r.TCI)} (${num(r.TCI, 0)})</em>
-          <span>${fT(r.Temp_Max_Mean)} / ${fT(r.Temp_Min_Mean)}</span>
+          <span>${fT(r.Temp_Max_Mean)} /${fT(r.Temp_Min_Mean)}</span>
           <span>${num(r.Precip_Total_mm, 0)} mm rain</span>
         </button>`).join("")}
     </div>
@@ -556,7 +543,6 @@ document.addEventListener("click", e => {
   if (m) { SEL = +m.dataset.m; render(); }
 });
 
-/* ---------- Load a city ---------- */
 async function explore(cityArg, initial) {
   const city = (cityArg || $("city").value).trim();
   if (!city) { $("city").focus(); return; }
@@ -569,7 +555,6 @@ async function explore(cityArg, initial) {
   setHero(key);
   $("rTitle").textContent = `When to visit ${name}`;
   $("rSub").textContent = "Loading climate data…";
-  $("rNote").hidden = true;
   $("out").innerHTML = `<p class="loading">Loading…</p>`;
 
   let rows = null, sample = false;
@@ -597,8 +582,6 @@ async function explore(cityArg, initial) {
   render();
   if (!initial) $("results").scrollIntoView({ behavior: "smooth" });
 }
-
-
 </script>
 </body>
 </html>
