@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WanderClimate | When to visit, month by month</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --deep:#1E2B22;--moss:#3F6B4A;--sage:#5B8F94;--ochre:#E0B65A;--clay:#B5593A;
+  --ink:var(--deep);
+  --linen:color-mix(in srgb,var(--moss) 9%,#fff);
+  --paper:color-mix(in srgb,var(--moss) 5%,#fbfaf6);
+  --line:color-mix(in srgb,var(--moss) 22%,#fff);
+  --mut:color-mix(in srgb,var(--deep) 72%,#fff);
+  --white:#fff;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font:16px/1.6 'Figtree',system-ui,sans-serif;overflow-x:hidden;transition:background-color .4s}
+h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:800;letter-spacing:-.02em;line-height:1.08}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+a{color:inherit}
+button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
+:focus-visible{outline:3px solid var(--moss);outline-offset:3px}
+.hero :focus-visible{outline-color:#fff}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;color:#fff;min-height:min(62vh,540px);display:flex;background:linear-gradient(180deg,var(--moss),var(--deep));background-size:cover;background-position:center 40%;padding-top:env(safe-area-inset-top)}
+.is-home .hero{min-height:min(92vh,800px)}
+.scene{position:absolute;inset:0;width:100%;height:100%}
+.hero.has-photo .scene{display:none}
+.hero.has-photo:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--deep) 60%,transparent),color-mix(in srgb,var(--deep) 15%,transparent) 40%,color-mix(in srgb,var(--deep) 85%,transparent))}
+.tiles{height:40px;background:var(--tile) 0 0/40px 40px repeat-x;border-top:3px solid var(--moss);border-bottom:3px solid var(--moss)}
+.hero-in{position:relative;display:flex;flex-direction:column;width:100%;padding-bottom:44px}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font:800 24px 'Fraunces',serif;text-decoration:none}
+.logo svg{width:34px;height:34px}
+nav{display:flex;gap:26px;font-weight:600;font-size:15px}
+nav a{text-decoration:none;opacity:.9;padding:4px 0;border-bottom:2px solid transparent}
+nav a:hover{opacity:1;border-color:var(--ochre)}
+#api{font-size:13px;font-weight:600;padding:6px 14px;border-radius:99px;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);display:flex;gap:8px;align-items:center}
+#api b{width:8px;height:8px;border-radius:50%;background:var(--ochre)}
+#api.on b{background:#5BE0B0}
+#api.off b{background:#FF8A70}
+
+.hero-copy{margin-top:auto;padding-top:90px}
+.hero h1{font-size:clamp(56px,11vw,128px);text-shadow:0 2px 30px rgba(18,32,22,.35)}
+.is-home .hero h1{font-size:clamp(42px,7.4vw,92px);max-width:15ch}
+.lead{font-size:clamp(17px,2.2vw,21px);max-width:44ch;margin:14px 0 28px;text-shadow:0 1px 14px rgba(18,32,22,.5)}
+.search{display:flex;gap:8px;background:#fff;border-radius:18px;padding:8px;max-width:640px;box-shadow:0 18px 50px rgba(18,32,22,.35)}
+.search input{flex:1;min-width:0;border:0;background:none;color:var(--ink);font:600 17px 'Figtree',sans-serif;padding:12px 16px;border-radius:12px}
+.search input:focus{outline:none;background:var(--linen)}
+.search input::placeholder{color:#8A9784;font-weight:500}
+.go{background:var(--ochre);color:var(--ink);font-weight:700;padding:12px 24px;border-radius:12px;white-space:nowrap}
+.go:hover{filter:brightness(1.07)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.chips button{padding:7px 16px;border-radius:99px;font-size:14px;font-weight:600;background:rgba(255,255,255,.2);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.4)}
+.chips button:hover{background:#fff;color:var(--ink)}
+
+body.is-home .only-results,body:not(.is-home) .only-home{display:none}
+
+/* ---------- Home ---------- */
+.sec{padding:60px 0 4px}
+.sec h2{font-size:clamp(28px,4vw,40px);margin-bottom:8px}
+.places{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;margin-top:24px}
+.place{position:relative;overflow:hidden;min-height:220px;border-radius:26px 26px 18px 18px;text-align:left;color:#fff;background:linear-gradient(180deg,var(--m),var(--d));display:flex;flex-direction:column;justify-content:flex-end;padding:18px 20px;transition:transform .15s}
+.place:hover{transform:translateY(-3px)}
+.place svg{position:absolute;inset:0;width:100%;height:100%}
+.place b{position:relative;font:800 28px/1.1 'Fraunces',serif}
+.place span{position:relative;font-size:14px;opacity:.92}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;margin-top:24px}
+.steps div{border-left:4px solid var(--ochre);padding-left:16px}
+.steps h3{font-size:21px;margin-bottom:6px}
+.steps p{color:var(--mut)}
+.keyh{font-size:22px;margin:40px 0 4px}
+.key{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.key span{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:99px;padding:6px 14px 6px 8px;font-weight:600;font-size:14px}
+.key i{width:18px;height:18px;border-radius:50%}
+.key small{color:var(--mut);font-weight:500;font-size:13px}
+
+/* ---------- Results ---------- */
+#results{padding:56px 0 24px}
+.rhead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.rhead h2{font-size:clamp(30px,4.6vw,48px)}
+.sub{color:var(--mut);max-width:60ch;margin-top:8px;font-size:17px}
+.note{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;background:#FFF3D1;color:#7A5A00;padding:5px 12px;border-radius:8px}
+.units{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:12px;padding:3px}
+.units button{padding:6px 16px;border-radius:9px;font-weight:700;font-size:14px;color:var(--mut)}
+.units button[aria-pressed=true]{background:var(--moss);color:#fff}
+
+.verdict{display:grid;grid-template-columns:1.3fr repeat(3,1fr);gap:0;background:var(--moss);color:#fff;border-radius:22px;overflow:hidden;margin-bottom:28px}
+.verdict>div{padding:24px 26px}
+.verdict>div+div{border-left:1px solid rgba(255,255,255,.2)}
+.verdict small{display:block;font-size:14px;opacity:.85;font-weight:500}
+.verdict strong{display:block;font:800 30px/1.15 'Fraunces',serif;margin:4px 0 2px}
+.verdict .best strong{font-size:36px;color:color-mix(in srgb,var(--ochre) 60%,#fff)}
+.verdict span{font-size:14px;opacity:.85}
+
+.glance{display:grid;grid-template-columns:minmax(260px,380px) 1fr;gap:28px;margin-bottom:28px}
+.box{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px}
+.dialbox svg{width:100%;display:block}
+.dialbox p{font-size:13px;color:var(--mut);margin-top:8px;line-height:1.45}
+.sector{cursor:pointer}
+.sector:hover{opacity:.8}
+
+.detail{border-radius:28px 20px 20px 20px;border-top:6px solid var(--c)}
+.detail .dh{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.detail h3{font-size:34px}
+.tag{font-weight:700;font-size:14px;padding:4px 14px;border-radius:99px;background:var(--c);color:var(--ink)}
+.tag.light{color:#fff}
+.score{display:flex;align-items:baseline;gap:8px;margin:12px 0 4px}
+.score b{font:800 64px/1 'Fraunces',serif;color:var(--c)}
+.score span{color:var(--mut);font-weight:600}
+.bar{height:10px;border-radius:9px;background:var(--linen);overflow:hidden;margin-bottom:22px}
+.bar i{display:block;height:100%;background:var(--c);border-radius:9px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:22px}
+.fact{background:var(--linen);border-radius:14px;padding:12px 14px}
+.fact small{display:block;color:var(--mut);font-size:13px}
+.fact strong{font:700 20px 'Figtree',sans-serif}
+.tips{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.tips h4{font:800 17px 'Fraunces',serif;margin-bottom:4px}
+.tips p{color:color-mix(in srgb,var(--deep) 85%,#fff);font-size:15px}
+
+.panel h3{font-size:24px;margin-bottom:14px}
+.panel svg{width:100%;height:auto}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--mut);margin-top:12px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.panel{margin-bottom:28px}
+
+#months h3{font-size:24px;margin:34px 0 14px}
+.tiles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:12px}
+.mt{text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;border-bottom:5px solid var(--c);transition:transform .15s}
+.mt:hover{transform:translateY(-2px)}
+.mt[aria-pressed=true]{outline:3px solid var(--ink);outline-offset:2px}
+.mt b{display:block;font:800 18px 'Fraunces',serif}
+.mt span{display:block;font-size:13px;color:var(--mut)}
+.mt em{font-style:normal;font-weight:700;font-size:15px}
+
+.msg{background:#FFF1EC;border:1px solid #F3B8A8;border-radius:16px;padding:22px;color:#7A2410}
+.loading{color:var(--mut);padding:40px 0}
+
+footer{margin-top:56px;border-top:1px solid var(--line)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:26px;padding-bottom:44px;color:var(--mut);font-size:14px}
+
+@media(max-width:900px){
+  .verdict{grid-template-columns:1fr 1fr}
+  .verdict>div:nth-child(3){border-left:0}
+  .verdict>div:nth-child(n+3){border-top:1px solid rgba(255,255,255,.2)}
+  .glance{grid-template-columns:1fr}
+  nav{display:none}
+}
+@media(max-width:560px){
+  .tips{grid-template-columns:1fr}
+  .search{flex-direction:column}
+  .hero-copy{padding-top:50px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body class="is-home">
+
+<section class="hero" id="hero">
+  <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <circle cx="1220" cy="250" r="150" style="fill:var(--ochre)" opacity=".22"/>
+    <circle cx="1220" cy="250" r="86" style="fill:var(--ochre)" opacity=".95"/>
+    <path d="M0 560Q320 470 640 540T1280 510T1600 540V900H0Z" style="fill:var(--deep)" opacity=".25"/>
+    <path d="M0 650Q400 570 800 640T1600 620V900H0Z" style="fill:var(--deep)" opacity=".45"/>
+    <path d="M0 740Q500 690 900 745T1600 720V900H0Z" style="fill:var(--deep)" opacity=".7"/>
+  </svg>
+  <div class="wrap hero-in">
+    <header>
+      <a class="logo" href="#hero" onclick="goHome();return false" aria-label="WanderClimate home">
+        <svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="8" fill="#fff"/><circle cx="17" cy="15" r="6" style="fill:var(--ochre)"/><path d="M5 24c4-3 8-3 12 0s8 3 12 0" fill="none" style="stroke:var(--moss)" stroke-width="2.5" stroke-linecap="round"/><path d="M5 29c4-3 8-3 12 0s8 3 12 0" fill="none" style="stroke:var(--sage)" stroke-width="2.5" stroke-linecap="round"/></svg>
+        WanderClimate
+      </a>
+      <nav class="only-home"><a href="#places">Places</a><a href="#how">How it works</a></nav>
+      <nav class="only-results"><a href="#hero" onclick="goHome();return false">All places</a><a href="#results">Best time</a><a href="#months">Month by month</a><a href="#trend">Sun and rain</a></nav>
+      <div id="api" class="off"><b></b><span>checking server</span></div>
+    </header>
+
+    <div class="hero-copy">
+      <h1 id="heroCity">Find the best month to visit.</h1>
+      <p class="lead" id="heroLead">Search a city to see which months have the best sun, warmth and rain.</p>
+      <div class="search">
+        <input id="city" placeholder="Search a city: Lisbon, Cairo, Tokyo…" autocomplete="off" aria-label="City name">
+        <button class="go" onclick="explore()">Find best time</button>
+      </div>
+      <div class="chips" id="chips"></div>
+    </div>
+  </div>
+</section>
+<div class="tiles" aria-hidden="true"></div>
+
+<main class="wrap">
+  <section class="sec only-home" id="places">
+    <h2>Popular places</h2>
+    <p class="sub">Every country gets its own colours. Pick one, or search any city above.</p>
+    <div class="places" id="placeGrid"></div>
+  </section>
+
+  <section class="sec only-home" id="how">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div><h3>Search a city</h3><p>Type any city. We look up its monthly climate averages.</p></div>
+      <div><h3>Check the comfort score</h3><p>Each month gets a score out of 100 from temperature, sunshine, rain and humidity.</p></div>
+      <div><h3>Pack and plan</h3><p>See what to bring and what each month is good for.</p></div>
+    </div>
+    <h3 class="keyh">What the score colours mean</h3>
+    <p class="sub">The page colours follow the country. These score colours always mean the same thing.</p>
+    <div class="key" id="key"></div>
+  </section>
+
+  <section id="results" class="only-results">
+    <div class="rhead">
+      <div>
+        <h2 id="rTitle">Best time to visit</h2>
+        <p class="sub" id="rSub">Loading climate data…</p>
+        <span class="note" id="rNote" hidden>Showing typical Lisbon averages. Start the server to load live data.</span>
+      </div>
+      <div class="units" role="group" aria-label="Temperature unit">
+        <button data-unit="C" aria-pressed="true">°C</button>
+        <button data-unit="F" aria-pressed="false">°F</button>
+      </div>
+    </div>
+    <div id="out"><p class="loading">Loading…</p></div>
+  </section>
+</main>
+
+<footer>
+  <div class="tiles" aria-hidden="true"></div>
+  <div class="wrap">
+    <span>WanderClimate: climate and comfort for trip planning</span>
+    <span>Comfort score = Tourism Climate Index (temperature, sun, rain, humidity)</span>
+  </div>
+</footer>
+
+<script>
+const API = "http://127.0.0.1:8000";
+const NS = "http://www.w3.org/2000/svg";
+const MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MF = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const $ = id => document.getElementById(id);
+
+/* Comfort colours: green/teal = ideal, yellow = fine, orange/terracotta = hard going */
+const colorFor = t => t >= 80 ? "#6FA876" : t >= 70 ? "#A3BF7A" : t >= 60 ? "#E0B65A" : t >= 50 ? "#D98F4E" : t >= 40 ? "#B5593A" : "#7E3B2E";
+const lightText = c => c === "#B5593A" || c === "#7E3B2E";
+const labelFor = t => t >= 80 ? "Ideal" : t >= 70 ? "Very good" : t >= 60 ? "Good" : t >= 50 ? "Fair" : t >= 40 ? "Tough" : "Avoid";
+const num = (v, d = 1) => typeof v === "number" && isFinite(v) ? v.toFixed(d) : "N/A";
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const titleCase = s => s.replace(/\b\w/g, c => c.toUpperCase());
+
+let UNIT = "C", SEL = 0, STATE = null;
+const conv = c => UNIT === "F" ? c * 9 / 5 + 32 : c;
+const fT = v => typeof v === "number" && isFinite(v) ? Math.round(conv(v)) + "°" : "N/A";
+
+/* Country palettes: deep (dark text/shadow), main (hero + panels), sage (rain), ochre (sun/accents) */
+const T = (name, deep, main, sage, ochre) => ({ name, deep, main, sage, ochre });
+const THEMES = {
+  default: T("", "#1E2B22", "#3F6B4A", "#5B8F94", "#E0B65A"),
+  portugal: T("Portugal", "#1B3556", "#2D5F8B", "#5B93B0", "#E6B35C"),
+  egypt: T("Egypt", "#3A2A1C", "#A85F1A", "#2F8F8A", "#5CC4BA"),
+  france: T("France", "#1D2745", "#35508F", "#7C93C4", "#F0B8C4"),
+  japan: T("Japan", "#2B1A22", "#A93042", "#8AA0B0", "#F4B6BE"),
+  italy: T("Italy", "#1F3328", "#2E6B4D", "#4E8BA8", "#EDB86B"),
+  spain: T("Spain", "#3F1B15", "#B83F27", "#3E7C8C", "#F4B942"),
+  greece: T("Greece", "#0F3454", "#1C6FAE", "#4FA3C7", "#F5E3B3"),
+  thailand: T("Thailand", "#123C36", "#0E7C6B", "#3B9BB5", "#F0B341"),
+  morocco: T("Morocco", "#3A1D17", "#A8432A", "#2F8C99", "#F0B25B"),
+  uk: T("United Kingdom", "#151D36", "#2B4170", "#6F8FBF", "#E8A0A0"),
+  usa: T("United States", "#17243D", "#2F4B7C", "#5E8DB8", "#E58B7B"),
+  turkey: T("Turkey", "#3A1514", "#A7322F", "#2E8E99", "#6CC1C9"),
+  netherlands: T("Netherlands", "#1D2B47", "#C4621A", "#4A78A8", "#8FB8E0"),
+  uae: T("United Arab Emirates", "#2E2616", "#8C6A24", "#2F8FA6", "#6DC2D1"),
+  india: T("India", "#2E2548", "#C06A17", "#3F8C6F", "#7ACB8F"),
+  mexico: T("Mexico", "#3A1526", "#B03A5B", "#2F8F9D", "#F2B35E"),
+  australia: T("Australia", "#3A2015", "#B8552B", "#2F8FA3", "#F2C46B"),
+  brazil: T("Brazil", "#123826", "#1E7A4C", "#2F8FB0", "#F2C94C"),
+  germany: T("Germany", "#1B222A", "#3B4A5A", "#6A8FA8", "#E8B85A"),
+  china: T("China", "#3A1515", "#B02A2A", "#5E8FA3", "#F2C14E")
+};
+/* Country name (as the API sends it) -> palette */
+const COUNTRY = {};
+Object.entries(THEMES).forEach(([k, t]) => { if (t.name) COUNTRY[t.name.toLowerCase()] = k; });
+Object.assign(COUNTRY, { usa: "usa", "united states of america": "usa", england: "uk", "great britain": "uk", uae: "uae", "the netherlands": "netherlands", holland: "netherlands" });
+const themeKey = c => COUNTRY[String(c || "").toLowerCase()] || "default";
+
+/* Patterns, drawn in the country's colours: tile (azulejo), waves, zigzag, star */
+const PAT = { default: "tile", portugal: "tile", spain: "tile", egypt: "zigzag", mexico: "zigzag", australia: "zigzag", japan: "waves", china: "waves", greece: "waves", thailand: "waves", morocco: "star", turkey: "star", uae: "star", india: "star" };
+function patternSvg(kind, m, o) {
+  const bg = `<rect width='40' height='40' fill='#fff'/>`;
+  const body = {
+    tile: `<rect x='.5' y='.5' width='39' height='39' fill='none' stroke='${m}' stroke-opacity='.35'/><g fill='${m}'><circle cx='20' cy='20' r='3'/><path d='M20 6c4 4 4 8 0 12-4-4-4-8 0-12zM20 22c4 4 4 8 0 12-4-4-4-8 0-12zM6 20c4-4 8-4 12 0-4 4-8 4-12 0zM22 20c4-4 8-4 12 0-4 4-8 4-12 0z'/></g><g fill='${o}'><circle cx='3' cy='3' r='2'/><circle cx='37' cy='3' r='2'/><circle cx='3' cy='37' r='2'/><circle cx='37' cy='37' r='2'/></g>`,
+    waves: `<g fill='none' stroke='${m}' stroke-width='1.6'>${[[20,20],[0,0],[40,0],[0,40],[40,40]].map(([x,y]) => [18,12,6].map(r => `<circle cx='${x}' cy='${y}' r='${r}'/>`).join("")).join("")}</g><circle cx='20' cy='20' r='2.5' fill='${o}'/>`,
+    zigzag: `<path d='M0 14L10 4L20 14L30 4L40 14M0 34L10 24L20 34L30 24L40 34' fill='none' stroke='${m}' stroke-width='3' stroke-linejoin='round'/><path d='M0 24L10 14L20 24L30 14L40 24M0 44L10 34L20 44L30 34L40 44' fill='none' stroke='${o}' stroke-width='2' stroke-linejoin='round'/>`,
+    star: `<g fill='none' stroke='${m}' stroke-width='1.8'><rect x='11' y='11' width='18' height='18'/><rect x='11' y='11' width='18' height='18' transform='rotate(45 20 20)'/></g><circle cx='20' cy='20' r='3' fill='${o}'/><g fill='${o}'><circle cx='2' cy='2' r='2'/><circle cx='38' cy='2' r='2'/><circle cx='2' cy='38' r='2'/><circle cx='38' cy='38' r='2'/></g>`
+  }[kind];
+  return `<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'>${bg}${body}</svg>`;
+}
+function applyTheme(k) {
+  const t = THEMES[k] || THEMES.default, st = document.documentElement.style;
+  st.setProperty("--deep", t.deep); st.setProperty("--moss", t.main);
+  st.setProperty("--sage", t.sage); st.setProperty("--ochre", t.ochre);
+  st.setProperty("--tile", `url("data:image/svg+xml,${encodeURIComponent(patternSvg(PAT[k] || "tile", t.main, t.ochre))}")`);
+}
+
+const px = (id, slug) => `https://images.pexels.com/photos/${id}/${slug}?auto=compress&cs=tinysrgb&w=1800`;
+const CITY_PHOTOS = {
+  lisbon: [px(16338753, "pexels-photo-16338753.jpeg"), px(28961818, "pexels-photo-28961818.jpeg"), "https://images.pexels.com/photos/9253/sea-city-landscape-sky.jpg?auto=compress&cs=tinysrgb&w=1800"],
+  cairo:  ["https://images.unsplash.com/photo-1572252009286-268acec5ca0a?q=80&w=1800&auto=format&fit=crop"],
+  paris:  ["https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1800&auto=format&fit=crop"],
+  tokyo:  ["https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=1800&auto=format&fit=crop"],
+  rome:   ["https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1800&auto=format&fit=crop"]
+};
+/* Uses a city photo (tinted with the country colour) if one loads; otherwise the painted scene stays */
+function setHero(key) {
+  const hero = $("hero");
+  hero.dataset.key = key; hero.classList.remove("has-photo"); hero.style.backgroundImage = "";
+  const list = CITY_PHOTOS[key] || [];
+  (function next(i) {
+    if (i >= list.length) return;
+    const img = new Image();
+    img.onload = () => { if (hero.dataset.key === key) { hero.style.backgroundImage = `url('${list[i]}')`; hero.classList.add("has-photo"); } };
+    img.onerror = () => next(i + 1);
+    img.src = list[i];
+  })(0);
+}
+
+applyTheme("default");
+function goHome() {
+  document.body.classList.add("is-home");
+  applyTheme("default"); STATE = null; setHero("");
+  $("heroCity").textContent = "Find the best month to visit.";
+  $("heroLead").textContent = "Search a city to see which months have the best sun, warmth and rain.";
+  $("city").value = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* Typical Lisbon averages, used only if the server can't be reached */
+const LISBON_SAMPLE = [
+ [11.8,15.2,8.6,100,4.8,78,52],[12.8,16.5,9.2,89,5.6,75,56],[14.7,18.9,10.7,52,6.9,71,66],
+ [15.9,19.8,12.0,68,7.9,69,76],[18.3,22.5,14.0,48,9.3,67,84],[21.5,26.0,17.0,17,10.5,64,82],
+ [23.7,28.5,18.9,4,11.6,62,72],[24.2,29.0,19.4,6,10.9,63,70],[22.5,26.8,18.2,37,8.7,67,85],
+ [19.0,22.5,15.5,87,6.9,73,80],[15.0,18.4,12.0,102,5.2,77,62],[12.5,15.7,9.5,115,4.6,79,52]
+].map((a,i)=>({Month:i+1,Temp_Mean:a[0],Temp_Max_Mean:a[1],Temp_Min_Mean:a[2],Precip_Total_mm:a[3],Sunshine_h_per_day:a[4],RH_Mean:a[5],TCI:a[6]}));
+
+/* Places come from the API. Only if it can't be reached do the original five show. */
+const FALLBACK = [["Lisbon", "Portugal"], ["Cairo", "Egypt"], ["Paris", "France"], ["Tokyo", "Japan"], ["Rome", "Italy"]].map(([city, country]) => ({ city, country }));
+let PLACE_LIST = FALLBACK;
+function normalizePlaces(d) {
+  if (Array.isArray(d)) return d.map(x => typeof x === "string" ? { city: x } : { city: x.City || x.city || x.name || x.Name, country: x.Country || x.country }).filter(x => x.city);
+  if (d && typeof d === "object") {
+    const inner = d.cities || d.data || d.results;
+    if (inner) return normalizePlaces(inner);
+    return Object.entries(d).flatMap(([k, v]) => Array.isArray(v) ? v.map(c => ({ city: typeof c === "string" ? c : c.City || c.city || c.name, country: k })) : []);
+  }
+  return [];
+}
+function renderPlaces() {
+  const list = PLACE_LIST.slice(0, 12);
+  $("chips").innerHTML = list.slice(0, 5).map(p => `<button data-city="${esc(p.city)}">${esc(p.city)}</button>`).join("");
+  $("placeGrid").innerHTML = list.map(p => {
+    const t = THEMES[themeKey(p.country)];
+    return `<button class="place" data-city="${esc(p.city)}" style="--m:${t.main};--d:${t.deep}">
+      <svg viewBox="0 0 200 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><circle cx="150" cy="58" r="26" fill="${t.ochre}"/><path d="M0 135Q60 105 110 130T200 120V220H0Z" fill="${t.deep}" opacity=".3"/><path d="M0 170Q70 145 130 165T200 155V220H0Z" fill="${t.deep}" opacity=".5"/></svg>
+      <b>${esc(p.city)}</b><span>${esc(p.country || "")}</span></button>`;
+  }).join("");
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-city]");
+  if (b) { $("city").value = b.dataset.city; explore(); }
+});
+async function loadPlaces() {
+  for (const p of ["/cities", "/climate/cities", "/climate/city", "/climate", "/countries"]) {
+    try {
+      const r = await fetch(API + p);
+      if (!r.ok) continue;
+      const list = normalizePlaces(await r.json());
+      if (list.length) { PLACE_LIST = list; renderPlaces(); return; }
+    } catch (e) { return; }
+  }
+}
+renderPlaces();
+loadPlaces();
+$("key").innerHTML = [[85,"Ideal","80+"],[75,"Very good","70–79"],[65,"Good","60–69"],[55,"Fair","50–59"],[45,"Tough","40–49"],[30,"Avoid","under 40"]]
+  .map(([v, l, r]) => `<span><i style="background:${colorFor(v)}"></i>${l} <small>${r}</small></span>`).join("");
+$("city").addEventListener("keydown", e => { if (e.key === "Enter") explore(); });
+
+async function checkApi() {
+  const el = $("api");
+  try {
+    const d = await (await fetch(API + "/")).json();
+    if (d.status !== "online") throw 0;
+    el.className = "on"; el.lastChild.textContent = "live data";
+  } catch (e) {
+    el.className = "off"; el.lastChild.textContent = "server offline";
+  }
+}
+checkApi();
+
+/* ---------- Advice ---------- */
+function packing(r) {
+  const hi = typeof r.Temp_Max_Mean === "number" ? r.Temp_Max_Mean : r.Temp_Mean;
+  const bits = [];
+  if (hi >= 30) bits.push("Light, breathable clothes, a hat and plenty of water.");
+  else if (hi >= 23) bits.push("T-shirts and shorts, plus a light layer for the evening.");
+  else if (hi >= 16) bits.push("Layers and a light jacket.");
+  else bits.push("A warm coat, layers and a scarf.");
+  if ((r.Precip_Total_mm || 0) >= 70) bits.push("Bring a rain jacket and shoes with grip.");
+  else if ((r.Precip_Total_mm || 0) >= 40) bits.push("Pack a compact umbrella.");
+  if ((r.Sunshine_h_per_day || 0) >= 8.5) bits.push("Sunglasses and SPF.");
+  return bits.join(" ");
+}
+function plan(r) {
+  const t = r.TCI;
+  if (t >= 80) return "Great for long days outdoors: walking, viewpoints, day trips and eating outside.";
+  if (t >= 70) return "Very good for sightseeing. Start early and keep the afternoon flexible.";
+  if (t >= 60) return "Good overall. Mix outdoor sights with a few indoor stops.";
+  if (t >= 50) return "Fair. Plan around the weather and keep museums or cafés as backup.";
+  return "Tough conditions. Expect to spend more time indoors and check the forecast.";
+}
+
+/* ---------- Charts ---------- */
+function polar(r, a) { return [160 + r * Math.cos(a), 160 + r * Math.sin(a)]; }
+function sector(i, r) {
+  const a0 = (i * 30 - 90) * Math.PI / 180 + 0.02, a1 = ((i + 1) * 30 - 90) * Math.PI / 180 - 0.02, r0 = 36;
+  const [x0,y0] = polar(r0,a0), [x1,y1] = polar(r,a0), [x2,y2] = polar(r,a1), [x3,y3] = polar(r0,a1);
+  return `M${x0},${y0}L${x1},${y1}A${r},${r} 0 0 1 ${x2},${y2}L${x3},${y3}A${r0},${r0} 0 0 0 ${x0},${y0}Z`;
+}
+function dialSvg(scores) {
+  let g = [25,50,75,100].map(v => `<circle cx="160" cy="160" r="${36 + v * 1.0}" fill="none" style="stroke:var(--line)" stroke-dasharray="3 5"/>`).join("");
+  for (let i = 0; i < 12; i++) {
+    const t = scores[i];
+    const on = i === SEL;
+    g += `<path class="sector" data-m="${i}" d="${sector(i, 36 + (t == null ? 10 : Math.max(6, t)))}" style="fill:${t == null ? "var(--linen)" : colorFor(t)}${on ? ";stroke:var(--ink)" : ""}" ${on ? 'stroke-width="3"' : ""}><title>${MF[i]}${t == null ? "" : ": comfort " + Math.round(t)}</title></path>`;
+    const [lx, ly] = polar(150, ((i + .5) * 30 - 90) * Math.PI / 180);
+    g += `<text x="${lx}" y="${ly + 4}" text-anchor="middle" style="fill:${on ? "var(--ink)" : "var(--mut)"}" font-size="${on ? 12 : 10.5}" font-weight="${on ? 800 : 600}" font-family="Figtree">${MN[i]}</text>`;
+  }
+  const st = scores[SEL];
+  g += `<text x="160" y="158" text-anchor="middle" style="fill:var(--ink)" font-size="22" font-weight="800" font-family="Fraunces">${st == null ? "–" : Math.round(st)}</text><text x="160" y="173" text-anchor="middle" style="fill:var(--mut)" font-size="10" font-family="Figtree">${MN[SEL]}</text>`;
+  return `<svg viewBox="0 0 320 320" role="img" aria-label="Circular chart of monthly comfort scores. Longer petals are better months.">${g}</svg>`;
+}
+function trendChart(rows) {
+  const W = 640, H = 240, L = 40, B = 28, T = 14, step = (W - L - 10) / 12;
+  const temps = rows.map(r => r.Temp_Mean).filter(v => typeof v === "number").map(conv);
+  const pr = rows.map(r => r.Precip_Total_mm || 0);
+  const tMin = Math.min(UNIT === "F" ? 32 : 0, ...temps), tMax = Math.max(UNIT === "F" ? 86 : 30, ...temps), pMax = Math.max(10, ...pr);
+  const y = v => T + (H - T - B) * (1 - (v - tMin) / (tMax - tMin || 1));
+  const cx = m => L + m * step + step / 2;
+  let g = `<rect x="${L + SEL * step}" y="${T}" width="${step}" height="${H - T - B}" rx="6" style="fill:var(--ochre)" opacity=".22"/>`;
+  [0, .5, 1].forEach(f => {
+    const v = tMin + (tMax - tMin) * f;
+    g += `<line x1="${L}" x2="${W}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line)" stroke-dasharray="3 5"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" style="fill:var(--mut)" font-size="11" font-family="Figtree">${Math.round(v)}°</text>`;
+  });
+  rows.forEach(r => {
+    const h = (H - T - B) * (r.Precip_Total_mm || 0) / pMax;
+    g += `<rect x="${cx(r._m) - 10}" y="${H - B - h}" width="20" height="${h}" rx="4" style="fill:var(--sage)" opacity=".6"><title>${MF[r._m]}: ${num(r.Precip_Total_mm, 0)} mm rain</title></rect>`;
+  });
+  const withT = rows.filter(r => typeof r.Temp_Mean === "number");
+  g += `<polyline points="${withT.map(r => `${cx(r._m)},${y(conv(r.Temp_Mean))}`).join(" ")}" fill="none" stroke="#B5593A" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+  withT.forEach(r => { g += `<circle cx="${cx(r._m)}" cy="${y(conv(r.Temp_Mean))}" r="5" fill="#fff" stroke="#B5593A" stroke-width="3"><title>${MF[r._m]}: ${fT(r.Temp_Mean)}</title></circle>`; });
+  for (let i = 0; i < 12; i++) g += `<text x="${cx(i)}" y="${H - 8}" text-anchor="middle" style="fill:${i === SEL ? "var(--ink)" : "var(--mut)"}" font-weight="${i === SEL ? 800 : 500}" font-size="12" font-family="Figtree">${MN[i]}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Average temperature line and monthly rainfall bars">${g}</svg>`;
+}
+
+/* ---------- Render ---------- */
+function render() {
+  if (!STATE) return;
+  const { rows, city } = STATE;
+  const byM = Array(12).fill(null);
+  rows.forEach(r => byM[r._m] = r);
+  const scores = byM.map(r => r && typeof r.TCI === "number" ? r.TCI : null);
+  if (!byM[SEL]) SEL = rows[0]._m;
+  const cur = byM[SEL];
+
+  const scored = rows.filter(r => typeof r.TCI === "number");
+  const best = [...scored].sort((a, b) => b.TCI - a.TCI);
+  const top = best.slice(0, 3).sort((a, b) => a._m - b._m).map(r => MF[r._m]);
+  const bestStr = top.length > 1 ? top.slice(0, -1).join(", ") + " and " + top[top.length - 1] : top[0] || "N/A";
+  const pick = (key, dir) => rows.filter(r => typeof r[key] === "number").sort((a, b) => dir * (b[key] - a[key]))[0];
+  const sunny = pick("Sunshine_h_per_day", 1), wet = pick("Precip_Total_mm", 1), hot = pick("Temp_Max_Mean", 1);
+  const avgT = rows.reduce((s, r) => s + (r.Temp_Mean || 0), 0) / rows.length;
+  const rain = rows.reduce((s, r) => s + (r.Precip_Total_mm || 0), 0);
+
+  $("heroLead").textContent = top.length ? `Best time to go: ${bestStr}.` : "Monthly climate and comfort for your trip.";
+  $("rTitle").textContent = `When to visit ${city}`;
+  $("rSub").textContent = top.length
+    ? `Comfort peaks in ${bestStr}. The year averages ${fT(avgT)} with about ${num(rain, 0)} mm of rain.`
+    : `${rows.length} months of climate data.`;
+  $("rNote").hidden = !STATE.sample;
+
+  const c = colorFor(cur.TCI);
+  const cat = esc(cur.TCI_Category || labelFor(cur.TCI));
+
+  $("out").innerHTML = `
+  <div class="verdict">
+    <div class="best"><small>Best months</small><strong>${esc(bestStr)}</strong><span>highest comfort scores</span></div>
+    <div><small>Sunniest</small><strong>${sunny ? MN[sunny._m] : "N/A"}</strong><span>${sunny ? num(sunny.Sunshine_h_per_day) + " hours a day" : ""}</span></div>
+    <div><small>Wettest</small><strong>${wet ? MN[wet._m] : "N/A"}</strong><span>${wet ? num(wet.Precip_Total_mm, 0) + " mm of rain" : ""}</span></div>
+    <div><small>Hottest</small><strong>${hot ? MN[hot._m] : "N/A"}</strong><span>${hot ? "highs around " + fT(hot.Temp_Max_Mean) : ""}</span></div>
+  </div>
+
+  <div class="glance">
+    <div class="box dialbox">
+      ${dialSvg(scores)}
+      <p>Tap a petal to see that month. Longer petals mean a more comfortable time to visit.</p>
+    </div>
+    <div class="box detail" style="--c:${c}">
+      <div class="dh"><h3>${MF[SEL]}</h3><span class="tag ${lightText(c) ? "light" : ""}">${cat}</span></div>
+      <div class="score"><b>${num(cur.TCI, 0)}</b><span>comfort score out of 100</span></div>
+      <div class="bar"><i style="width:${Math.max(0, Math.min(100, cur.TCI || 0))}%"></i></div>
+      <div class="facts">
+        <div class="fact"><small>Daytime high</small><strong>${fT(cur.Temp_Max_Mean)}</strong></div>
+        <div class="fact"><small>Night low</small><strong>${fT(cur.Temp_Min_Mean)}</strong></div>
+        <div class="fact"><small>Sunshine</small><strong>${num(cur.Sunshine_h_per_day)} h/day</strong></div>
+        <div class="fact"><small>Rain</small><strong>${num(cur.Precip_Total_mm, 0)} mm</strong></div>
+        <div class="fact"><small>Humidity</small><strong>${num(cur.RH_Mean, 0)}%</strong></div>
+      </div>
+      <div class="tips">
+        <div><h4>What to pack</h4><p>${packing(cur)}</p></div>
+        <div><h4>What it's good for</h4><p>${plan(cur)}</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box panel" id="trend">
+    <h3>Temperature and rainfall through the year</h3>
+    ${trendChart(rows)}
+    <div class="legend"><span><i style="background:#B5593A"></i>Average temperature</span><span><i style="background:var(--sage)"></i>Monthly rain</span><span><i style="background:var(--ochre)"></i>Selected month</span></div>
+  </div>
+
+  <div id="months">
+    <h3>Every month at a glance</h3>
+    <div class="tiles-grid">
+      ${rows.map(r => `
+        <button class="mt" data-m="${r._m}" aria-pressed="${r._m === SEL}" style="--c:${colorFor(r.TCI)}">
+          <b>${MF[r._m]}</b>
+          <em>${labelFor(r.TCI)} (${num(r.TCI, 0)})</em>
+          <span>${fT(r.Temp_Max_Mean)} / ${fT(r.Temp_Min_Mean)}</span>
+          <span>${num(r.Precip_Total_mm, 0)} mm rain</span>
+        </button>`).join("")}
+    </div>
+  </div>`;
+}
+
+document.addEventListener("click", e => {
+  const u = e.target.closest("[data-unit]");
+  if (u) {
+    UNIT = u.dataset.unit;
+    document.querySelectorAll("[data-unit]").forEach(b => b.setAttribute("aria-pressed", b.dataset.unit === UNIT));
+    render(); return;
+  }
+  const m = e.target.closest("#out [data-m]");
+  if (m) { SEL = +m.dataset.m; render(); }
+});
+
+/* ---------- Load a city ---------- */
+async function explore(cityArg, initial) {
+  const city = (cityArg || $("city").value).trim();
+  if (!city) { $("city").focus(); return; }
+  const name = titleCase(city);
+  const key = city.toLowerCase();
+
+  document.body.classList.remove("is-home");
+  applyTheme(themeKey((PLACE_LIST.find(p => p.city.toLowerCase() === key) || {}).country));
+  $("heroCity").textContent = name;
+  setHero(key);
+  $("rTitle").textContent = `When to visit ${name}`;
+  $("rSub").textContent = "Loading climate data…";
+  $("rNote").hidden = true;
+  $("out").innerHTML = `<p class="loading">Loading…</p>`;
+
+  let rows = null, sample = false;
+  try {
+    const res = await fetch(`${API}/climate/city/${encodeURIComponent(city)}`);
+    if (!res.ok) throw new Error(`We couldn't find "${name}". Check the spelling or try another city.`);
+    rows = await res.json();
+    if (!Array.isArray(rows) || !rows.length) throw new Error(`No climate data came back for "${name}".`);
+  } catch (err) {
+    if (err instanceof TypeError && key === "lisbon") { rows = LISBON_SAMPLE; sample = true; }
+    else {
+      $("rSub").textContent = "";
+      applyTheme("default");
+      const msg = err instanceof TypeError ? `We can't reach the climate server. Start your FastAPI backend (uvicorn) and try again. Lisbon works offline with sample data.` : err.message;
+      $("out").innerHTML = `<div class="msg"><b>Couldn't load ${esc(name)}.</b><br>${esc(msg)}</div>`;
+      return;
+    }
+  }
+
+  const ctry = rows[0].Country || rows[0].country; if (ctry) applyTheme(themeKey(ctry));
+  rows = rows.map(r => ({ ...r, _m: (parseInt(r.Month, 10) || 1) - 1 })).sort((a, b) => a._m - b._m);
+  const bestRow = rows.filter(r => typeof r.TCI === "number").sort((a, b) => b.TCI - a.TCI)[0];
+  SEL = bestRow ? bestRow._m : rows[0]._m;
+  STATE = { rows, city: name, sample };
+  render();
+  if (!initial) $("results").scrollIntoView({ behavior: "smooth" });
+}
+
+
+</script>
+</body>
+</html>
