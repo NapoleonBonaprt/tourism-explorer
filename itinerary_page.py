@@ -38,7 +38,7 @@ CSS = """
 <style>
 .hero{background:linear-gradient(120deg,#FFD9A8 0%,#FBE9CF 45%,#BFE3F5 100%);
       border-radius:20px;padding:22px 28px;margin-bottom:18px;border:1px solid #F0D3AA}
-.hero h1{margin:0;padding:0;font-size:2rem;color:#7A3410}
+.hero h1{margin:0;padding:0;font-size:2rem;color:#7A3410 !important}
 .hero p{margin:6px 0 0;color:#5B4636}
 .day{background:#fff;border-radius:16px;padding:14px 16px;margin-bottom:14px;
      box-shadow:0 2px 10px rgba(120,70,20,.10);border-left:6px solid #E8742C}
@@ -64,12 +64,6 @@ CSS = """
 .empty{color:#8a7560;font-style:italic;padding-top:6px}
 div.stButton > button{border-radius:12px;font-weight:600}
 section[data-testid="stSidebar"]{border-right:1px solid #EAD3AE}
-/* Warm page background: only in light mode, and only while THIS page is open */
-@media (prefers-color-scheme: light){
-  .stApp{background:#FBF4E9}
-  section[data-testid="stSidebar"]{background:#F6E6CB}
-  header[data-testid="stHeader"]{background:transparent}
-}
 button[kind="primary"], button[data-testid="stBaseButton-primary"]{
   background:#E8742C;border-color:#E8742C;color:#fff}
 button[kind="primary"]:hover, button[data-testid="stBaseButton-primary"]:hover{
