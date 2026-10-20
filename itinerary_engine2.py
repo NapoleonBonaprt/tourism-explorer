@@ -129,3 +129,76 @@ def plan_to_frame(plan):
                              category=r["Category"], slot=r["slot"],
                              lat=r["Latitude"], lon=r["Longitude"], cluster=r["spatial_cluster"]))
     return pd.DataFrame(rows, columns=PLAN_COLS) 
+# =====  v2: these definitions replace the older versions above  =====
+
+def build_day(city_places, day_type, used, n_stops=4):
+    avail = city_places[~city_places["Destination Name"].isin(used)]
+    out, ind = avail[avail.Category == "Outdoor"], avail[avail.Category == "Indoor"]
+    if day_type == "outdoor":   n_out, n_in = n_stops, 0
+    elif day_type == "indoor":  n_out, n_in = 0, n_stops
+    else:                       n_out, n_in = n_stops // 2, n_stops - n_stops // 2
+    morning = pick_nearby(out, n_out)
+    anchor = (morning.Latitude.mean(), morning.Longitude.mean()) if len(morning) else None
+    afternoon = pick_nearby(ind, n_in, anchor)
+    # fallback: not enough places of the wanted type -> fill from the other type
+    short = n_stops - len(morning) - len(afternoon)
+    if day_type == "indoor":
+        # bad weather: stay indoors, borrow outdoor places only to reach 2 stops (never an empty day)
+        short = max(0, min(short, min(n_stops, 2) - len(afternoon)))
+    if short > 0:
+        rest = avail[~avail["Destination Name"].isin(pd.concat([morning, afternoon])["Destination Name"])]
+        extra = pick_nearby(rest, short, anchor)
+        morning = pd.concat([morning, extra[extra.Category == "Outdoor"]])
+        afternoon = pd.concat([afternoon, extra[extra.Category == "Indoor"]])
+    parts = []
+    if len(morning):   parts.append(order_route(morning).assign(slot="morning"))
+    if len(afternoon): parts.append(order_route(afternoon).assign(slot="afternoon"))
+    if not parts:      # no places left -> empty day, but keep the 'slot' column
+        return avail.head(0).assign(slot=pd.Series(dtype="object"))
+    return pd.concat(parts)
+
+
+PRIORITY = {"indoor": 0, "mixed": 1, "outdoor": 2}   # scarce indoor places go to indoor days first
+
+
+def stops_per_day(n_days, n_stops, available):
+    """Spread the places evenly so that no day is left empty (e.g. 17 places / 5 days -> 4,4,3,3,3)."""
+    total = min(n_days * n_stops, available)
+    base, extra = divmod(total, n_days)
+    return [base + (1 if i < extra else 0) for i in range(n_days)]
+
+
+def _fill_days(cp, weather_df, counts, used, keep):
+    rows = [w for _, w in weather_df.iterrows()]
+    plan = dict(keep)
+    todo = [(w, n) for w, n in zip(rows, counts) if w.time not in keep]
+    for w, n in sorted(todo, key=lambda t: PRIORITY[t[0].day_type]):
+        day = build_day(cp, w.day_type, used, n)
+        used |= set(day["Destination Name"])
+        plan[w.time] = (w.day_type, day)
+    return {w.time: plan[w.time] for w in rows}
+
+
+def build_itinerary(places, city, weather_df, n_stops=4):
+    cp = prepare_city(places, city)
+    counts = stops_per_day(len(weather_df), n_stops, len(cp))
+    return _fill_days(cp, weather_df, counts, set(), {})
+
+
+def replan(plan, places, city, new_weather_df, n_stops=4):
+    """Keep days whose weather type did not change; rebuild only the days that did.
+    Returns (new_plan, changes)."""
+    cp, keep, used, changes = prepare_city(places, city), {}, set(), []
+    for _, w in new_weather_df.iterrows():
+        old = plan.get(w.time)
+        if old is not None and old[0] == w.day_type:
+            keep[w.time] = old
+            used |= set(old[1]["Destination Name"])
+    counts = [len(plan[w.time][1]) if w.time in plan else n_stops for _, w in new_weather_df.iterrows()]
+    new_plan = _fill_days(cp, new_weather_df, counts, used, keep)
+    for _, w in new_weather_df.iterrows():
+        if w.time not in keep:
+            old = plan.get(w.time)
+            changes.append({"date": w.time, "from": old[0] if old else "new",
+                            "to": w.day_type, "reason": explain(w)})
+    return new_plan, changes
