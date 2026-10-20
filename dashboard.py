@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit.components.v1 as components
+from itinerary_page import render as render_itinerary
 
 # --- Page Configuration ---
 st.set_page_config(
@@ -58,7 +59,7 @@ def load_data():
         df_tourism = smart_read_csv('tourism_final_clean.csv')
         
         try:
-            df_attractions = smart_read_csv('attractions_with_clusters.csv')
+            df_attractions = smart_read_csv('cleaned_data/attractions_with_clusters.csv')
         except:
             df_attractions = smart_read_csv('places_with_clusters.csv')
             
@@ -83,7 +84,8 @@ page = st.sidebar.radio("Go to:", [
     "🏠 Executive Overview", 
     "🌤️ Climate & TCI Analytics", 
     "📍 Spatial Clustering & Map Explorer", 
-    "🗺️ Interactive Itinerary Planner"
+    "🗺️ Interactive Itinerary Planner",
+    "Adaptive Daily Itinerary"
 ])
 
 st.sidebar.markdown("---")
@@ -259,3 +261,6 @@ elif page == "🗺️ Interactive Itinerary Planner":
                 st.write("✨ *Tip: Ideal spot for photography and cultural exploration during your selected travel month!*")
     else:
         st.info("No attractions matching your filters were found for this city.")
+
+if page == "Adaptive Daily Itinerary":
+    render_itinerary()
