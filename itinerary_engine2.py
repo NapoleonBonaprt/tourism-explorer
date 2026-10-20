@@ -5,7 +5,7 @@ def haversine(lat1, lon1, lat2, lon2):
     a = np.sin((lat2-lat1)/2)**2 + np.cos(lat1)*np.cos(lat2)*np.sin((lon2-lon1)/2)**2
     return 6371 * 2 * np.arcsin(np.sqrt(a))
 
-def prepare_city(places, city, merge_km=3.0):
+def prepare_city(places, city, merge_km=0.3):
     """Clean one city's places: drop city-centre rows, merge near-duplicates."""
     c = places[places.City == city].copy()
     c = c[c["Destination Name"] != f"{city} ({city})"]          # not a real attraction
