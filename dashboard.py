@@ -59,9 +59,9 @@ def load_data():
         df_tourism = smart_read_csv('cleaned_data/tourism_final_clean.csv')
         
         try:
-            df_attractions = smart_read_csv('attractions_with_clusters.csv')
+            df_attractions = smart_read_csv('cleaned_data/attractions_with_clusters.csv')
         except:
-            df_attractions = smart_read_csv('places_with_clusters.csv')
+            df_attractions = smart_read_csv('cleaned_data/places_with_clusters.csv')
             
         df_city_month = smart_read_csv('cleaned_data/city_month_features.csv')
         df_cluster_sum = smart_read_csv('cleaned_data/cluster_summary.csv')
