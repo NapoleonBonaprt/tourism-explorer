@@ -56,16 +56,16 @@ def smart_read_csv(filename):
 @st.cache_data
 def load_data():
     try:
-        df_tourism = smart_read_csv('tourism_final_clean.csv')
+        df_tourism = smart_read_csv('cleaned_data/tourism_final_clean.csv')
         
         try:
             df_attractions = smart_read_csv('attractions_with_clusters.csv')
         except:
             df_attractions = smart_read_csv('places_with_clusters.csv')
             
-        df_city_month = smart_read_csv('city_month_features.csv')
-        df_cluster_sum = smart_read_csv('cluster_summary.csv')
-        df_country_sum = smart_read_csv('country_cluster_summary.csv')
+        df_city_month = smart_read_csv('cleaned_data/city_month_features.csv')
+        df_cluster_sum = smart_read_csv('cleaned_data/cluster_summary.csv')
+        df_country_sum = smart_read_csv('cleaned_data/country_cluster_summary.csv')
         
         return df_tourism, df_attractions, df_city_month, df_cluster_sum, df_country_sum
     except Exception as e:
