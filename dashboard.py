@@ -38,7 +38,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Universal Recursive File Finder ---
-ROOT_DIR = r"C:\Users\HP\Downloads\tourism-explorer-main\tourism-explorer-main"
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def find_file(filename):
     for root, dirs, files in os.walk(ROOT_DIR):
