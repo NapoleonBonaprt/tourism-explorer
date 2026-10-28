@@ -3,3 +3,6 @@ streamlit-folium
 folium
 pandas
 requests
+numpy
+matplotlib
+seaborn

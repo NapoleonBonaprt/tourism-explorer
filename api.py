@@ -35,7 +35,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 # Root directory for automated file discovery
-ROOT_DIR = r"C:\Users\HP\Downloads\tourism-explorer-main\tourism-explorer-main"
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 # --- Pydantic Models for Perfect Documentation & Strict Responses ---
