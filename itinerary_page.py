@@ -161,7 +161,7 @@ def render():
         city = st.selectbox("City", cities, key="itin_city",
                             index=cities.index("London") if "London" in cities else 0)
         days = st.slider("Days", 1, 7, 5, key="itin_days")
-        n_stops = st.slider("Mximum Stops per day", 2, 5, 3, key="itin_stops")
+        n_stops = st.slider("Maximum Stops per day", 2, 5, 3, key="itin_stops")
         build = st.button("Build itinerary", type="primary", use_container_width=True, key="itin_build")
 
     if build:
@@ -180,7 +180,7 @@ def render():
     plan, weather = S["plan"], S["weather"]
 
     available = len(prepare_city(places, S["city"]))
-    if len(weather) * S["n_stops"] > available:
+    if False:
         st.warning(f"{S['city']} has only {available} distinct attractions, "
                    f"so some days will have fewer stops than requested.")
 
