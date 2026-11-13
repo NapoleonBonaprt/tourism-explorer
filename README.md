@@ -213,11 +213,11 @@ The dashboard reads its CSV files from the project directory. Its file discovery
 
 ### Run the FastAPI + HTML website locally
 
-The API dependencies are **separate** from the dashboard's `requirements.txt`:
+Install dependencies from the shared `requirements.txt` (which now includes FastAPI and Uvicorn):
 
 ```bash
-python -m pip install fastapi uvicorn
-python -m uvicorn api:app --reload
+python -m pip install -r requirements.txt
+python -m uvicorn api:app --reload --port 8000
 ```
 
 Check **http://127.0.0.1:8000/docs** and try **http://127.0.0.1:8000/climate/city/Cairo**.
