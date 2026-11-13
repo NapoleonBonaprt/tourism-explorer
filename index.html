@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WanderClimate | When to visit, month by month</title>
+<link rel="icon" type="image/svg+xml" href="assets/wanderclimate-logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -37,7 +38,7 @@ button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
 .hero-in{position:relative;display:flex;flex-direction:column;width:100%;padding-bottom:44px}
 header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0;flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:10px;font:800 24px 'Fraunces',serif;text-decoration:none}
-.logo svg{width:34px;height:34px}
+.logo img{width:40px;height:40px;display:block;flex-shrink:0}
 nav{display:flex;gap:26px;font-weight:600;font-size:15px}
 nav a{text-decoration:none;opacity:.9;padding:4px 0;border-bottom:2px solid transparent}
 nav a:hover{opacity:1;border-color:var(--ochre)}
@@ -192,7 +193,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
   <div class="wrap hero-in">
     <header>
       <a class="logo" href="#hero" onclick="goHome();return false" aria-label="WanderClimate home">
-        <svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="8" fill="#fff"/><circle cx="17" cy="15" r="6" style="fill:var(--ochre)"/><path d="M5 24c4-3 8-3 12 0s8 3 12 0" fill="none" style="stroke:var(--moss)" stroke-width="2.5" stroke-linecap="round"/><path d="M5 29c4-3 8-3 12 0s8 3 12 0" fill="none" style="stroke:var(--sage)" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <img src="assets/wanderclimate-logo.svg" width="40" height="40" alt="" aria-hidden="true">
         WanderClimate
       </a>
       <nav class="only-home"><a href="#places">Places</a><a href="#browse">All destinations</a><a href="#analytics">Dashboard</a><a href="#how">How it works</a></nav>
