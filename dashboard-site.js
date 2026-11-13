@@ -65,7 +65,7 @@
   function renderShell() {
     document.title = `${title[PAGE][0]} | WanderClimate`;
     $("siteHeader").innerHTML = `<div class="nav-wrap">
-      <a class="brand" href="index.html"><span class="brand-mark">◉</span>WanderClimate</a>
+      <a class="brand" href="index.html"><img src="assets/wanderclimate-logo.svg" width="38" height="38" alt="" aria-hidden="true">WanderClimate</a>
       <button id="navToggle" class="mobile-nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="siteNav" aria-expanded="false">Menu</button>
       <nav class="primary-nav" id="siteNav" aria-label="Main navigation">
         <a href="index.html">Home</a>
