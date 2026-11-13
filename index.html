@@ -139,6 +139,9 @@ body.is-home .only-results,body:not(.is-home) .only-home{display:none}
 .mt em{font-style:normal;font-weight:700;font-size:15px}
 
 .msg{background:#FFF1EC;border:1px solid #F3B8A8;border-radius:16px;padding:22px;color:#7A2410}
+.country-options{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.country-option{background:#fff;border:1px solid #F3B8A8;border-radius:10px;padding:8px 14px;font-weight:700;color:#7A2410}
+.country-option:hover,.country-option:focus-visible{background:#FFE1D8}
 .loading{color:var(--mut);padding:40px 0}
 
 footer{margin-top:56px;border-top:1px solid var(--line)}
@@ -466,6 +469,33 @@ function trendChart(rows) {
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Average temperature line and monthly rainfall bars">${g}</svg>`;
 }
 
+// Collapse historical year-by-month records into one representative row per month.
+// Each value is the mean of the available years, not a current weather forecast.
+function aggregateMonthly(records) {
+  const fields = ["TCI", "Temp_Mean", "Temp_Max_Mean", "Temp_Min_Mean",
+                  "Precip_Total_mm", "Sunshine_h_per_day", "RH_Mean"];
+  const groups = new Map();
+  for (const record of records) {
+    const m = Number(record.Month);
+    if (!Number.isInteger(m) || m < 1 || m > 12) continue;
+    if (!groups.has(m)) groups.set(m, []);
+    groups.get(m).push(record);
+  }
+  return [...groups.entries()].map(([month, items]) => {
+    const result = { Month: month, _m: month - 1 };
+    for (const field of fields) {
+      const values = items.map(r => r[field])
+        .filter(v => v !== null && v !== undefined && v !== "" && Number.isFinite(Number(v)))
+        .map(Number);
+      result[field] = values.length
+        ? values.reduce((sum, value) => sum + value, 0) / values.length
+        : null;
+    }
+    result.TCI_Category = result.TCI == null ? "N/A" : labelFor(result.TCI);
+    return result;
+  }).sort((a, b) => a.Month - b.Month);
+}
+
 function render() {
   if (!STATE) return;
   const { rows, city } = STATE;
@@ -487,8 +517,8 @@ function render() {
   $("heroLead").textContent = top.length ? `Best time to go: ${bestStr}.` : "Monthly climate and comfort for your trip.";
   $("rTitle").textContent = `When to visit ${city}`;
   $("rSub").textContent = top.length
-    ? `Comfort peaks in ${bestStr}. The year averages ${fT(avgT)} with about ${num(rain, 0)} mm of rain.`
-    : `${rows.length} months of climate data.`;
+    ? `Historical monthly averages: comfort peaks in ${bestStr}. Average annual temperature is ${fT(avgT)} with about ${num(rain, 0)} mm of rain per year.`
+    : `${rows.length} months of historical climate data.`;
 
   const c = colorFor(cur.TCI);
   const cat = esc(cur.TCI_Category || labelFor(cur.TCI));
@@ -560,25 +590,43 @@ async function explore(cityArg, initial) {
   if (!city) { $("city").focus(); return; }
   const name = titleCase(city);
   const key = city.toLowerCase();
+  STATE = null; // Never carry a previous city result into a new search.
 
   document.body.classList.remove("is-home");
   applyTheme(themeKey((PLACE_LIST.find(p => p.city.toLowerCase() === key) || {}).country));
   $("heroCity").textContent = name;
+  $("heroLead").textContent = `Checking climate information for ${name}…`;
   setHero(key);
   $("rTitle").textContent = `When to visit ${name}`;
   $("rSub").textContent = "Loading climate data…";
   $("out").innerHTML = `<p class="loading">Loading…</p>`;
 
+  // The climate endpoint expects a city, not a country.
+  const isCity = PLACE_LIST.some(p => p.city.toLowerCase() === key);
+  const countryCities = PLACE_LIST.filter(p => (p.country || "").toLowerCase() === key);
+  if (!isCity && countryCities.length) {
+    const options = countryCities.slice(0, 12)
+      .map(p => `<button class="country-option" data-city="${esc(p.city)}">${esc(p.city)}</button>`)
+      .join("");
+    $("heroLead").textContent = `Choose a city in ${name} to find the best time to visit.`;
+    $("rSub").textContent = "Climate information is available by city.";
+    $("out").innerHTML = `<div class="msg"><b>${esc(name)} is a country, not a city.</b>
+      <p>Choose a city below to see its monthly climate data:</p>
+      <div class="country-options">${options}</div></div>`;
+    return;
+  }
+
   let rows = null, sample = false;
   try {
     const res = await fetch(`${API}/climate/city/${encodeURIComponent(city)}`);
-    if (!res.ok) throw new Error(`We couldn't find "${name}". Check the spelling or try another city.`);
+    if (!res.ok) throw new Error(`No climate records found for "${name}". Search for a city, not a country, and choose from the available suggestions.`);
     rows = await res.json();
     if (!Array.isArray(rows) || !rows.length) throw new Error(`No climate data came back for "${name}".`);
   } catch (err) {
     if (err instanceof TypeError && key === "lisbon") { rows = LISBON_SAMPLE; sample = true; }
     else {
       $("rSub").textContent = "";
+      $("heroLead").textContent = "Search for a city to see monthly climate and comfort scores.";
       applyTheme("default");
       const msg = err instanceof TypeError ? `We can't reach the climate server. Start your FastAPI backend (uvicorn) and try again. Lisbon works offline with sample data.` : err.message;
       $("out").innerHTML = `<div class="msg"><b>Couldn't load ${esc(name)}.</b><br>${esc(msg)}</div>`;
@@ -586,8 +634,15 @@ async function explore(cityArg, initial) {
     }
   }
 
-  const ctry = rows[0].Country || rows[0].country; if (ctry) applyTheme(themeKey(ctry));
-  rows = rows.map(r => ({ ...r, _m: (parseInt(r.Month, 10) || 1) - 1 })).sort((a, b) => a._m - b._m);
+  const ctry = rows[0].Country_dest || rows[0].Country || rows[0].country;
+  if (ctry) applyTheme(themeKey(ctry));
+  rows = aggregateMonthly(rows);
+  if (!rows.length) {
+    $("heroLead").textContent = "No monthly climate information available.";
+    $("rSub").textContent = "";
+    $("out").innerHTML = '<div class="msg">No valid monthly climate records were found for this city.</div>';
+    return;
+  }
   const bestRow = rows.filter(r => typeof r.TCI === "number").sort((a, b) => b.TCI - a.TCI)[0];
   SEL = bestRow ? bestRow._m : rows[0]._m;
   STATE = { rows, city: name, sample };
