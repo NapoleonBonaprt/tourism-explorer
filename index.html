@@ -184,7 +184,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
       <h1 id="heroCity">Find the best month to visit.</h1>
       <p class="lead" id="heroLead">Search a city to see which months have the best sun, warmth and rain.</p>
       <div class="search">
-        <input id="city" placeholder="Search a city: Lisbon, Cairo, Tokyo…" autocomplete="off" aria-label="City name">
+        <input id="city" list="availableCities" placeholder="Search a city: Lisbon, Cairo, Tokyo…" autocomplete="off" aria-label="City name">
+        <datalist id="availableCities"></datalist>
         <button class="go" onclick="explore()">Find best time</button>
       </div>
       <div class="chips" id="chips"></div>
@@ -364,13 +365,24 @@ document.addEventListener("click", e => {
   if (b) { $("city").value = b.dataset.city; explore(); }
 });
 async function loadPlaces() {
-  for (const p of ["/cities", "/climate/cities", "/climate/city", "/climate", "/countries"]) {
-    try {
-      const r = await fetch(API + p);
-      if (!r.ok) continue;
-      const list = normalizePlaces(await r.json());
-      if (list.length) { PLACE_LIST = list; renderPlaces(); return; }
-    } catch (e) { return; }
+  try {
+    const response = await fetch(API + "/cities");
+    if (!response.ok) throw new Error("City directory unavailable");
+    const cities = normalizePlaces(await response.json());
+    if (!cities.length) throw new Error("City directory is empty");
+
+    PLACE_LIST = cities.sort((a, b) =>
+      a.city.localeCompare(b.city) || (a.country || "").localeCompare(b.country || "")
+    );
+    $("availableCities").innerHTML = PLACE_LIST
+      .map(p => `<option value="${esc(p.city)}" label="${esc(p.country || "")}"></option>`)
+      .join("");
+    renderPlaces();
+  } catch (error) {
+    $("availableCities").innerHTML = FALLBACK
+      .map(p => `<option value="${esc(p.city)}" label="${esc(p.country)}"></option>`)
+      .join("");
+    console.warn("Could not load cities from API:", error);
   }
 }
 renderPlaces();
