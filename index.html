@@ -74,6 +74,20 @@ body.is-home .only-results,body:not(.is-home) .only-home{display:none}
 .place:hover .place-photo{transform:scale(1.04)}
 .place b{position:relative;z-index:2;font:800 28px/1.1 'Fraunces',serif;text-shadow:0 2px 10px rgba(0,0,0,.4)}
 .place span{position:relative;z-index:2;font-size:14px;opacity:.96;text-shadow:0 1px 7px rgba(0,0,0,.5)}
+
+/* ---------- Destination browser ---------- */
+.browse-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap}
+.browse-search{display:block;flex:0 1 350px}
+.browse-search input{width:100%;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--ink);font:600 16px 'Figtree',sans-serif;padding:13px 16px}
+.browse-search input:focus{outline:3px solid var(--moss);outline-offset:2px}
+.browse-count{font-size:14px;color:var(--mut);margin-top:14px}
+.browse-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px;margin-top:14px}
+.browse-place{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:2px;min-height:72px;padding:12px 16px;background:#fff;border:1px solid var(--line);border-radius:14px;transition:border-color .15s,transform .15s}
+.browse-place:hover{border-color:var(--moss);transform:translateY(-2px)}
+.browse-place strong{font-size:16px;font-weight:700}
+.browse-place small{font-size:13px;color:var(--mut)}
+.browse-empty{grid-column:1/-1;color:var(--mut);background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
+@media(max-width:560px){.browse-search{flex-basis:100%}}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;margin-top:24px}
 .steps div{border-left:4px solid var(--ochre);padding-left:16px}
 .steps h3{font-size:21px;margin-bottom:6px}
@@ -181,7 +195,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
         <svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="8" fill="#fff"/><circle cx="17" cy="15" r="6" style="fill:var(--ochre)"/><path d="M5 24c4-3 8-3 12 0s8 3 12 0" fill="none" style="stroke:var(--moss)" stroke-width="2.5" stroke-linecap="round"/><path d="M5 29c4-3 8-3 12 0s8 3 12 0" fill="none" style="stroke:var(--sage)" stroke-width="2.5" stroke-linecap="round"/></svg>
         WanderClimate
       </a>
-      <nav class="only-home"><a href="#places">Places</a><a href="#how">How it works</a></nav>
+      <nav class="only-home"><a href="#places">Places</a><a href="#browse">All destinations</a><a href="#how">How it works</a></nav>
       <nav class="only-results"><a href="#hero" onclick="goHome();return false">All places</a><a href="#results">Best time</a><a href="#months">Month by month</a><a href="#trend">Sun and rain</a></nav>
       <div id="api" class="off"><b></b><span>checking server</span></div>
     </header>
@@ -205,6 +219,21 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
     <h2>Popular places</h2>
     <p class="sub">Every country gets its own colours. Pick one, or search any city above.</p>
     <div class="places" id="placeGrid"></div>
+  </section>
+
+
+  <section class="sec only-home" id="browse" aria-labelledby="browseTitle">
+    <div class="browse-head">
+      <div>
+        <h2 id="browseTitle">Browse all destinations</h2>
+        <p class="sub">Explore every city in the climate dataset, or filter by city or country.</p>
+      </div>
+      <label class="browse-search" for="browseQuery">
+        <input id="browseQuery" type="search" placeholder="Filter cities or countries..." aria-label="Filter destinations by city or country" autocomplete="off">
+      </label>
+    </div>
+    <p class="browse-count" id="browseCount" role="status" aria-live="polite">Loading destinations...</p>
+    <div class="browse-grid" id="browseGrid"></div>
   </section>
 
   <section class="sec only-home" id="how">
@@ -388,7 +417,18 @@ function setHero(key) {
 }
 
 applyTheme("default");
+let climateRequest = null;
+let climateRequestNumber = 0;
+function cancelClimateRequest() {
+  climateRequestNumber++;
+  if (climateRequest) {
+    climateRequest.abort();
+    climateRequest = null;
+  }
+  return climateRequestNumber;
+}
 function goHome() {
+  cancelClimateRequest();
   document.body.classList.add("is-home");
   applyTheme("default"); STATE = null; setHero("");
   $("heroCity").textContent = "Find the best month to visit.";
@@ -408,6 +448,7 @@ const FALLBACK = [["Lisbon", "Portugal"], ["Cairo", "Egypt"], ["Paris", "France"
 const cityLabel = p => `${p.city}, ${p.country || "Unknown country"}`;
 const normalizeName = value => String(value || "").trim().toLocaleLowerCase();
 let citiesLoaded = false;
+let directoryError = "";
 let PLACE_LIST = FALLBACK;
 function normalizePlaces(d) {
   if (Array.isArray(d)) return d.map(x => typeof x === "string" ? { city: x } : { city: x.City || x.city || x.name || x.Name, country: x.Country || x.country }).filter(x => x.city);
@@ -470,6 +511,18 @@ function renderPlaces() {
       <b>${esc(p.city)}</b><span>${esc(p.country || "")}</span></button>`;
   }).join("");
 }
+function renderBrowse() {
+  const query = normalizeName($("browseQuery").value);
+  const matching = PLACE_LIST.filter(p => normalizeName(`${p.city} ${p.country || ""}`).includes(query));
+  $("browseCount").textContent = directoryError
+    ? `City directory unavailable. Showing ${matching.length} of ${PLACE_LIST.length} sample destinations; start the API and refresh.`
+    : `Showing ${matching.length} of ${PLACE_LIST.length} destinations`;
+  $("browseGrid").innerHTML = matching.length
+    ? matching.map(p => `<button type="button" class="browse-place" data-city="${esc(p.city)}" data-country="${esc(p.country || "")}" aria-label="Explore ${esc(p.city)}, ${esc(p.country || "")}">
+        <strong>${esc(p.city)}</strong><small>${esc(p.country || "Country unavailable")}</small>
+      </button>`).join("")
+    : `<p class="browse-empty">No destinations match "${esc($("browseQuery").value.trim())}". Try another city or country.</p>`;
+}
 // Try configured photo fallbacks, then reveal the city illustration.
 document.addEventListener("error", event => {
   if (event.target instanceof HTMLImageElement && event.target.matches(".place-photo")) {
@@ -491,11 +544,15 @@ async function loadPlaces() {
       a.city.localeCompare(b.city) || (a.country || "").localeCompare(b.country || "")
     );
     citiesLoaded = true;
+    directoryError = "";
     $("availableCities").innerHTML = PLACE_LIST
       .map(p => `<option value="${esc(cityLabel(p))}"></option>`)
       .join("");
     renderPlaces();
+    renderBrowse();
   } catch (error) {
+    directoryError = "Directory unavailable";
+    renderBrowse();
     $("availableCities").innerHTML = FALLBACK
       .map(p => `<option value="${esc(cityLabel(p))}"></option>`)
       .join("");
@@ -503,6 +560,8 @@ async function loadPlaces() {
   }
 }
 renderPlaces();
+renderBrowse();
+$("browseQuery").addEventListener("input", renderBrowse);
 loadPlaces();
 $("key").innerHTML = [[85,"Ideal","80+"],[75,"Very good","70–79"],[65,"Good","60–69"],[55,"Fair","50–59"],[45,"Tough","40–49"],[30,"Avoid","under 40"]]
   .map(([v, l, r]) => `<span><i style="background:${colorFor(v)}"></i>${l} <small>${r}</small></span>`).join("");
@@ -513,7 +572,7 @@ async function checkApi() {
   try {
     const d = await (await fetch(API + "/")).json();
     if (d.status !== "online") throw 0;
-    el.className = "on"; el.lastChild.textContent = "live data";
+    el.className = "on"; el.lastChild.textContent = "server online";
   } catch (e) {
     el.className = "off"; el.lastChild.textContent = "server offline";
   }
@@ -699,10 +758,18 @@ document.addEventListener("click", e => {
   if (m) { SEL = +m.dataset.m; render(); }
 });
 
+class ClimateApiError extends Error {
+  constructor(status, message, countries = []) {
+    super(message);
+    this.name = "ClimateApiError";
+    this.status = status;
+    this.countries = countries;
+  }
+}
 async function explore(cityArg, initial = false, selectedCountry = "") {
   const entered = String(cityArg || $("city").value || "").trim();
   if (!entered) { $("city").focus(); return; }
-
+  const requestNumber = cancelClimateRequest();
   const fullLabel = PLACE_LIST.find(p => normalizeName(cityLabel(p)) === normalizeName(entered));
   const matching = PLACE_LIST.filter(p => normalizeName(p.city) === normalizeName(entered));
   const countryMatch = PLACE_LIST.filter(p => normalizeName(p.country) === normalizeName(entered));
@@ -723,7 +790,7 @@ async function explore(cityArg, initial = false, selectedCountry = "") {
   setHero(key);
   $("rTitle").textContent = `When to visit ${name}`;
   $("rSub").textContent = "Loading climate data…";
-  $("out").innerHTML = '<p class="loading">Loading…</p>';
+  $("out").innerHTML = '<p class="loading" role="status">Loading…</p>';
 
   if (countryMatch.length && !selected) {
     $("heroLead").textContent = `Choose a city in ${name} to find the best time to visit.`;
@@ -748,44 +815,73 @@ async function explore(cityArg, initial = false, selectedCountry = "") {
     $("heroLead").textContent = "Choose a city from the available destinations.";
     $("rSub").textContent = "";
     $("out").innerHTML = `<div class="msg"><b>No matching city: ${esc(entered)}</b>
-      <p>Choose a city from the search suggestions. The database does not cover every city worldwide.</p></div>`;
+      <p>This destination is not in the dataset. Use a city from Browse all destinations or the search suggestions.</p></div>`;
     return;
   }
-
   let rows = null, sample = false;
+  const controller = new AbortController();
+  climateRequest = controller;
   try {
     const url = new URL(API + "/climate/search");
     url.searchParams.set("city", city);
     if (country) url.searchParams.set("country", country);
-    const res = await fetch(url);
+    const res = await fetch(url, { signal: controller.signal });
     if (!res.ok) {
-      if (res.status === 409) throw new Error("This city exists in more than one country. Choose a city and country from the suggestions.");
-      throw new Error(`No climate records found for "${name}". Please select a supported city.`);
+      const body = await res.json().catch(() => null);
+      const detail = body && body.detail;
+      const countries = detail && Array.isArray(detail.countries) ? detail.countries : [];
+      let message;
+      if (res.status === 404) message = `No climate records were found for ${name}${country ? `, ${country}` : ""}. Choose another available destination.`;
+      else if (res.status === 409) message = "This city exists in multiple countries. Choose its country below.";
+      else if (res.status === 422) message = "The search could not be processed. Please select a valid city and try again.";
+      else if (res.status === 429) message = "Too many requests. Please try again in a moment.";
+      else if (res.status >= 500) message = "The climate server encountered an error while reading the data. Check the FastAPI terminal and try again.";
+      else message = `Unable to load climate data (HTTP ${res.status}). Please try again.`;
+      throw new ClimateApiError(res.status, message, countries);
     }
-    rows = await res.json();
-    if (!Array.isArray(rows) || !rows.length) throw new Error(`No climate data came back for "${name}".`);
+    try {
+      rows = await res.json();
+    } catch (error) {
+      if (error && error.name === "AbortError") throw error;
+      throw new ClimateApiError(502, "The server returned an invalid response. Please retry or check the FastAPI terminal.");
+    }
+    if (!Array.isArray(rows)) throw new ClimateApiError(502, "The server returned data in an unexpected format. Please check the API.");
+    if (!rows.length) throw new ClimateApiError(404, `No monthly climate data is available for ${name}. Try another destination.`);
   } catch (err) {
-    if (err instanceof TypeError && key === "lisbon" && !citiesLoaded) {
-      rows = LISBON_SAMPLE; sample = true;
-    } else {
-      $("rSub").textContent = "";
-      $("heroLead").textContent = "Search for a city to see monthly climate and comfort scores.";
-      applyTheme("default");
-      const msg = err instanceof TypeError
-        ? "The climate server is unavailable. Start FastAPI and make sure you pulled the latest project files."
-        : err.message;
-      $("out").innerHTML = `<div class="msg"><b>Couldn't load ${esc(name)}.</b><p>${esc(msg)}</p></div>`;
+    if (requestNumber !== climateRequestNumber || (err && err.name === "AbortError")) return;
+    $("rSub").textContent = "";
+    if (err instanceof ClimateApiError && err.status === 409 && err.countries.length) {
+      $("heroLead").textContent = "Choose the country for this city.";
+      $("out").innerHTML = `<div class="msg"><b>${esc(err.message)}</b>
+        <div class="country-options">${err.countries.map(c =>
+          `<button class="country-option" data-city="${esc(city)}" data-country="${esc(c)}">${esc(city)}, ${esc(c)}</button>`
+        ).join("")}</div></div>`;
       return;
     }
+    if (err instanceof TypeError && key === "lisbon" && !citiesLoaded) {
+      rows = LISBON_SAMPLE;
+      sample = true;
+    } else {
+      $("heroLead").textContent = `Could not load climate information for ${name}.`;
+      const msg = err instanceof ClimateApiError ? err.message
+        : err instanceof TypeError
+          ? "Cannot connect to the climate server. Start FastAPI on port 8000, check its terminal, and retry."
+          : "An unexpected error occurred while loading climate data. Please retry.";
+      $("out").innerHTML = `<div class="msg" role="alert"><b>Couldn't load ${esc(name)}.</b><p>${esc(msg)}</p></div>`;
+      return;
+    }
+  } finally {
+    if (requestNumber === climateRequestNumber) climateRequest = null;
   }
 
+  if (requestNumber !== climateRequestNumber) return;
   const ctry = country || rows[0].Country_dest || rows[0].Country || rows[0].country;
   if (ctry) applyTheme(themeKey(ctry));
   rows = aggregateMonthly(rows);
   if (!rows.length) {
     $("heroLead").textContent = "No monthly climate information available.";
     $("rSub").textContent = "";
-    $("out").innerHTML = '<div class="msg">No valid monthly climate records were found for this city.</div>';
+    $("out").innerHTML = '<div class="msg" role="alert">No valid monthly climate records were found for this city.</div>';
     return;
   }
   const bestRow = rows.filter(r => typeof r.TCI === "number").sort((a,b) => b.TCI-a.TCI)[0];
@@ -793,6 +889,7 @@ async function explore(cityArg, initial = false, selectedCountry = "") {
   STATE = { rows, city: name, sample };
   $("city").value = cityLabel({city, country: ctry || ""});
   render();
+  if (sample) $("rSub").textContent = "Sample Lisbon climate data (offline demo), not a live API result. " + $("rSub").textContent;
   if (!initial) $("results").scrollIntoView({ behavior: "smooth" });
 }
 
