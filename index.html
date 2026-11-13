@@ -315,10 +315,29 @@ const CITY_PHOTOS = {
   tokyo:  ["https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=1800&auto=format&fit=crop"],
   rome:   ["https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1800&auto=format&fit=crop"]
 };
+
+// Local city images: put a JPEG in assets/cities/ using the city name in
+// lowercase, with spaces replaced by hyphens (e.g. rio-de-janeiro.jpg).
+// Local images take priority. The original remote photos remain fallbacks.
+function cityImageCandidates(city) {
+  const key = String(city || "").trim().toLowerCase();
+  const slug = key.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return slug ? [`assets/cities/${slug}.jpg`, ...(CITY_PHOTOS[key] || [])] : [];
+}
+function tryNextCityCardPhoto(img) {
+  const images = cityImageCandidates(img.dataset.city);
+  const next = Number(img.dataset.imageIndex || 0) + 1;
+  if (next < images.length) {
+    img.dataset.imageIndex = String(next);
+    img.src = images[next];
+  } else {
+    img.remove(); // Keep the existing illustrated card visible.
+  }
+}
 function setHero(key) {
   const hero = $("hero");
   hero.dataset.key = key; hero.classList.remove("has-photo"); hero.style.backgroundImage = "";
-  const list = CITY_PHOTOS[key] || [];
+  const list = cityImageCandidates(key);
   (function next(i) {
     if (i >= list.length) return;
     const img = new Image();
@@ -403,18 +422,18 @@ function renderPlaces() {
     .map(p => `<button data-city="${esc(p.city)}" data-country="${esc(p.country || "")}">${esc(p.city)}</button>`).join("");
   $("placeGrid").innerHTML = list.map(p => {
     const t = THEMES[themeKey(p.country)];
-    const photo = (CITY_PHOTOS[p.city.toLowerCase()] || [])[0];
-    const image = photo ? `<img class="place-photo" src="${esc(photo)}" alt="" loading="lazy" decoding="async">` : "";
+    const photo = cityImageCandidates(p.city)[0];
+    const image = photo ? `<img class="place-photo" data-city="${esc(p.city)}" data-image-index="0" src="${esc(photo)}" alt="" loading="lazy" decoding="async">` : "";
     return `<button class="place" data-city="${esc(p.city)}" data-country="${esc(p.country || "")}" style="--m:${t.main};--d:${t.deep}" aria-label="Explore ${esc(p.city)}, ${esc(p.country || "")}">
       ${cityArtwork(p.city, t)}
       ${image}
       <b>${esc(p.city)}</b><span>${esc(p.country || "")}</span></button>`;
   }).join("");
 }
-// If a photo cannot load, expose its city illustration instead.
+// Try configured photo fallbacks, then reveal the city illustration.
 document.addEventListener("error", event => {
   if (event.target instanceof HTMLImageElement && event.target.matches(".place-photo")) {
-    event.target.remove();
+    tryNextCityCardPhoto(event.target);
   }
 }, true);
 document.addEventListener("click", e => {
