@@ -625,8 +625,12 @@ $("city").addEventListener("keydown", e => { if (e.key === "Enter") explore(); }
 async function checkApi() {
   const el = $("api");
   try {
-    const d = await (await fetch(API + "/")).json();
-    if (d.status !== "online") throw 0;
+    let response = await fetch(API + "/health", { cache: "no-store" });
+    // Local FastAPI development uses GET / for health; the hosted site uses /health.
+    if (response.status === 404) response = await fetch(API + "/", { cache: "no-store" });
+    if (!response.ok) throw new Error(`Health check failed: ${response.status}`);
+    const d = await response.json();
+    if (d.status !== "ok" && d.status !== "online") throw new Error("Unexpected health response");
     el.className = "on"; el.lastChild.textContent = "server online";
   } catch (e) {
     el.className = "off"; el.lastChild.textContent = "server offline";
