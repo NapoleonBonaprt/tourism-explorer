@@ -66,7 +66,10 @@
     document.title = `${title[PAGE][0]} | WanderClimate`;
     $("siteHeader").innerHTML = `<div class="nav-wrap">
       <a class="brand" href="index.html"><img src="assets/wanderclimate-logo.svg" width="38" height="38" alt="" aria-hidden="true">WanderClimate</a>
-      <button id="navToggle" class="mobile-nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="siteNav" aria-expanded="false">Menu</button>
+      <div class="nav-actions">
+        <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode"><span data-theme-icon aria-hidden="true">☾</span><span data-theme-label>Dark mode</span></button>
+        <button id="navToggle" class="mobile-nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="siteNav" aria-expanded="false">Menu</button>
+      </div>
       <nav class="primary-nav" id="siteNav" aria-label="Main navigation">
         <a href="index.html">Home</a>
         ${PAGES.map(([key,label,href])=>`<a href="${href}"${key===PAGE ? ' aria-current="page"' : ""}>${label}</a>`).join("")}
@@ -84,11 +87,34 @@
       $("navToggle").setAttribute("aria-expanded", String(open));
     });
   }
+  function syncChartTheme() {
+    if (!window.Chart) return;
+    const dark = document.documentElement.dataset.theme === "dark";
+    const ink = dark ? "#d9e7dc" : "#435c4b";
+    const grid = dark ? "#3b5145" : "#e8eee9";
+    Chart.defaults.color = ink;
+    Chart.defaults.borderColor = grid;
+    for (const canvas of document.querySelectorAll("canvas")) {
+      const chart = Chart.getChart(canvas);
+      if (!chart) continue;
+      const axes = chart.options?.scales || {};
+      Object.values(axes).forEach(axis => {
+        axis.ticks = {...axis.ticks, color: ink};
+        axis.grid = {...axis.grid, color: grid};
+        if (axis.title) axis.title.color = ink;
+      });
+      if (chart.options.plugins?.legend?.labels) chart.options.plugins.legend.labels.color = ink;
+      chart.update("none");
+    }
+  }
+  document.addEventListener("wanderclimate:themechange", syncChartTheme);
   function plot(id, cfg) {
     if (!window.Chart) { status("Charts could not load. Check the Chart.js network connection.", "warning"); return; }
+    syncChartTheme();
     const canvas = $(id);
     if (canvas._chart) canvas._chart.destroy();
     canvas._chart = new Chart(canvas, cfg);
+    syncChartTheme();
   }
   function baseChart(type, labels, datasets, extra={}) {
     return {type,data:{labels,datasets},options:{
