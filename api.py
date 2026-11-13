@@ -302,3 +302,7 @@ def get_country_attractions(country_name: str) -> List[Dict]:
     raise he
   except Exception as e:
     raise HTTPException(status_code=500, detail=str(e))
+
+# Website-facing equivalents of the Streamlit dashboard pages.
+from website_api import router as website_router
+app.include_router(website_router)
