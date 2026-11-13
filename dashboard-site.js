@@ -606,6 +606,17 @@
     const button=$("downloadItineraryPdf");
     busy(button,true);
     status("Preparing your complete itinerary PDF...");
+    if(window.WanderClimatePDF?.available()){
+      try {
+        window.WanderClimatePDF.download(adaptiveState);
+        status("");
+        return;
+      } catch(error){
+        status("Browser PDF generation failed; trying server export...", "warning");
+      } finally {
+        busy(button,false);
+      }
+    }
     const days=adaptiveState.days.map(day=>({
       number:day.number,date:day.date,day_type:day.day_type,weather:day.weather,
       stops:day.stops.map(stop=>({
@@ -637,7 +648,11 @@
       setTimeout(()=>URL.revokeObjectURL(objectUrl),30000);
       status("");
     }catch(error){
-      status(error.message||"Could not download the PDF. Try Print / Save as PDF instead.","error");
+      const networkFailure=error instanceof TypeError || /failed to fetch|networkerror/i.test(error.message||"");
+      const message=networkFailure
+        ? "Could not reach the PDF export server. Start or restart FastAPI on port 8000. If offline, use Print / Save as PDF."
+        : (error.message||"Could not download the PDF. Try Print / Save as PDF instead.");
+      status(message,"error");
     }finally{busy(button,false);}
   }
 
