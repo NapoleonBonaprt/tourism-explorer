@@ -538,7 +538,15 @@
     if(!d)return;
     $("adaptiveResults").innerHTML=`
       ${d.warning?`<p class="status warning">${safe(d.warning)}</p>`:""}
-      <section class="card"><h2>Re-check the Weather and Adapt the Plan</h2>
+      <section class="card itinerary-actions-card"><div class="itinerary-actions-head">
+        <div><h2>Save or Print Your Itinerary</h2><p class="note">Keep the full daily plan, forecast and all numbered attractions.</p></div>
+        <div class="export-buttons">
+          <button type="button" class="btn" id="downloadItineraryPdf">Download PDF</button>
+          <button type="button" class="btn secondary" id="printItinerary">Print / Save as PDF</button>
+        </div>
+      </div><p class="route-disclaimer"><strong>Route information:</strong> Lines connect stops in geographic order (straight-line distance). They are not actual driving, walking, public transport or turn-by-turn routes. The itinerary does not account for travel time, roads, traffic or attraction opening hours.</p>
+      </section>
+      <section class="card itinerary-interactions"><h2>Re-check the Weather and Adapt the Plan</h2>
         <div class="filters" style="margin-bottom:12px">
           <label class="checkline"><input type="checkbox" id="simulateStorm"> Demo: simulate a storm</label>
           <div class="field hidden" id="stormDateWrap"><label for="stormDate">Day</label>
@@ -554,7 +562,7 @@
           '<p class="status">Forecast unchanged: the plan stays as it is.</p>'}</div>
       </section>
       <div class="day-layout section-gap">
-        <section class="stack" id="adaptiveDayCards">
+        <section class="stack" id="adaptiveDayCards"><div class="itinerary-print-head"><h2>WanderClimate Trip Plan</h2><p>${safe(d.city)} · ${d.days.length} day(s)</p></div>
           ${d.days.map(day=>`<article class="day-card ${safe(day.day_type)}">
             <div class="day-meta"><h3>Day ${day.number} · ${safe(day.date)}</h3>
               <span class="day-type">${safe(day.day_type)}</span></div>
@@ -577,9 +585,11 @@
           </div>
           <div id="adaptiveMap" class="map" role="application" aria-label="Map of the route stops"></div>
           <div id="adaptiveLegend" class="legend"></div>
-          <p class="note">Straight lines join the attractions in visiting order. They are not street directions.</p>
+          <p class="note route-disclaimer">Straight lines join stops in visiting order. They do not follow actual roads or indicate travel time, traffic, access or walking/driving directions.</p>
         </section>
       </div>`;
+    $("downloadItineraryPdf").addEventListener("click", downloadItineraryPdf);
+    $("printItinerary").addEventListener("click", () => window.print());
     $("simulateStorm").addEventListener("change",e=>{
       $("stormDateWrap").classList.toggle("hidden",!e.target.checked);
       $("stormRainWrap").classList.toggle("hidden",!e.target.checked);
@@ -589,6 +599,48 @@
     $("adaptiveDayFilter").addEventListener("change",e=>{adaptiveMapFilter=e.target.value;drawAdaptiveMap();});
     drawAdaptiveMap();
   }
+  async function downloadItineraryPdf() {
+    if(!adaptiveState || !adaptiveState.days.length){
+      status("Build an itinerary before exporting it.","warning");return;
+    }
+    const button=$("downloadItineraryPdf");
+    busy(button,true);
+    status("Preparing your complete itinerary PDF...");
+    const days=adaptiveState.days.map(day=>({
+      number:day.number,date:day.date,day_type:day.day_type,weather:day.weather,
+      stops:day.stops.map(stop=>({
+        order:stop.order,name:stop.name,category:stop.category,
+        slot:stop.slot,lat:stop.lat,lon:stop.lon
+      }))
+    }));
+    try{
+      const response=await fetch(query("adaptive/export-pdf"),{
+        method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({city:adaptiveState.city,days,
+          warning:adaptiveState.warning||null,changes:adaptiveState.changes||null})
+      });
+      if(!response.ok){
+        const body=await response.json().catch(()=>({}));
+        throw new Error(typeof body.detail==="string"?body.detail:
+          "The PDF server could not export this itinerary.");
+      }
+      const blob=await response.blob();
+      if(!blob.size)throw new Error("The PDF returned from the server is empty.");
+      const objectUrl=URL.createObjectURL(blob);
+      const anchor=document.createElement("a");
+      anchor.href=objectUrl;
+      const cityslug=adaptiveState.city.replace(/[^a-z0-9_-]+/gi,"-").replace(/^-|-$/g,"");
+      anchor.download=`WanderClimate-${cityslug}-Itinerary.pdf`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      setTimeout(()=>URL.revokeObjectURL(objectUrl),30000);
+      status("");
+    }catch(error){
+      status(error.message||"Could not download the PDF. Try Print / Save as PDF instead.","error");
+    }finally{busy(button,false);}
+  }
+
   const dayColors=["#d18f24","#3c89b2","#328e68","#b45977","#7964ab","#3c8b8c","#986a37"];
   function drawAdaptiveMap(){
     if(!adaptiveState)return;
