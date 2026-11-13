@@ -77,7 +77,7 @@ remain to be done.
 - Switching the site's theme updates the actual basemap tiles: OpenStreetMap in light mode and Esri World Dark Gray in dark mode (with attribution), rather than darkening ordinary street tiles. Map tiles require internet access.
 
 **Adaptive Daily Itinerary (`adaptive.html`):**
-- After generating a trip, click **Download PDF** to get an A4 document with the city, dates, day types, forecast, ordered attractions, coordinates, and any replanning notes.
+- After generating a trip, click **Download PDF** to get an A4 document with the city, dates, day types, forecast, ordered attractions, coordinates, and any replanning notes. PDF generation now runs in the browser first using jsPDF (`trip-pdf.js`); it falls back to the FastAPI export endpoint when the jsPDF library cannot load. This makes downloads possible after a plan has been built even if the backend is temporarily unreachable, provided the PDF library loaded earlier.
 - **Print / Save as PDF** uses the browser's print dialog and its own print-friendly design, with the itinerary shown without the site navigation.
 - Both outputs explain that map lines are **straight-line visual connections**, not walking/driving routes or measured travel times.
 - The new `POST /website/adaptive/export-pdf` backend endpoint uses the `reportlab` dependency in `requirements.txt`. Reinstall requirements after pulling the latest version.
