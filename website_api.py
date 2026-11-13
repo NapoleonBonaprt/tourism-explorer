@@ -134,12 +134,16 @@ def climate(country: str = Query(..., min_length=1),
     numeric = [name for name in columns if name not in {"Year", "Month", "TCI_Category"}]
     monthly = subset.groupby("Month", as_index=False)[numeric].mean(numeric_only=True)
     def label(score: float) -> str:
-        if score >= 80: return "Ideal"
+        # Match the TCI_Category definitions in the cleaned climate CSV.
+        if score >= 90: return "Ideal"
+        if score >= 80: return "Excellent"
         if score >= 70: return "Very Good"
         if score >= 60: return "Good"
         if score >= 50: return "Acceptable"
         if score >= 40: return "Marginal"
-        return "Unfavourable"
+        if score >= 30: return "Unfavorable"
+        if score >= 20: return "Very Unfavorable"
+        return "Extremely Unfavorable"
     monthly["TCI_Category"] = monthly["TCI"].map(label)
     return {"country": country, "city": city, "history": history,
             "monthly": records(monthly), "months": MONTHS,
