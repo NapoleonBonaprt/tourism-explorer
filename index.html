@@ -66,11 +66,14 @@ body.is-home .only-results,body:not(.is-home) .only-home{display:none}
 .sec{padding:60px 0 4px}
 .sec h2{font-size:clamp(28px,4vw,40px);margin-bottom:8px}
 .places{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px;margin-top:24px}
-.place{position:relative;overflow:hidden;min-height:220px;border-radius:26px 26px 18px 18px;text-align:left;color:#fff;background:linear-gradient(180deg,var(--m),var(--d));display:flex;flex-direction:column;justify-content:flex-end;padding:18px 20px;transition:transform .15s}
+.place{position:relative;overflow:hidden;min-height:220px;border-radius:26px 26px 18px 18px;text-align:left;color:#fff;background:linear-gradient(180deg,var(--m),var(--d));display:flex;flex-direction:column;justify-content:flex-end;padding:18px 20px;transition:transform .15s;isolation:isolate}
 .place:hover{transform:translateY(-3px)}
-.place svg{position:absolute;inset:0;width:100%;height:100%}
-.place b{position:relative;font:800 28px/1.1 'Fraunces',serif}
-.place span{position:relative;font-size:14px;opacity:.92}
+.place::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,0) 25%,rgba(7,18,22,.73) 100%);pointer-events:none}
+.place .city-art,.place .place-photo{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.place .place-photo{object-fit:cover;transition:transform .25s ease}
+.place:hover .place-photo{transform:scale(1.04)}
+.place b{position:relative;z-index:2;font:800 28px/1.1 'Fraunces',serif;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.place span{position:relative;z-index:2;font-size:14px;opacity:.96;text-shadow:0 1px 7px rgba(0,0,0,.5)}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;margin-top:24px}
 .steps div{border-left:4px solid var(--ochre);padding-left:16px}
 .steps h3{font-size:21px;margin-bottom:6px}
@@ -353,16 +356,64 @@ function normalizePlaces(d) {
   }
   return [];
 }
+// Keep the original photographic city cards visible after the directory loads.
+// Search suggestions still use the complete city directory from /cities.
+const FEATURED_CITIES = ["Lisbon", "Cairo", "Paris", "Tokyo", "Rome"];
+function popularPlaces() {
+  const chosen = [];
+  const used = new Set();
+  for (const city of FEATURED_CITIES) {
+    const match = PLACE_LIST.find(p => p.city.toLowerCase() === city.toLowerCase());
+    if (match) { chosen.push(match); used.add(match.city.toLowerCase()); }
+  }
+  for (const place of PLACE_LIST) {
+    if (chosen.length >= 12) break;
+    if (!used.has(place.city.toLowerCase())) {
+      chosen.push(place);
+      used.add(place.city.toLowerCase());
+    }
+  }
+  return chosen;
+}
+
+// Illustrations remain visible even when external photo hosts are inaccessible.
+function cityArtwork(city, t) {
+  const silhouettes = {
+    lisbon: '<path d="M8 150h43v-30l15-15 16 15v30h24v-45h30v45h58v70H8z" fill="var(--d)"/><path d="M22 146v-25h17v25m30 3v-25h15v25m49-29v-20h14v20" fill="var(--ochre)" opacity=".75"/><path d="M15 115l14-19 15 19m69-24l17-20 17 20" stroke="var(--ochre)" stroke-width="5" fill="none"/>',
+    cairo: '<path d="M0 172l56-83 56 83zm64 14l61-105 64 105z" fill="var(--d)"/><path d="M41 150l15-28 15 28m41 5l13-27 13 27" stroke="var(--ochre)" stroke-width="5" fill="none" opacity=".9"/>',
+    paris: '<path d="M86 184l15-123 16 123m-29-94h27m-33 35h38m-51 59h69" stroke="var(--ochre)" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M0 178h62v42H0zm140-25h60v67h-60z" fill="var(--d)"/>',
+    tokyo: '<path d="M0 173L80 83l51 66 25-33 44 57v47H0z" fill="var(--d)"/><path d="M47 120l33-37 29 39-16-9-13 6-11-7z" fill="#fff" opacity=".8"/><path d="M145 166h40m-35 0v48m30-48v48m-40-60h50" stroke="var(--ochre)" stroke-width="7" stroke-linecap="round"/>',
+    rome: '<path d="M25 110q73-40 150 0v108H25z" fill="var(--d)"/><path d="M34 135h132M34 165h132" stroke="var(--ochre)" stroke-width="5" opacity=".9"/><path d="M46 133v-17q12-17 24 0v17m11 0v-17q12-17 24 0v17m11 0v-17q12-17 24 0v17M49 196v-20q12-14 24 0v20m18 0v-20q12-14 24 0v20m18 0v-20q12-14 24 0v20" stroke="var(--ochre)" stroke-width="6" fill="none"/>'
+  };
+  const fallback = '<path d="M0 171h20v-29h24v29h15v-55h30v55h15v-36h28v36h16v-70h28v70h8v49H0z" fill="var(--d)"/><path d="M65 129h7m10 0h7m-17 16h7m10 0h7m40 8h7m10 0h7" stroke="var(--ochre)" stroke-width="5"/>';
+  const drawing = silhouettes[city.toLowerCase()] || fallback;
+  return `<svg class="city-art" viewBox="0 0 200 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <rect width="200" height="220" fill="${t.main}"/>
+    <circle cx="156" cy="56" r="30" fill="${t.ochre}" opacity=".95"/>
+    <path d="M0 153Q50 127 110 155T200 148V220H0Z" fill="${t.sage}" opacity=".48"/>
+    ${drawing}
+  </svg>`;
+}
 function renderPlaces() {
-  const list = PLACE_LIST.slice(0, 12);
-  $("chips").innerHTML = list.slice(0, 5).map(p => `<button data-city="${esc(p.city)}">${esc(p.city)}</button>`).join("");
+  const list = popularPlaces();
+  $("chips").innerHTML = list.slice(0, 5)
+    .map(p => `<button data-city="${esc(p.city)}">${esc(p.city)}</button>`).join("");
   $("placeGrid").innerHTML = list.map(p => {
     const t = THEMES[themeKey(p.country)];
-    return `<button class="place" data-city="${esc(p.city)}" style="--m:${t.main};--d:${t.deep}">
-      <svg viewBox="0 0 200 220" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><circle cx="150" cy="58" r="26" fill="${t.ochre}"/><path d="M0 135Q60 105 110 130T200 120V220H0Z" fill="${t.deep}" opacity=".3"/><path d="M0 170Q70 145 130 165T200 155V220H0Z" fill="${t.deep}" opacity=".5"/></svg>
+    const photo = (CITY_PHOTOS[p.city.toLowerCase()] || [])[0];
+    const image = photo ? `<img class="place-photo" src="${esc(photo)}" alt="" loading="lazy" decoding="async">` : "";
+    return `<button class="place" data-city="${esc(p.city)}" style="--m:${t.main};--d:${t.deep}" aria-label="Explore ${esc(p.city)}, ${esc(p.country || "")}">
+      ${cityArtwork(p.city, t)}
+      ${image}
       <b>${esc(p.city)}</b><span>${esc(p.country || "")}</span></button>`;
   }).join("");
 }
+// If a photo cannot load, expose its city illustration instead.
+document.addEventListener("error", event => {
+  if (event.target instanceof HTMLImageElement && event.target.matches(".place-photo")) {
+    event.target.remove();
+  }
+}, true);
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-city]");
   if (b) { $("city").value = b.dataset.city; explore(); }
