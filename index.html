@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WanderClimate | When to visit, month by month</title>
 <link rel="icon" type="image/svg+xml" href="assets/wanderclimate-logo.svg">
+<script src="theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -27,6 +28,14 @@ a{color:inherit}
 button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
 :focus-visible{outline:3px solid var(--moss);outline-offset:3px}
 .hero :focus-visible{outline-color:#fff}
+
+/* ---------- Color scheme switch ---------- */
+.header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:40px;padding:7px 13px;border-radius:999px;font-size:13px;font-weight:800;white-space:nowrap;cursor:pointer;transition:background .2s}
+.hero-theme-toggle{color:#fff;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.48);backdrop-filter:blur(6px)}
+.hero-theme-toggle:hover{background:rgba(255,255,255,.27)}
+.theme-toggle [data-theme-icon]{font-size:19px;line-height:1}
+@media(max-width:560px){.header-actions{gap:7px}.hero-theme-toggle{padding:6px 10px}.theme-toggle [data-theme-label]{display:none}}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;color:#fff;min-height:min(62vh,540px);display:flex;background:linear-gradient(180deg,var(--moss),var(--deep));background-size:cover;background-position:center 40%;padding-top:env(safe-area-inset-top)}
@@ -177,6 +186,31 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
   .search{flex-direction:column}
   .hero-copy{padding-top:50px}
 }
+:root[data-theme="dark"]{color-scheme:dark;--ink:#eff5ee;--paper:#101a18;--linen:#1c2e29;--line:#344b43;--mut:#b6c8be;--white:#192721}
+:root[data-theme="dark"] .box,
+:root[data-theme="dark"] .browse-place,
+:root[data-theme="dark"] .browse-empty,
+:root[data-theme="dark"] .key span,
+:root[data-theme="dark"] .units,
+:root[data-theme="dark"] .mt{background:#1b2b27;color:#eff5ee;border-color:var(--line)}
+:root[data-theme="dark"] .browse-search input{background:#1b2b27;color:#eff5ee;border-color:var(--line)}
+:root[data-theme="dark"] .browse-search input::placeholder{color:#9fb2a6}
+:root[data-theme="dark"] .fact{background:#253a32}
+:root[data-theme="dark"] .tips p{color:#d6e2d8}
+:root[data-theme="dark"] .tag{color:#142019}
+:root[data-theme="dark"] .search{background:#20332d}
+:root[data-theme="dark"] .search input{color:#eff5ee}
+:root[data-theme="dark"] .search input:focus{background:#294139}
+:root[data-theme="dark"] .go{color:#17231b}
+:root[data-theme="dark"] .chips button:hover{background:#e5f2e6;color:#15241b}
+:root[data-theme="dark"] .country-option{background:#332522;color:#ffd6c8;border-color:#785045}
+:root[data-theme="dark"] .country-option:hover{background:#58382f}
+:root[data-theme="dark"] .msg{background:#35221f;color:#ffcebf;border-color:#7b4a3f}
+:root[data-theme="dark"] .units button[aria-pressed="true"]{background:#416f4c;color:#fff}
+:root[data-theme="dark"] .verdict{background:#294635}
+:root[data-theme="dark"] .tiles{filter:brightness(.6)}
+:root[data-theme="dark"] .panel svg text{fill:var(--mut)}
+:root[data-theme="dark"] .panel svg line{stroke:var(--line)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -198,7 +232,10 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
       </a>
       <nav class="only-home"><a href="#places">Places</a><a href="#browse">All destinations</a><a href="#analytics">Dashboard</a><a href="#how">How it works</a></nav>
       <nav class="only-results"><a href="#hero" onclick="goHome();return false">All places</a><a href="#results">Best time</a><a href="#months">Month by month</a><a href="#trend">Sun and rain</a><a href="overview.html">Analytics Dashboard</a></nav>
-      <div id="api" class="off"><b></b><span>checking server</span></div>
+      <div class="header-actions">
+        <button type="button" class="theme-toggle hero-theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode"><span data-theme-icon aria-hidden="true">☾</span><span data-theme-label>Dark mode</span></button>
+        <div id="api" class="off"><b></b><span>checking server</span></div>
+      </div>
     </header>
 
     <div class="hero-copy">
