@@ -67,6 +67,21 @@ to the public backend URL, and likewise configure the API base in
 `index.html`. Production deployment and browser end-to-end verification
 remain to be done.
 
+### New interactive map and itinerary exports
+
+**Map Explorer (`explorer.html`):**
+- Search the attraction names or cities in the currently selected country.
+- Toggle each DBSCAN cluster, noise points, and unknown clusters; use **Show all** and **Hide all**.
+- Restrict the view to the Top 5 recommendations using **Top 5 only**.
+- Click a matching attraction to focus its marker and open the popup; use **Open in Google Maps** for its exact dataset coordinates.
+- Switching the site's theme updates the actual basemap tiles: OpenStreetMap in light mode and Esri World Dark Gray in dark mode (with attribution), rather than darkening ordinary street tiles. Map tiles require internet access.
+
+**Adaptive Daily Itinerary (`adaptive.html`):**
+- After generating a trip, click **Download PDF** to get an A4 document with the city, dates, day types, forecast, ordered attractions, coordinates, and any replanning notes.
+- **Print / Save as PDF** uses the browser's print dialog and its own print-friendly design, with the itinerary shown without the site navigation.
+- Both outputs explain that map lines are **straight-line visual connections**, not walking/driving routes or measured travel times.
+- The new `POST /website/adaptive/export-pdf` backend endpoint uses the `reportlab` dependency in `requirements.txt`. Reinstall requirements after pulling the latest version.
+
 ## ✨ Main Dashboard Features
 
 Start with `streamlit run dashboard.py`. The sidebar offers five sections:
