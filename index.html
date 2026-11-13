@@ -195,8 +195,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
         <svg viewBox="0 0 34 34" aria-hidden="true"><rect width="34" height="34" rx="8" fill="#fff"/><circle cx="17" cy="15" r="6" style="fill:var(--ochre)"/><path d="M5 24c4-3 8-3 12 0s8 3 12 0" fill="none" style="stroke:var(--moss)" stroke-width="2.5" stroke-linecap="round"/><path d="M5 29c4-3 8-3 12 0s8 3 12 0" fill="none" style="stroke:var(--sage)" stroke-width="2.5" stroke-linecap="round"/></svg>
         WanderClimate
       </a>
-      <nav class="only-home"><a href="#places">Places</a><a href="#browse">All destinations</a><a href="#how">How it works</a></nav>
-      <nav class="only-results"><a href="#hero" onclick="goHome();return false">All places</a><a href="#results">Best time</a><a href="#months">Month by month</a><a href="#trend">Sun and rain</a></nav>
+      <nav class="only-home"><a href="#places">Places</a><a href="#browse">All destinations</a><a href="#analytics">Dashboard</a><a href="#how">How it works</a></nav>
+      <nav class="only-results"><a href="#hero" onclick="goHome();return false">All places</a><a href="#results">Best time</a><a href="#months">Month by month</a><a href="#trend">Sun and rain</a><a href="overview.html">Analytics Dashboard</a></nav>
       <div id="api" class="off"><b></b><span>checking server</span></div>
     </header>
 
@@ -208,7 +208,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
         <datalist id="availableCities"></datalist>
         <button class="go" onclick="explore()">Find best time</button>
       </div>
-      <div class="chips" id="chips"></div>
+      <div class="chips" id="chips"></div><p class="lead" style="font-size:15px;margin-top:18px"><a href="overview.html" style="display:inline-block;padding:8px 15px;border:1px solid #ffffffaa;border-radius:11px;text-decoration:none;background:#ffffff18">Explore the full Analytics Dashboard</a></p>
     </div>
   </div>
 </section>
@@ -234,6 +234,19 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
     </div>
     <p class="browse-count" id="browseCount" role="status" aria-live="polite">Loading destinations...</p>
     <div class="browse-grid" id="browseGrid"></div>
+  </section>
+
+
+  <section class="sec only-home" id="analytics">
+    <h2>Advanced tourism intelligence</h2>
+    <p class="sub">Explore the full analysis, recommendation maps, and trip-planning tools powered by our cleaned datasets and Python engines.</p>
+    <div class="steps" style="margin-top:28px">
+      <div><h3><a href="overview.html">Executive Overview</a></h3><p>Key metrics, TCI category distribution, project objectives and country summaries.</p></div>
+      <div><h3><a href="climate.html">Climate &amp; TCI Analytics</a></h3><p>Monthly and historical climate charts, temperature, precipitation, sunshine and TCI data tables.</p></div>
+      <div><h3><a href="explorer.html">Spatial Clustering &amp; Map Explorer</a></h3><p>Top 5 TCI-ranked destinations, DBSCAN cluster maps, noise points and attraction popups.</p></div>
+      <div><h3><a href="planner.html">Interactive Itinerary Planner</a></h3><p>Country, city, month, Indoor/Outdoor filters and attraction recommendations.</p></div>
+      <div><h3><a href="adaptive.html">Adaptive Daily Itinerary</a></h3><p>Build a 1–7 day trip with a live forecast, maps, and re-planning when the weather changes.</p></div>
+    </div>
   </section>
 
   <section class="sec only-home" id="how">
