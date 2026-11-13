@@ -72,6 +72,52 @@ def read_root():
   }
 
 
+class CityOption(BaseModel):
+  city: str
+  country: str
+
+
+@app.get(
+    "/cities",
+    tags=["Climate Intelligence"],
+    summary="List available cities and their countries",
+    response_model=List[CityOption],
+)
+def list_cities() -> List[CityOption]:
+  """Return unique city/country pairs from the same data as city climate search."""
+  path = find_file("city_month_features.csv")
+  if not path:
+    raise HTTPException(
+        status_code=404, detail="Dataset 'city_month_features.csv' not found."
+    )
+
+  try:
+    cities = pd.read_csv(
+        path, usecols=["City", "Country_dest"], dtype="string"
+    ).dropna()
+  except ValueError as exc:
+    raise HTTPException(
+        status_code=500,
+        detail="City or Country_dest column missing from climate dataset.",
+    ) from exc
+  except (OSError, pd.errors.ParserError) as exc:
+    raise HTTPException(
+        status_code=500, detail="Unable to read the climate dataset."
+    ) from exc
+
+  cities["City"] = cities["City"].str.strip()
+  cities["Country_dest"] = cities["Country_dest"].str.strip()
+  cities = cities[(cities["City"] != "") & (cities["Country_dest"] != "")]
+  cities = (
+      cities.drop_duplicates(subset=["City", "Country_dest"])
+      .sort_values(["City", "Country_dest"], key=lambda values: values.str.casefold())
+  )
+  return [
+      CityOption(city=city, country=country)
+      for city, country in cities.itertuples(index=False, name=None)
+  ]
+
+
 @app.get(
     "/overview/summary",
     tags=["Spatial Analytics"],
