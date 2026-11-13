@@ -6,11 +6,14 @@
 
 The project now includes a **multi-page Streamlit dashboard** that integrates the original Top 5 Recommendations & Dynamic Map page, a separate **FastAPI backend**, and an experimental **HTML frontend**.
 
-**[🚀 Streamlit Dashboard](https://tourism-explorer-eacdqv7bn7swpw97tuhoyt.streamlit.app/)** · **[📓 EDA & ML Notebook](python%20files/EDA_Notebook.ipynb)** · **[🔌 API Source](api.py)**
+**[🌐 WanderClimate Website](https://mahmoudkh6.pythonanywhere.com/)** · **[🚀 Streamlit Dashboard](https://tourism-explorer-eacdqv7bn7swpw97tuhoyt.streamlit.app/)** · **[📓 EDA & ML Notebook](python%20files/EDA_Notebook.ipynb)** · **[🔌 API Source](api.py)**
 
 > **Important:** The main dashboard is `dashboard.py`. The original `app.py` remains available as a standalone Streamlit app, but it still asks users to upload two CSV files. In the integrated dashboard, the corresponding recommendations page loads those files automatically from the repository.
 
 ## WanderClimate Website: migrated dashboard pages
+
+**Public website URL:** [https://mahmoudkh6.pythonanywhere.com/](https://mahmoudkh6.pythonanywhere.com/) (PythonAnywhere deployment; live availability should be verified after the ASGI service is started).
+
 
 The website now has **native HTML/JavaScript equivalents of all five Streamlit dashboard sections**, with no iframe:
 
@@ -59,13 +62,7 @@ order, **not road directions**. The browser also needs access to Chart.js,
 Leaflet and OpenStreetMap tiles. Streamlit is retained for side-by-side
 comparisons until the website has been fully tested.
 
-**Deployment:** The HTML files and FastAPI must be served from compatible
-public endpoints. Currently the website assumes `http://127.0.0.1:8000` for
-local development; when hosted elsewhere, set
-`window.WANDERCLIMATE_API_BASE` before loading `dashboard-site.js`
-to the public backend URL, and likewise configure the API base in
-`index.html`. Production deployment and browser end-to-end verification
-remain to be done.
+**Deployment:** The HTML frontend and FastAPI can be served from one origin using `web_server.py`. The public deployment URL is [mahmoudkh6.pythonanywhere.com](https://mahmoudkh6.pythonanywhere.com/). `index.html` uses the current origin when deployed and retains local API support for development. The PythonAnywhere ASGI service and browser features should be checked after each deployment.
 
 ### New interactive map and itinerary exports
 
@@ -167,7 +164,7 @@ These endpoints read project datasets; the monthly climate endpoint is **not a r
 
 **WanderClimate** is a separate HTML/CSS/JavaScript prototype for exploring the best time to visit a city, showing monthly climate values and TCI trends. It calls the FastAPI backend.
 
-The HTML currently targets `http://127.0.0.1:8000`, so it is set up for **local development**. Publishing it on the internet requires deploying the backend and updating the API URL. A small Lisbon sample is available in the frontend as a fallback demonstration.
+The HTML frontend uses the same host as the FastAPI backend in deployment, with localhost support for development. The intended public website URL is [mahmoudkh6.pythonanywhere.com](https://mahmoudkh6.pythonanywhere.com/). A small Lisbon sample is available as a fallback demonstration.
 
 ## 📁 Repository Structure
 
@@ -271,7 +268,7 @@ The original standalone application uses `app.py` instead. Changing the reposito
 - **Precomputed clustering:** DBSCAN labels are loaded from CSV rather than fitted during each dashboard session.
 - **Different time horizons:** Monthly TCI records describe historical climate suitability; the adaptive itinerary uses a short-range weather forecast.
 - **Simple route ordering:** The itinerary uses geographic proximity rather than travel times, roads, attraction opening hours, or bookings.
-- **Separate HTML/API deployment:** The HTML frontend expects a locally running backend until a public API URL and deployment are configured.
+- **Hosting verification:** The PythonAnywhere ASGI deployment at [mahmoudkh6.pythonanywhere.com](https://mahmoudkh6.pythonanywhere.com/) requires live checks of the backend, map, and itinerary functions.
 - **Model evaluation:** Add location-based/time-based testing to assess generalization.
 - **Product improvements:** Consider richer traveler preferences, automated testing, clearer data-source documentation, and performance improvements for large maps.
 
