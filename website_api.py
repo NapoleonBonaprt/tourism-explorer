@@ -6,6 +6,7 @@ selected/aggregated data needed by the HTML pages, not the full CSV exports.
 from __future__ import annotations
 
 import json
+import logging
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
@@ -312,6 +313,10 @@ def weather_for(city: str, days: int):
         if len(data) != days:
             raise ValueError("Incomplete forecast")
     except Exception as exc:
+        logging.getLogger(__name__).exception(
+            "Open-Meteo forecast failure for city=%r, days=%d, coordinates=(%.4f, %.4f)",
+            canonical, days, float(lat), float(lon),
+        )
         raise HTTPException(status_code=503, detail="Live forecast unavailable from Open-Meteo. Try again later.") from exc
     return places, canonical, data
 
