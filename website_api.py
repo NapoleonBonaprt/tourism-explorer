@@ -39,7 +39,21 @@ def data_path(name: str) -> Path:
 @lru_cache(maxsize=9)
 def frame(name: str) -> pd.DataFrame:
     try:
-        return pd.read_csv(data_path(name), low_memory=False)
+        path = data_path(name)
+        # Only load the columns the website uses from the large analysis CSVs.
+        # This reduces RAM pressure on Render's 512 MB free instance.
+        if name == "tourism_final_clean.csv":
+            return pd.read_csv(path, usecols=lambda col: col in {
+                "TCI", "TCI_Category"
+            }, low_memory=False)
+        if name == "full.csv":
+            return pd.read_csv(path, usecols=lambda col: col in {
+                "Country", "Country_dest", "country", "Month", "month",
+                "Destination Name", "Destination", "destination", "Place", "Name",
+                "TCI", "tci", "City", "city", "Governorate", "Province",
+                "Region", "governorate"
+            }, low_memory=False)
+        return pd.read_csv(path, low_memory=False)
     except HTTPException:
         raise
     except (OSError, ValueError, pd.errors.ParserError) as exc:

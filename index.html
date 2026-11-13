@@ -323,7 +323,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 </footer>
 
 <script>
-const API = "http://127.0.0.1:8000";
+const API = (window.WANDERCLIMATE_API_BASE ||
+  (["localhost", "127.0.0.1"].includes(window.location.hostname)
+    && window.location.port !== "8000"
+    ? "http://127.0.0.1:8000"
+    : window.location.origin)).replace(/\/$/, "");
 const NS = "http://www.w3.org/2000/svg";
 const MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const MF = ["January","February","March","April","May","June","July","August","September","October","November","December"];
