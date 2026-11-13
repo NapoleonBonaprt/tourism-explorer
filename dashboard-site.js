@@ -458,7 +458,13 @@
       const coords=day.stops.map(x=>[x.lat,x.lon]);
       if(coords.length>1)L.polyline(coords,{color,weight:4,opacity:.86}).addTo(m);
       for(const stop of day.stops){
-        L.circleMarker([stop.lat,stop.lon],{radius:11,color:"#fff",weight:2,fillColor:color,fillOpacity:1})
+        L.marker([stop.lat,stop.lon],{
+          icon:L.divIcon({
+            className:"route-marker",
+            html:`<span style="display:grid;place-items:center;width:27px;height:27px;background:${color};color:#fff;border:2px solid white;border-radius:50%;font-weight:800;font-size:12px;box-shadow:0 1px 6px #0005">${stop.order}</span>`,
+            iconSize:[27,27],iconAnchor:[13,13]
+          })
+        })
          .bindTooltip(`Day ${day.number} · ${stop.order}. ${stop.name}`)
          .bindPopup(escapePopup([stop.name,`Day ${day.number}`,stop.category,stop.slot])).addTo(m);
       }
