@@ -287,7 +287,7 @@
           const color=clusterColor(p.cluster);
           L.circleMarker([p.lat,p.lon],{radius:p.is_top?7:4,color:p.is_top?"#111":color,
             weight:p.is_top?3:1,fillColor:color,fillOpacity:p.is_top?1:.85})
-            .bindTooltip(p.name)
+            .bindTooltip(safe(p.name))
             .bindPopup(escapePopup([
               p.name,
               p.cluster===null?"Cluster unknown":p.cluster===-1?"Noise (-1)":`Cluster ${p.cluster}`,
@@ -465,7 +465,7 @@
             iconSize:[27,27],iconAnchor:[13,13]
           })
         })
-         .bindTooltip(`Day ${day.number} · ${stop.order}. ${stop.name}`)
+         .bindTooltip(`Day ${day.number} · ${stop.order}. ${safe(stop.name)}`)
          .bindPopup(escapePopup([stop.name,`Day ${day.number}`,stop.category,stop.slot])).addTo(m);
       }
     }
@@ -487,7 +487,7 @@
     try{
       const d=await request("adaptive/recheck",{},{
         method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({...buildPayload(),previous,simulate_storm:storm,storm_date:storm?weatherDate:null,rain_mm:rain})
+        body:JSON.stringify({city:adaptiveState.city,days:adaptiveState.days.length,stops:adaptiveState.requested_stops,previous,simulate_storm:storm,storm_date:storm?weatherDate:null,rain_mm:rain})
       });
       adaptiveState=d;
       renderAdaptive();
