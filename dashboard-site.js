@@ -125,18 +125,45 @@
     }};
   }
   let map = null;
+  let basemapLayer = null;
+  function setBasemap() {
+    if (!map || !window.L) return;
+    if (basemapLayer) map.removeLayer(basemapLayer);
+    const dark = document.documentElement.dataset.theme === "dark";
+    if (dark) {
+      // Genuine dark cartography, not a brightness filter on OpenStreetMap tiles.
+      // Esri World Dark Gray canvas, with a separate reference layer for labels.
+      const base = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+        { maxZoom:19, maxNativeZoom:16, attribution:
+          'Map data &copy; Esri, HERE, Garmin, <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors and GIS user community' }
+      );
+      const labels = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
+        { maxZoom:19, maxNativeZoom:16 }
+      );
+      basemapLayer = L.layerGroup([base,labels]);
+    } else {
+      basemapLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom:19,
+        attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      });
+    }
+    basemapLayer.addTo(map);
+    if (basemapLayer.bringToBack) basemapLayer.bringToBack();
+  }
+  document.addEventListener("wanderclimate:themechange", setBasemap);
   function makeMap(id, points, center=[20,0], zoom=4) {
-    if(map){map.remove();map=null;}
+    if(map){map.remove();map=null;basemapLayer=null;}
     if(!window.L){status("Map library unavailable. Check the Leaflet connection.", "warning");return null;}
     map = L.map(id, {scrollWheelZoom:false}).setView(center,zoom);
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{
-      maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    setBasemap();
     if(points.length) {
       const bounds=L.latLngBounds(points.filter(p=>Number.isFinite(+p.lat)&&Number.isFinite(+p.lon)).map(p=>[+p.lat,+p.lon]));
       if(bounds.isValid()) map.fitBounds(bounds.pad(.15),{maxZoom:12});
     }
-    setTimeout(()=>map?.invalidateSize(),100);
+    const thisMap=map;
+    setTimeout(()=>{ if(map===thisMap) map.invalidateSize(); },100);
     return map;
   }
   const clusterColor = (cluster) => cluster==null || cluster===-1 ? "#808080"
@@ -292,14 +319,33 @@
       <section class="card section-gap"><h2>Top destinations · ${safe(data.country)} · ${safe(data.month_name)}</h2>
         ${data.top5.length?table(["Rank","Destination","City","Country","Month","TCI"],rows):'<p>No destinations found for these filters.</p>'}
       </section>
-      <section class="card section-gap"><h2>Interactive Attractions Map</h2>
-        <div id="explorerMap" class="map large" role="application" aria-label="Map of tourist attractions and spatial clusters"></div>
-        <div id="clusterLegend" class="legend">
-          <span class="legend-item"><span class="marker-top"></span>Top 5 (black outline)</span>
-          ${uniqueClusters.map(c=>`<span class="legend-item"><i style="background:${clusterColor(c)}"></i>Cluster ${c}</span>`).join("")}
-          ${data.points.some(p=>p.cluster===-1)?'<span class="legend-item"><i style="background:#808080"></i>Noise (-1)</span>':""}
+      <section class="card section-gap explorer-panel">
+        <div class="map-section-heading">
+          <div><h2>Interactive Attractions Map</h2><p class="note">Search the attractions and control which DBSCAN clusters are visible.</p></div>
+          <div class="map-filter-actions">
+            <button type="button" id="showMapClusters" class="btn secondary small">Show all</button>
+            <button type="button" id="hideMapClusters" class="btn secondary small">Hide all</button>
+          </div>
         </div>
-        <p class="note">Points are precomputed DBSCAN labels. Top 5 have a black border; gray means noise or unknown cluster.</p>
+        <div class="field map-search-field">
+          <label for="attractionSearch">Find an attraction by name or city</label>
+          <input id="attractionSearch" type="search" placeholder="Try Great Pyramid, Cairo..." autocomplete="off">
+        </div>
+        <fieldset class="cluster-controls" aria-label="Visible map clusters">
+          <legend>Visible clusters</legend>
+          ${uniqueClusters.map(c=>`<label class="cluster-chip"><input type="checkbox" data-map-cluster="${c}" checked><i style="background:${clusterColor(c)}"></i>Cluster ${c}</label>`).join("")}
+          ${data.points.some(p=>p.cluster===-1)?'<label class="cluster-chip"><input id="mapNoise" type="checkbox" checked><i style="background:#808080"></i>Noise (-1)</label>':""}
+          ${data.points.some(p=>p.cluster===null)?'<label class="cluster-chip"><input id="mapUnknown" type="checkbox" checked><i style="background:#808080"></i>Unknown</label>':""}
+          <label class="cluster-chip featured"><input id="mapTopOnly" type="checkbox">Top 5 only</label>
+        </fieldset>
+        <p id="visibleAttractions" class="note" role="status" aria-live="polite"></p>
+        <div id="mapSearchMatches" class="map-search-results" aria-label="Matching attractions"></div>
+        <div id="explorerMap" class="map large" role="application" aria-label="Map of tourist attractions and spatial clusters"></div>
+        <div class="legend">
+          <span class="legend-item"><span class="marker-top"></span>Top 5 (black outline)</span>
+          <span class="legend-item"><i style="background:#808080"></i>Noise / unknown</span>
+        </div>
+        <p class="note">Colored markers use the precomputed DBSCAN cluster IDs. Google Maps links open the selected attraction in a new tab.</p>
       </section>
       <div class="summary-grid section-gap">
         ${metric("Top Recommendations on Map",data.counts.on_map)}
@@ -307,24 +353,97 @@
         ${metric("Noise Points",data.counts.noise)}
         ${metric("Cluster Unknown",data.counts.unknown)}
       </div>`;
-      const m=makeMap("explorerMap",data.points);
-      if(m){
-        for(const p of data.points){
-          const color=clusterColor(p.cluster);
-          L.circleMarker([p.lat,p.lon],{radius:p.is_top?7:4,color:p.is_top?"#111":color,
-            weight:p.is_top?3:1,fillColor:color,fillOpacity:p.is_top?1:.85})
-            .bindTooltip(safe(p.name))
-            .bindPopup(escapePopup([
-              p.name,
-              p.cluster===null?"Cluster unknown":p.cluster===-1?"Noise (-1)":`Cluster ${p.cluster}`,
-              `City: ${p.city}`,p.is_top?"Top 5 recommendation":"",
-              p.tci!=null?`TCI: ${pretty(p.tci)}`:""
-            ].filter(Boolean))).addTo(m);
-        }
-      }
+      setupExplorerMap(data);
       status("");
     }catch(e){if(id===explorerSeq)status(e.message,"error");}
     finally{if(id===explorerSeq)busy(button,false);}
+  }
+
+
+  function googleMapsUrl(lat, lon) {
+    // Coordinates are returned by the analyzed attractions dataset, not scraped text.
+    return "https://www.google.com/maps/search/?api=1&query=" +
+      encodeURIComponent(Number(lat) + "," + Number(lon));
+  }
+
+  function setupExplorerMap(data) {
+    const mapInstance=makeMap("explorerMap",data.points);
+    if(!mapInstance)return;
+    const controls=$("explorerResults");
+    const allCheckboxes=()=>Array.from(controls.querySelectorAll("[data-map-cluster], #mapNoise, #mapUnknown"));
+    const markers=data.points.map((point,index)=>{
+      const color=clusterColor(point.cluster);
+      const mapsLink=googleMapsUrl(point.lat,point.lon);
+      const clusterLabel=point.cluster===null?"Cluster unknown":
+        point.cluster===-1?"Noise (-1)":`Cluster ${point.cluster}`;
+      const extra=escapePopup([
+        point.name,clusterLabel,`City: ${point.city}`,point.category,
+        point.is_top?"Top 5 recommendation":"",
+        point.tci!=null?`TCI: ${pretty(point.tci)}`:""
+      ].filter(Boolean));
+      const marker=L.circleMarker([point.lat,point.lon],{
+        radius:point.is_top?7:4,color:point.is_top?"#111":color,
+        weight:point.is_top?3:1,fillColor:color,fillOpacity:point.is_top?1:.85
+      }).bindTooltip(safe(point.name))
+        .bindPopup(extra+`<div class="popup-actions"><a href="${mapsLink}" target="_blank" rel="noopener noreferrer">Open in Google Maps</a></div>`);
+      return {point,index,marker};
+    });
+    function updateVisibleMarkers() {
+      const search=$("attractionSearch").value.trim().toLocaleLowerCase();
+      const enabled=new Set(Array.from(controls.querySelectorAll("[data-map-cluster]:checked"))
+        .map(el=>Number(el.dataset.mapCluster)));
+      const noise=$("mapNoise")?.checked??false;
+      const unknown=$("mapUnknown")?.checked??false;
+      const topOnly=$("mapTopOnly").checked;
+      const matched=[];
+      for(const entry of markers){
+        const p=entry.point;
+        const allowed=p.cluster===null?unknown:p.cluster===-1?noise:enabled.has(p.cluster);
+        const nameMatch=!search || (p.name+" "+p.city).toLocaleLowerCase().includes(search);
+        const show=allowed && nameMatch && (!topOnly || p.is_top);
+        if(show){
+          if(!mapInstance.hasLayer(entry.marker))entry.marker.addTo(mapInstance);
+          matched.push(entry);
+        }else if(mapInstance.hasLayer(entry.marker)){
+          mapInstance.removeLayer(entry.marker);
+        }
+      }
+      $("visibleAttractions").textContent=`Showing ${matched.length} of ${markers.length} attractions` +
+        (search?` matching "${search}"`:"");
+      const suggestions=$("mapSearchMatches");
+      if(!search){
+        suggestions.innerHTML="";
+      }else if(!matched.length){
+        suggestions.innerHTML='<p class="note">No matching attractions in the selected clusters. Try showing more clusters or a different search.</p>';
+      }else{
+        suggestions.innerHTML=matched.slice(0,16).map(entry=>
+          `<button type="button" class="map-result" data-attraction-index="${entry.index}">`+
+          `<strong>${safe(entry.point.name)}</strong><small>${safe(entry.point.city)} · `+
+          `${entry.point.cluster===-1?"Noise":entry.point.cluster===null?"Unclustered":"Cluster "+entry.point.cluster}</small></button>`
+        ).join("")+(matched.length>16?`<p class="note">Showing the first 16 of ${matched.length} matches. Refine your search to narrow the results.</p>`:"");
+      }
+    }
+    controls.querySelector(".cluster-controls").addEventListener("change",updateVisibleMarkers);
+    $("attractionSearch").addEventListener("input",updateVisibleMarkers);
+    $("showMapClusters").addEventListener("click",()=>{
+      allCheckboxes().forEach(el=>{el.checked=true;});
+      $("mapTopOnly").checked=false;
+      updateVisibleMarkers();
+    });
+    $("hideMapClusters").addEventListener("click",()=>{
+      allCheckboxes().forEach(el=>{el.checked=false;});
+      $("mapTopOnly").checked=false;
+      updateVisibleMarkers();
+    });
+    $("mapSearchMatches").addEventListener("click",event=>{
+      const button=event.target.closest("[data-attraction-index]");
+      if(!button)return;
+      const entry=markers[Number(button.dataset.attractionIndex)];
+      if(!entry || !mapInstance.hasLayer(entry.marker))return;
+      mapInstance.setView(entry.marker.getLatLng(),Math.max(mapInstance.getZoom(),12),{animate:true});
+      entry.marker.openPopup();
+    });
+    updateVisibleMarkers();
   }
 
   async function runPlanner(){
