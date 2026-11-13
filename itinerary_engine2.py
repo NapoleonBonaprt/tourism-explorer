@@ -71,12 +71,34 @@ def build_itinerary(places, city, weather_df, n_stops=4):
 # Weather helpers (so the Streamlit app can import everything from here)
 # ---------------------------------------------------------------
 def get_daily_weather(lat, lon, days=7):
+    """Fetch Open-Meteo forecast, with a proxy fallback for restricted hosting.
+
+    PythonAnywhere free ASGI workers may not inherit the proxy variables that
+    Bash consoles receive. In that case their direct outbound connection is
+    refused, even when the domain is allowed. Try its documented HTTP proxy
+    only after a connection failure, keeping other deployments unchanged.
+    """
+    import os
     import requests
-    r = requests.get("https://api.open-meteo.com/v1/forecast", params={
+
+    url = "https://api.open-meteo.com/v1/forecast"
+    params = {
         "latitude": lat, "longitude": lon, "forecast_days": days,
         "daily": "temperature_2m_max,precipitation_sum,wind_speed_10m_max",
-        "timezone": "auto"}, timeout=30)
-    return r.json()["daily"]
+        "timezone": "auto",
+    }
+    try:
+        response = requests.get(url, params=params, timeout=15)
+    except requests.exceptions.ConnectionError:
+        proxy = os.environ.get(
+            "WANDERCLIMATE_WEATHER_PROXY", "http://proxy.server:3128"
+        )
+        response = requests.get(
+            url, params=params, timeout=20,
+            proxies={"http": proxy, "https": proxy},
+        )
+    response.raise_for_status()
+    return response.json()["daily"]
 
 def classify_day(temp_max, precip_mm, wind_kmh):
     if precip_mm >= 2 or temp_max >= 35 or wind_kmh >= 40:
