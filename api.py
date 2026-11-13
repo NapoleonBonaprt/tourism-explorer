@@ -158,6 +158,75 @@ def get_country_summary() -> List[Dict]:
 
 
 @app.get(
+    "/climate/search",
+    tags=["Climate Intelligence"],
+    summary="Search historical climate records by city and optional country",
+)
+def search_city_climate(
+    city: str = Query(..., min_length=1),
+    country: Optional[str] = Query(None),
+) -> List[Dict]:
+  """Find exact city climate records; disambiguate cities shared by countries."""
+  path = find_file("city_month_features.csv")
+  if not path:
+    raise HTTPException(
+        status_code=404, detail="Dataset 'city_month_features.csv' not found."
+    )
+
+  try:
+    df = pd.read_csv(path)
+  except (OSError, pd.errors.ParserError) as exc:
+    raise HTTPException(
+        status_code=500, detail="Unable to read the climate dataset."
+    ) from exc
+
+  if not {"City", "Country_dest"}.issubset(df.columns):
+    raise HTTPException(
+        status_code=500, detail="City or Country_dest column missing from climate dataset."
+    )
+
+  city_name = city.strip()
+  if not city_name:
+    raise HTTPException(status_code=422, detail="City must not be blank.")
+
+  city_mask = (
+      df["City"].astype("string").str.strip().str.casefold()
+      .eq(city_name.casefold()).fillna(False)
+  )
+  country_name = country.strip() if country is not None else ""
+  if country_name:
+    country_mask = (
+        df["Country_dest"].astype("string").str.strip().str.casefold()
+        .eq(country_name.casefold()).fillna(False)
+    )
+    result = df.loc[city_mask & country_mask]
+  else:
+    result = df.loc[city_mask]
+    countries = (
+        result["Country_dest"].dropna().astype(str).str.strip()
+        .loc[lambda values: values != ""].unique().tolist()
+    )
+    if len({name.casefold() for name in countries}) > 1:
+      raise HTTPException(
+          status_code=409,
+          detail={
+              "message": "This city exists in multiple countries. Specify country.",
+              "countries": sorted(countries),
+          },
+      )
+
+  if result.empty:
+    raise HTTPException(
+        status_code=404,
+        detail=f"No climate records found for city '{city_name}'"
+        + (f" in '{country_name}'." if country_name else "."),
+    )
+
+  # Retain all historical years; the frontend calculates one average per month.
+  return result.to_dict(orient="records")
+
+
+@app.get(
     "/climate/city/{city_name}",
     tags=["Climate Intelligence"],
     summary="Get Real-Time Monthly Climate Profiles for a City",
