@@ -211,6 +211,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 :root[data-theme="dark"] .tiles{filter:brightness(.6)}
 :root[data-theme="dark"] .panel svg text{fill:var(--mut)}
 :root[data-theme="dark"] .panel svg line{stroke:var(--line)}
+.dashboard-cta a{display:inline-block;padding:8px 15px;border:1px solid #ffffffaa;border-radius:11px;text-decoration:none;background:#ffffff18}
 /* Phone layout: keep header actions aligned and make city controls consistent. */
 @media(max-width:600px){
   .wrap{padding-inline:18px}
@@ -330,7 +331,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
         <datalist id="availableCities"></datalist>
         <button class="go" onclick="explore()">Find best time</button>
       </div>
-      <div class="chips" id="chips"></div><p class="lead dashboard-cta" style="font-size:15px;margin-top:18px"><a href="overview.html" style="display:inline-block;padding:8px 15px;border:1px solid #ffffffaa;border-radius:11px;text-decoration:none;background:#ffffff18">Explore the full Analytics Dashboard</a></p>
+      <div class="chips" id="chips"></div><p class="lead dashboard-cta" style="font-size:15px;margin-top:18px"><a href="overview.html">Explore the full Analytics Dashboard</a></p>
     </div>
   </div>
 </section>
