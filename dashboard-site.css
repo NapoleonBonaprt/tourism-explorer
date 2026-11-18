@@ -113,6 +113,21 @@ tbody tr:last-child td{border-bottom:0}
 :root[data-theme="dark"]{color-scheme:dark;--deep:#edf5ee;--paper:#101a18;--mut:#b9c9bf;--line:#354b42;--white:#1d2e28;--moss:#5f9771;--sage:#83b8b8;--ochre:#e5bf66;--shadow:0 8px 26px rgba(0,0,0,.18)}
 :root[data-theme="dark"] .topbar{background:#14241d;border-bottom:1px solid #34493b}
 :root[data-theme="dark"] .brand{color:#f0f6f0}
+/* The mobile nav must not use --deep: that token becomes pale text in dark mode. */
+@media(max-width:760px){
+  :root[data-theme="dark"] .primary-nav{
+    background:#14241d;
+    color:#edf5ee;
+    border-top:1px solid #34493b;
+    box-shadow:0 16px 28px rgba(0,0,0,.45);
+  }
+  :root[data-theme="dark"] .primary-nav a{color:#edf5ee}
+  :root[data-theme="dark"] .primary-nav a:hover,
+  :root[data-theme="dark"] .primary-nav a[aria-current="page"]{
+    background:rgba(255,255,255,.1);
+    color:#e5bf66;
+  }
+}
 :root[data-theme="dark"] .card,
 :root[data-theme="dark"] .attraction-card,
 :root[data-theme="dark"] .day-card{background:#1b2b26;color:#edf5ee}
