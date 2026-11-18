@@ -522,11 +522,50 @@
     } catch(e){status(e.message,"error");}
   }
   const buildPayload=()=>({city:$("adaptiveCity").value,days:+$("adaptiveDays").value,stops:+$("adaptiveStops").value});
+  const weatherCache=new Map();
+  async function browserForecast(city, days) {
+    const filters=await getFilters();
+    const point=filters.adaptive_coordinates?.[city];
+    if(!point || !Number.isFinite(point.latitude) || !Number.isFinite(point.longitude)) return null;
+    const key=city+"|"+days;
+    const cached=weatherCache.get(key);
+    if(cached && Date.now()-cached.time<10*60*1000) return cached.forecast;
+    const url=new URL("https://api.open-meteo.com/v1/forecast");
+    Object.entries({
+      latitude:point.latitude,longitude:point.longitude,forecast_days:days,
+      daily:"temperature_2m_max,precipitation_sum,wind_speed_10m_max",timezone:"auto"
+    }).forEach(([k,v])=>url.searchParams.set(k,String(v)));
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),15000);
+    try {
+      const response=await fetch(url.toString(),{signal:controller.signal,cache:"no-store"});
+      if(!response.ok) throw new Error("Open-Meteo HTTP "+response.status);
+      const data=(await response.json()).daily;
+      const fields=["time","temperature_2m_max","precipitation_sum","wind_speed_10m_max"];
+      if(!data || fields.some(field=>!Array.isArray(data[field]) || data[field].length!==days))
+        throw new Error("Incomplete Open-Meteo forecast");
+      if(fields.slice(1).some(field=>data[field].some(n=>typeof n!=="number" || !Number.isFinite(n))))
+        throw new Error("Invalid Open-Meteo weather values");
+      const forecast=Object.fromEntries(fields.map(field=>[field,data[field]]));
+      weatherCache.set(key,{time:Date.now(),forecast});
+      return forecast;
+    } finally {clearTimeout(timeout);}
+  }
+  async function adaptivePayload(payload) {
+    try {
+      const forecast=await browserForecast(payload.city,payload.days);
+      return forecast ? {...payload,forecast} : payload;
+    } catch(e) {
+      console.warn("Browser weather retrieval failed; trying server-side forecast.",e);
+      return payload;
+    }
+  }
   async function buildAdaptive(){
     const button=$("adaptiveBuild");busy(button,true);status("Getting the forecast and building the route...");
     try{
+      const payload=await adaptivePayload(buildPayload());
       const d=await request("adaptive/build",{},{
-        method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(buildPayload())
+        method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)
       });
       adaptiveState=d;adaptiveMapFilter="all";renderAdaptive();
       status("");
@@ -697,9 +736,11 @@
       }))
     }));
     try{
+      const payload=await adaptivePayload({city:adaptiveState.city,days:adaptiveState.days.length,
+        stops:adaptiveState.requested_stops,previous,simulate_storm:storm,storm_date:storm?weatherDate:null,rain_mm:rain});
       const d=await request("adaptive/recheck",{},{
         method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({city:adaptiveState.city,days:adaptiveState.days.length,stops:adaptiveState.requested_stops,previous,simulate_storm:storm,storm_date:storm?weatherDate:null,rain_mm:rain})
+        body:JSON.stringify(payload)
       });
       adaptiveState=d;
       renderAdaptive();
