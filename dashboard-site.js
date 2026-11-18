@@ -526,7 +526,8 @@
   async function browserForecast(city, days) {
     const filters=await getFilters();
     const point=filters.adaptive_coordinates?.[city];
-    if(!point || !Number.isFinite(point.latitude) || !Number.isFinite(point.longitude)) return null;
+    if(!point || !Number.isFinite(point.latitude) || !Number.isFinite(point.longitude))
+      throw new Error("Cannot locate the selected city for live forecast. Refresh the page and try again.");
     const key=city+"|"+days;
     const cached=weatherCache.get(key);
     if(cached && Date.now()-cached.time<10*60*1000) return cached.forecast;
@@ -539,7 +540,8 @@
     const timeout=setTimeout(()=>controller.abort(),15000);
     try {
       const response=await fetch(url.toString(),{signal:controller.signal,cache:"no-store"});
-      if(!response.ok) throw new Error("Open-Meteo HTTP "+response.status);
+      if(response.status===429) throw new Error("Open-Meteo is limiting weather requests on your network (HTTP 429). Please try again later.");
+      if(!response.ok) throw new Error("Open-Meteo forecast request failed (HTTP "+response.status+").");
       const data=(await response.json()).daily;
       const fields=["time","temperature_2m_max","precipitation_sum","wind_speed_10m_max"];
       if(!data || fields.some(field=>!Array.isArray(data[field]) || data[field].length!==days))
@@ -552,13 +554,10 @@
     } finally {clearTimeout(timeout);}
   }
   async function adaptivePayload(payload) {
-    try {
-      const forecast=await browserForecast(payload.city,payload.days);
-      return forecast ? {...payload,forecast} : payload;
-    } catch(e) {
-      console.warn("Browser weather retrieval failed; trying server-side forecast.",e);
-      return payload;
-    }
+    // The hosted server shares a rate-limited outbound proxy on free hosting.
+    // Show the original browser error rather than silently retrying via that proxy.
+    const forecast=await browserForecast(payload.city,payload.days);
+    return {...payload,forecast};
   }
   async function buildAdaptive(){
     const button=$("adaptiveBuild");busy(button,true);status("Getting the forecast and building the route...");
