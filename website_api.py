@@ -96,10 +96,21 @@ def filters() -> dict:
     attractions = frame("attractions_with_clusters.csv") if (ROOT / "python files" / "processed_data" / "attractions_with_clusters.csv").exists() else places
     full = frame("full.csv")
     country_col = select_col(full, ["Country", "Country_dest", "country"])
+    # The browser can fetch Open-Meteo directly, avoiding hosting providers'
+    # shared outbound IP limits. Use the same city centroids as the planner.
+    centers = places[["City", "Latitude", "Longitude"]].copy()
+    centers["Latitude"] = pd.to_numeric(centers["Latitude"], errors="coerce")
+    centers["Longitude"] = pd.to_numeric(centers["Longitude"], errors="coerce")
+    centers = centers.dropna(subset=["City", "Latitude", "Longitude"])
+    centers = centers.groupby("City")[["Latitude", "Longitude"]].mean()
     return {
         "climate_cities": country_cities(climate),
         "planner_cities": country_cities(attractions),
         "adaptive_cities": sorted(places["City"].dropna().astype(str).unique().tolist()),
+        "adaptive_coordinates": {
+            str(city): {"latitude": float(row["Latitude"]), "longitude": float(row["Longitude"])}
+            for city, row in centers.iterrows()
+        },
         "map_countries": sorted(full[country_col].dropna().astype(str).str.strip().unique().tolist()),
         "months": MONTHS,
     }
@@ -268,10 +279,19 @@ def planner(country: str = Query(..., min_length=1),
             "tip": "Ideal spot for photography and cultural exploration during your selected travel month!"}
 
 
+class BrowserForecast(BaseModel):
+    """Daily Open-Meteo observations sent by the visitor's browser."""
+    time: list[str] = Field(min_length=1, max_length=7)
+    temperature_2m_max: list[float] = Field(min_length=1, max_length=7)
+    precipitation_sum: list[float] = Field(min_length=1, max_length=7)
+    wind_speed_10m_max: list[float] = Field(min_length=1, max_length=7)
+
+
 class BuildRequest(BaseModel):
     city: str = Field(min_length=1, max_length=100)
     days: int = Field(default=5, ge=1, le=7)
     stops: int = Field(default=3, ge=2, le=5)
+    forecast: BrowserForecast | None = None
 
 
 class SavedStop(BaseModel):
@@ -296,7 +316,7 @@ class RecheckRequest(BuildRequest):
     rain_mm: float = Field(default=8, ge=0, le=50)
 
 
-def weather_for(city: str, days: int):
+def weather_for(city: str, days: int, supplied_forecast: BrowserForecast | None = None):
     places = frame("places_with_clusters.csv")
     names = places["City"].dropna().astype(str).unique()
     canonical = next((x for x in names if x.casefold() == city.strip().casefold()), None)
@@ -307,17 +327,32 @@ def weather_for(city: str, days: int):
     lon = pd.to_numeric(within["Longitude"], errors="coerce").mean()
     if pd.isna(lat) or pd.isna(lon):
         raise HTTPException(status_code=503, detail="City coordinates are unavailable.")
-    try:
-        forecast = get_daily_weather(float(lat), float(lon), days)
-        data = add_day_type(pd.DataFrame(forecast))
-        if len(data) != days:
-            raise ValueError("Incomplete forecast")
-    except Exception as exc:
-        logging.getLogger(__name__).exception(
-            "Open-Meteo forecast failure for city=%r, days=%d, coordinates=(%.4f, %.4f)",
-            canonical, days, float(lat), float(lon),
-        )
-        raise HTTPException(status_code=503, detail="Live forecast unavailable from Open-Meteo. Try again later.") from exc
+    if supplied_forecast is not None:
+        # Open-Meteo supports CORS. Browser-side fetching avoids shared proxy IPs
+        # that can be rate-limited on free hosting. Never use client coordinates.
+        forecast = supplied_forecast.model_dump()
+        if any(len(values) != days for values in forecast.values()):
+            raise HTTPException(status_code=422, detail="Forecast must contain exactly the requested number of days.")
+        try:
+            from datetime import date
+            parsed = [date.fromisoformat(value) for value in forecast["time"]]
+            if len(set(parsed)) != days:
+                raise ValueError("Duplicate forecast dates")
+            data = add_day_type(pd.DataFrame(forecast))
+        except (ValueError, TypeError) as exc:
+            raise HTTPException(status_code=422, detail="Invalid daily forecast supplied.") from exc
+    else:
+        try:
+            forecast = get_daily_weather(float(lat), float(lon), days)
+            data = add_day_type(pd.DataFrame(forecast))
+            if len(data) != days:
+                raise ValueError("Incomplete forecast")
+        except Exception as exc:
+            logging.getLogger(__name__).exception(
+                "Open-Meteo forecast failure for city=%r, days=%d, coordinates=(%.4f, %.4f)",
+                canonical, days, float(lat), float(lon),
+            )
+            raise HTTPException(status_code=503, detail="Live forecast unavailable from Open-Meteo. Try again later.") from exc
     return places, canonical, data
 
 
@@ -354,7 +389,7 @@ def serialise_plan(plan, weather, city, n_stops, places, changes=None):
 
 @router.post("/adaptive/build")
 def adaptive_build(request: BuildRequest):
-    places, city, weather = weather_for(request.city, request.days)
+    places, city, weather = weather_for(request.city, request.days, request.forecast)
     try:
         plan = build_itinerary(places, city, weather, request.stops)
         return serialise_plan(plan, weather, city, request.stops, places)
@@ -364,7 +399,7 @@ def adaptive_build(request: BuildRequest):
 
 @router.post("/adaptive/recheck")
 def adaptive_recheck(request: RecheckRequest):
-    places, city, weather = weather_for(request.city, request.days)
+    places, city, weather = weather_for(request.city, request.days, request.forecast)
     if request.simulate_storm:
         if request.storm_date not in set(weather["time"].astype(str)):
             raise HTTPException(status_code=422, detail="Select a day within the current forecast.")
