@@ -274,9 +274,20 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
     font-size:16px;
   }
   .go{display:block;width:100%;min-height:48px;text-align:center;padding:11px 16px}
-  .chips{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:14px}
-  .chips button{width:100%;min-width:0;min-height:44px;padding:8px 10px;text-align:center}
-  .chips button:last-child:nth-child(odd){grid-column:1/-1;width:calc(50% - 5px);justify-self:center}
+  /* Five quick-city actions: balanced 3 + 2 layout without an orphan button. */
+  .chips{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;margin-top:14px}
+  .chips button{
+    grid-column:span 2;
+    width:100%;
+    min-width:0;
+    min-height:46px;
+    padding:9px 6px;
+    font-size:14px;
+    text-align:center;
+    white-space:nowrap;
+  }
+  .chips button:nth-child(4),
+  .chips button:nth-child(5){grid-column:span 3}
   .dashboard-cta{display:block;margin-top:18px;text-align:center}
   .dashboard-cta a{
     display:block;
