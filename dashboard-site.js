@@ -122,6 +122,9 @@
     const dark = document.documentElement.dataset.theme === "dark";
     const ink = dark ? "#d9e7dc" : "#435c4b";
     const grid = dark ? "#3b5145" : "#e8eee9";
+    // Keep chart labels in the same font as dashboard headings and controls.
+    Chart.defaults.font.family = "'Figtree', system-ui, sans-serif";
+    Chart.defaults.font.size = 12;
     Chart.defaults.color = ink;
     Chart.defaults.borderColor = grid;
     for (const canvas of document.querySelectorAll("canvas")) {
