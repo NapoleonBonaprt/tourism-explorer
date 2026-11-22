@@ -563,6 +563,53 @@ body:not(.is-home) .mobile-nav-toggle:hover {
   .is-home .hero header .logo img,.topbar .brand img,
   .is-home .hero header .logo::after,.topbar .brand::after {transition:none}
 }
+/* The homepage switches to results mode after a city search:
+   keep exactly the same integrated wordmark header there as well. */
+body:not(.is-home) .hero header {
+  background:linear-gradient(110deg,rgba(12,45,49,.92),rgba(17,62,65,.89));
+  color:#eefaf5;
+  border:1px solid rgba(168,219,209,.23);
+  box-shadow:0 12px 34px rgba(7,35,42,.20);
+  backdrop-filter:blur(18px);
+}
+body:not(.is-home) .hero header .logo {
+  position:relative;min-width:0;max-width:100%;padding:0;
+  background:transparent;border:0;box-shadow:none;
+}
+body:not(.is-home) .hero header .logo img {
+  display:block;width:clamp(180px,19.5vw,244px);
+  height:auto;max-width:100%;aspect-ratio:450/86;object-fit:contain;
+  border:0;border-radius:8px;box-shadow:none;transform:none;
+  transition:filter .2s ease;
+}
+body:not(.is-home) .hero header .logo::after {
+  content:"";position:absolute;height:2px;bottom:-7px;left:8px;right:8px;
+  border-radius:2px;background:linear-gradient(90deg,#5cd1c6,#f6c76b);
+  transform:scaleX(0);transform-origin:left;transition:transform .22s ease;
+}
+body:not(.is-home) .hero header .logo:hover img {filter:brightness(1.08) saturate(1.05);transform:none;box-shadow:none}
+body:not(.is-home) .hero header .logo:hover::after,
+body:not(.is-home) .hero header .logo:focus-visible::after {transform:scaleX(1)}
+body:not(.is-home) .hero header nav a {color:#e1f0ec}
+body:not(.is-home) .hero header nav a:hover {color:#ffe1a0;background:rgba(255,255,255,.10)}
+body:not(.is-home) .hero header .hero-theme-toggle,
+body:not(.is-home) .hero header .home-menu-toggle {
+  color:#edfaf4;background:rgba(218,251,240,.10);border:1px solid rgba(199,242,228,.28)
+}
+body:not(.is-home) .hero header #api {color:#d5f5ea;background:rgba(175,231,213,.12)}
+:root[data-theme="dark"] body:not(.is-home) .hero header {
+  background:linear-gradient(115deg,rgba(13,46,57,.96),rgba(20,64,69,.94));
+  border-color:rgba(155,220,211,.28);
+}
+@media(max-width:900px){
+  body:not(.is-home) .hero header .logo img {width:clamp(175px,25vw,220px)}
+}
+@media(max-width:600px){
+  body:not(.is-home) .hero header .logo img {width:clamp(150px,43vw,194px);height:auto}
+}
+@media(max-width:360px){
+  body:not(.is-home) .hero header .logo img {width:clamp(140px,41vw,161px);height:auto}
+}
 @media print{
   #vista-progress,.vista-dock{display:none!important}
   .vista-reveal.vista-ready{opacity:1!important;filter:none!important;transform:none!important}
