@@ -84,11 +84,20 @@
       planner: "Plan your itinerary",
       adaptive: "Build an itinerary",
     }[PAGE];
+    const sectionLabel = {
+      overview: "The bigger picture",
+      climate: "Understand the seasons",
+      explorer: "Discover the destinations",
+      planner: "Plan with confidence",
+      adaptive: "Weather-aware travel"
+    }[PAGE];
     $("dashboardRoot").innerHTML = `<div class="page-heading">
-      <span class="eyebrow">WanderClimate / Tourism intelligence</span>
-      <h1>${safe(title[PAGE][0])}</h1>
-      <p class="lead">${safe(title[PAGE][1])}</p>
-      <a class="page-cta" href="#pageContent">${safe(actionText)}</a>
+      <div class="page-heading__content">
+        <span class="eyebrow">${safe(sectionLabel)}</span>
+        <h1>${safe(title[PAGE][0])}</h1>
+        <p class="lead">${safe(title[PAGE][1])}</p>
+        <a class="page-cta" href="#pageContent">${safe(actionText)}</a>
+      </div>
     </div>
       <div class="status" id="pageStatus" role="status" aria-live="polite" hidden></div>
       <div id="pageContent"></div>`;
