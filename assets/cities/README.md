@@ -1,63 +1,52 @@
-# City photos for WanderClimate
+# WanderClimate city images
 
-Add your city photos to this folder. Use a JPEG file with the exact name listed below (lowercase, hyphen between words).
+The site now has **a local visual for all 41 supported destinations**. Images
+are served from `assets/cities/` by the FastAPI static-files mount, so normal
+page rendering does not depend on Unsplash or Pexels being available.
 
-**Example:** `Alexandria` uses `assets/cities/alexandria.jpg`.
+## Image format and naming
 
-The website checks for the local JPEG first. If it is not available, existing remote city photos (where configured) or the illustrated card will be used instead. The search covers the cities in the climate dataset independently of whether an image exists.
+City names use lowercase, hyphen-separated slugs (for example,
+`rio-de-janeiro.jpg`).
 
-For a good result, use landscape images at least 1200 pixels wide, optimized for web (preferably below 500 KB when practical). Do not rename images with an extra extension such as `.jpg.jpg`.
+- **35 destinations:** locally stored JPEG photographs named `<city>.jpg`.
+- **6 destinations:** original, city-specific SVG landmark illustrations named
+  `<city>.svg`: **Cairo, Lisbon, Madrid, Paris, Rome, Tokyo**. These are
+  **illustrations, not photographic representations**. They cover five formerly
+  missing local photographs and the incorrect Madrid image.
+- The former `madrid.jpg` was identical to `barcelona.jpg` and has been removed.
+  Madrid now displays `madrid.svg` instead of a wrong-city photograph.
+- Existing optional external photographic fallbacks remain available when
+  configured, but the local image is always preferred.
 
-## Photos to add (36)
+The frontend selects the appropriate local extension in
+`index.html` (`cityImageCandidates`). If a file fails to load, existing
+remote fallbacks (where configured) or the built-in card illustration remain
+available. The site must never show a broken-image icon in the city cards.
 
-| City | Filename |
-| --- | --- |
-| Alexandria | `alexandria.jpg` |
-| Amman | `amman.jpg` |
-| Amsterdam | `amsterdam.jpg` |
-| Aswan | `aswan.jpg` |
-| Athens | `athens.jpg` |
-| Bangkok | `bangkok.jpg` |
-| Barcelona | `barcelona.jpg` |
-| Beijing | `beijing.jpg` |
-| Berlin | `berlin.jpg` |
-| Budapest | `budapest.jpg` |
-| Buenos Aires | `buenos-aires.jpg` |
-| Cape Town | `cape-town.jpg` |
-| Dubai | `dubai.jpg` |
-| Florence | `florence.jpg` |
-| Istanbul | `istanbul.jpg` |
-| Kuala Lumpur | `kuala-lumpur.jpg` |
-| Kyoto | `kyoto.jpg` |
-| London | `london.jpg` |
-| Los Angeles | `los-angeles.jpg` |
-| Luxor | `luxor.jpg` |
-| Madrid | `madrid.jpg` |
-| Marrakesh | `marrakesh.jpg` |
-| Mexico City | `mexico-city.jpg` |
-| Munich | `munich.jpg` |
-| New York | `new-york.jpg` |
-| Prague | `prague.jpg` |
-| Rio de Janeiro | `rio-de-janeiro.jpg` |
-| Riyadh | `riyadh.jpg` |
-| San Francisco | `san-francisco.jpg` |
-| Seoul | `seoul.jpg` |
-| Shanghai | `shanghai.jpg` |
-| Singapore | `singapore.jpg` |
-| Sydney | `sydney.jpg` |
-| Toronto | `toronto.jpg` |
-| Venice | `venice.jpg` |
-| Vienna | `vienna.jpg` |
+## Validate files after cloning or deploying
 
-## Original cities with remote fallback photos
+From the repository root:
 
-`cairo.jpg`, `lisbon.jpg`, `paris.jpg`, `rome.jpg`, `tokyo.jpg`.
+```bash
+python scripts/verify_city_assets.py
+```
 
-You can add those local images later as well, without changing HTML.
+The script checks the presence of all 41 primary image files, validates SVG
+syntax, checks JPEG start/end markers, and performs a full image integrity
+check if Pillow is installed.
 
-## Local workflow
+If a local photograph has been corrupted or was only partially downloaded,
+remove the incomplete local copy and run `git restore assets/cities/<filename>`
+from a complete clone or fetch a fresh copy from GitHub. Avoid copying
+`*.jpg` files through a text editor.
 
-1. Create or open this folder in your local project.
-2. Put JPEG images in this folder with the exact filenames above.
-3. Refresh the webpage with `Ctrl + Shift + R`.
-4. When ready, commit and push the photos to GitHub to make them available in deployed copies.
+## Replacing an illustration with a photograph
+
+1. Add a properly licensed local JPEG named `<slug>.jpg` (web-optimized
+   landscape format, preferably 1200px or wider and under 500KB when practical).
+2. Remove that slug from `LOCAL_CITY_ILLUSTRATIONS` in `index.html`.
+3. Verify, commit and push the image and HTML changes together.
+4. Deploy with `git pull --ff-only origin main` and reload the website.
+
+Keep attribution and licensing records for any third-party photographs.
