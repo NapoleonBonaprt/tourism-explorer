@@ -1,6 +1,6 @@
 /* WanderClimate Interactive Map Discovery
  * Progressive enhancement: all original city buttons work without Leaflet.
- * Marker coordinates are obtained from the existing /website/filters API.
+ * Marker coordinates are obtained from /website/destination-coordinates.
  */
 (() => {
   "use strict";
@@ -14,7 +14,7 @@
     map: null,
     layer: null,
     tileLayer: null,
-    tileFallback: false,
+    tilesUnavailable: false,
     coords: new Map(),
     matching: [],
     markers: new Map(),
@@ -41,26 +41,27 @@
   }
 
   function makeTiles() {
-    if (!state.map || !window.L) return;
-    const dark = document.documentElement.getAttribute("data-theme") === "dark";
-    const url = dark
-      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-      : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-    if (state.tileLayer) state.map.removeLayer(state.tileLayer);
-    const layer = L.tileLayer(url, {
-      maxZoom: 19, subdomains: "abcd",
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    // CARTO now requires an API key and returns watermarked tiles without one.
+    // Use the public OSM standard basemap with visible attribution instead.
+    // Dark styling is handled by CSS on the tile pane, without reloading tiles.
+    if (!state.map || !window.L || state.tileLayer) return;
+    const layer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      minZoom: 0,
+      maxZoom: 19,
+      tileSize: 256,
+      detectRetina: false,
+      updateWhenIdle: true,
+      keepBuffer: 2,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     state.tileLayer = layer;
-    state.tileFallback = false;
+    let tileFailures = 0;
     layer.on("tileerror", () => {
-      if (state.tileFallback || state.tileLayer !== layer) return;
-      state.tileFallback = true;
-      state.map.removeLayer(layer);
-      state.tileLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(state.map);
+      tileFailures++;
+      if (tileFailures >= 4 && !state.tilesUnavailable) {
+        state.tilesUnavailable = true;
+        setStatus("Map imagery is temporarily unavailable. City markers and the directory still work.");
+      }
     });
     layer.addTo(state.map);
   }
@@ -116,8 +117,10 @@
     } else if (!bounds.length) {
       setStatus("Map locations are unavailable for these cities. Use the directory.");
     } else {
-      setStatus("Showing " + bounds.length + " of " + state.matching.length
-        + " matching cities on the map. Select a pin to explore.");
+      if (!state.tilesUnavailable) {
+        setStatus("Showing " + bounds.length + " of " + state.matching.length
+          + " matching cities on the map. Select a pin to explore.");
+      }
       if (bounds.length === 1) {
         state.map.setView(bounds[0], 6, {animate: false});
       } else {
@@ -170,12 +173,6 @@
       L.control.zoom({position: "bottomright"}).addTo(state.map);
       state.layer = L.layerGroup().addTo(state.map);
       makeTiles();
-      const themeObserver = new MutationObserver(mutations => {
-        if (mutations.some(mutation => mutation.attributeName === "data-theme")) makeTiles();
-      });
-      themeObserver.observe(document.documentElement, {
-        attributes: true, attributeFilter: ["data-theme"]
-      });
       window.addEventListener("resize", () => state.map.invalidateSize(), {passive: true});
       setStatus("Loading city locations...");
       loadCoordinates();
