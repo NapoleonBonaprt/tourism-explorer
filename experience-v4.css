@@ -391,6 +391,52 @@ thead th{background:#eaf7f2;color:#22655e}
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .vista-reveal.vista-ready{opacity:1;transform:none;filter:none}
 }
+/* Premium WanderClimate illustrated wordmark: one logo, no duplicate text. */
+.hero header .logo,
+.topbar .brand{
+  display:inline-flex;
+  align-items:center;
+  flex:0 1 auto;
+  min-width:0;
+  max-width:100%;
+  padding:0;
+  text-decoration:none;
+  background:transparent;
+  line-height:1;
+}
+.hero header .logo img,
+.topbar .brand img{
+  display:block;
+  width:clamp(183px,19.5vw,255px);
+  height:auto;
+  max-width:100%;
+  aspect-ratio:450/86;
+  object-fit:contain;
+  border:1px solid rgba(231,197,128,.39);
+  border-radius:10px;
+  box-shadow:0 6px 18px rgba(7,41,43,.18);
+  transition:transform .22s ease,box-shadow .22s ease;
+}
+.hero header .logo:hover img,
+.topbar .brand:hover img{
+  transform:translateY(-2px);
+  box-shadow:0 10px 22px rgba(7,41,43,.25);
+}
+@media(max-width:900px){
+  .hero header .logo img,.topbar .brand img{width:clamp(180px,25vw,228px)}
+}
+@media(max-width:600px){
+  .hero header .logo img,.topbar .brand img{
+    width:clamp(157px,44vw,198px);
+    border-radius:8px;
+  }
+  .hero header .logo{min-width:0;grid-column:1;grid-row:1}
+  .topbar .brand{min-width:0}
+  .topbar .nav-wrap{gap:8px}
+}
+@media(max-width:360px){
+  .hero header .logo img,.topbar .brand img{width:clamp(145px,42vw,165px)}
+}
 @media print{
   #vista-progress,.vista-dock{display:none!important}
   .vista-reveal.vista-ready{opacity:1!important;filter:none!important;transform:none!important}
