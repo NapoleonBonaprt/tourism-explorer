@@ -313,7 +313,8 @@ tbody tr:hover{background:#f4f7f1}
 :root[data-theme="dark"] .primary-nav a[aria-current="page"]{background:#2a4836;color:#f4cc78}
 :root[data-theme="dark"] .theme-toggle,
 :root[data-theme="dark"] .mobile-nav-toggle{background:#284335;color:#f0f7ec;border-color:#45654e}
-:root[data-theme="dark"] .page-heading{background:linear-gradient(115deg,#1b3b2e,#254734);border:1px solid #3b5a43}
+/* Preserve the destination photo supplied by experience-v4.css in dark mode. */
+:root[data-theme="dark"] .page-heading{background-color:#173b43;border:1px solid #3b5a43}
 :root[data-theme="dark"] .page-heading .lead{color:#d6e5d8}
 :root[data-theme="dark"] .card,
 :root[data-theme="dark"] .attraction-card,
