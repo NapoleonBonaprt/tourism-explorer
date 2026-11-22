@@ -28,7 +28,9 @@ CITY_SLUGS = (
     "rome", "san-francisco", "seoul", "shanghai", "singapore",
     "sydney", "tokyo", "toronto", "venice", "vienna",
 )
-ILLUSTRATED_SLUGS = {"cairo", "lisbon", "madrid", "paris", "rome", "tokyo"}
+# The five cities below intentionally use their original remote photos.
+REMOTE_PHOTO_SLUGS = {"cairo", "lisbon", "paris", "rome", "tokyo"}
+ILLUSTRATED_SLUGS = {"madrid"}
 
 
 def main() -> int:
@@ -41,6 +43,9 @@ def main() -> int:
     duplicates: list[tuple[str, str]] = []
 
     for slug in CITY_SLUGS:
+        if slug in REMOTE_PHOTO_SLUGS:
+            print(f"REMOTE  {slug} (original external photographic source)")
+            continue
         ext = "svg" if slug in ILLUSTRATED_SLUGS else "jpg"
         name = f"{slug}.{ext}"
         path = CITY_DIR / name
@@ -92,7 +97,7 @@ def main() -> int:
             print(issue)
         return 1
 
-    print(f"\nPASS: {len(CITY_SLUGS)} / {len(CITY_SLUGS)} city visuals verified")
+    print(f"\nPASS: {len(CITY_SLUGS) - len(REMOTE_PHOTO_SLUGS)} local visuals verified; {len(REMOTE_PHOTO_SLUGS)} original remote photographic sources configured")
     return 0
 
 
