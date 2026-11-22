@@ -264,6 +264,7 @@ body.is-home .tiles{display:none}
 .home-intro{padding:23px 0 0}
 .home-proof{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;padding:15px 20px;background:#fff;border:1px solid var(--ui-border);border-radius:14px;box-shadow:0 8px 25px rgba(19,62,63,.04)}
 .home-proof span{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:#416861}
+.home-proof span strong{font:850 18px/1.1 'Figtree',sans-serif;color:#0a7d77}
 .home-proof span::before{content:"";width:7px;height:7px;background:#16a693;border-radius:50%}
 .home-proof span+span{border-left:1px solid var(--ui-border);padding-left:15px}
 .quick-cities{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;padding:31px 0 6px}
@@ -315,6 +316,7 @@ footer{color:#627878}
 :root[data-theme="dark"] .hero header{background:rgba(13,45,56,.96);border-color:#426b70}
 :root[data-theme="dark"] .home-proof,:root[data-theme="dark"] #browse,:root[data-theme="dark"] .tool-card,:root[data-theme="dark"] #how .steps div,:root[data-theme="dark"] .browse-place,:root[data-theme="dark"] .key span,:root[data-theme="dark"] .box,:root[data-theme="dark"] .units,:root[data-theme="dark"] .mt{background:#22434e;border-color:#375e64;color:#eaf7f3}
 :root[data-theme="dark"] .home-proof span{color:#d1e8e1}
+:root[data-theme="dark"] .home-proof span strong{color:#8fdfcd}
 :root[data-theme="dark"] .quick-cities h2,:root[data-theme="dark"] .sec h2,:root[data-theme="dark"] .tool-card h3,:root[data-theme="dark"] #how .steps h3{color:#f2faf7}
 :root[data-theme="dark"] .tool-card p,:root[data-theme="dark"] #how .steps p,:root[data-theme="dark"] .sec .sub{color:#c5d9d5}
 :root[data-theme="dark"] .chips button{background:#2c535c;border-color:#4c7475;color:#f1faf5}
