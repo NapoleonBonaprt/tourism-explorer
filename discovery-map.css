@@ -15,8 +15,18 @@
   min-width:0;border-radius:21px;overflow:hidden;border:1px solid #dce9e4;
   background:#fff;box-shadow:0 14px 42px rgba(12,58,60,.075);
 }
-.discovery-map-panel{position:relative;min-height:530px;background:#e2efec}
-.discovery-map{height:530px;width:100%;z-index:0;background:#e2efec}
+.discovery-map-panel{position:relative;min-height:530px;background:#e5eef1}
+.discovery-map{
+  height:530px;width:100%;z-index:0;
+  background:#e5eef1;
+  isolation:isolate;
+}
+.discovery-map .leaflet-tile-pane{
+  /* Native OSM colors keep roads, boundaries, labels and sea visible. */
+  filter:none!important;
+}
+.discovery-map .leaflet-tile{image-rendering:auto}
+.discovery-map .leaflet-container{background:#e5eef1}
 .discovery-map-title{
   position:absolute;z-index:600;left:17px;top:17px;right:17px;display:flex;
   align-items:center;justify-content:space-between;gap:10px;pointer-events:none;
@@ -111,6 +121,35 @@
   background:#f18869;transform:scale(1.23);
   box-shadow:0 3px 15px rgba(3,50,52,.36),0 0 0 3px rgba(241,136,105,.25);
 }
+/* Numbered city groups keep the world view tidy. Click to zoom in. */
+.wc-map-cluster{background:transparent;border:0;cursor:pointer}
+.wc-map-cluster span{
+  display:grid;place-items:center;
+  width:43px;height:43px;
+  border:3px solid #fff;border-radius:50%;
+  background:#0b827b;color:#fff;
+  font:850 14px/1 'Figtree',system-ui,sans-serif;
+  box-shadow:0 4px 18px rgba(4,52,57,.3),0 0 0 4px rgba(19,144,136,.18);
+  transition:transform .18s ease,background-color .18s ease;
+}
+.wc-map-cluster:hover span{
+  transform:scale(1.08);background:#d46e4e;
+}
+.discovery-map .leaflet-control-zoom{
+  border:1px solid rgba(40,104,101,.21);
+  border-radius:10px;overflow:hidden;
+  box-shadow:0 7px 23px rgba(15,52,59,.16);
+}
+.discovery-map .leaflet-control-zoom a{
+  background:#fff;color:#0f625e;
+  border-bottom-color:#dfe9e6;
+}
+.discovery-map .leaflet-control-zoom a:hover{
+  color:#064844;background:#e8f5f0;
+}
+.discovery-map .leaflet-control-attribution{
+  background:rgba(255,255,255,.88);color:#375e64;
+}
 .discovery-map .leaflet-control-zoom a{color:#205e58}
 .discovery-map .leaflet-control-attribution{font-size:9px}
 :root[data-theme="dark"] #browse.discovery-section{background:transparent;border:0;box-shadow:none}
@@ -118,12 +157,13 @@
 :root[data-theme="dark"] .discovery-directory{
   background:#20434c;border-color:#42676c;box-shadow:0 16px 42px rgba(1,18,27,.18);
 }
-:root[data-theme="dark"] .discovery-map{background:#24444b}
-/* Transform only the OSM raster tiles. Keep markers, controls and labels natural. */
-:root[data-theme="dark"] .discovery-map .leaflet-tile-pane{
-  filter:invert(.89) hue-rotate(175deg) saturate(.52) brightness(.81) contrast(.92);
+/* In dark mode, retain a full-color map with readable streets and labels.
+   Dark mode applies to the panel, search and controls, not the map raster. */
+:root[data-theme="dark"] .discovery-map,
+:root[data-theme="dark"] .discovery-map .leaflet-container{
+  background:#e5eef1;
 }
-.discovery-map .leaflet-tile-pane{transition:filter .22s ease}
+:root[data-theme="dark"] .discovery-map .leaflet-tile-pane{filter:none!important}
 :root[data-theme="dark"] .discovery-directory-heading h3{color:#edf9f4}
 :root[data-theme="dark"] .discovery-directory-heading p,
 :root[data-theme="dark"] .discovery-directory .browse-count{color:#bfd9d2}
@@ -175,5 +215,5 @@
   .discovery-directory{padding:14px}
 }
 @media(prefers-reduced-motion:reduce){
-  .wc-map-pin span,.discovery-directory .browse-place{transition:none}
+  .wc-map-pin span,.wc-map-cluster span,.discovery-directory .browse-place{transition:none}
 }
