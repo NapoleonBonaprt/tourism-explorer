@@ -251,7 +251,7 @@ h1,h2,h3{letter-spacing:-.035em}
 .go{min-height:45px;border-radius:10px;background:#0a7c78;color:#fff;padding-inline:20px}
 .go:hover{background:#076864;filter:none}
 .hero-assurance{color:#d8ece7;font-size:12px;margin-top:13px;line-height:1.5}
-.hero-visual{width:min(100%,425px);justify-self:end;min-width:0}
+.hero-visual{position:relative;width:min(100%,425px);justify-self:end;min-width:0}
 .spotlight{position:relative;min-height:415px;overflow:hidden;border:1px solid rgba(255,255,255,.35);border-radius:25px;box-shadow:0 24px 58px rgba(1,21,31,.25);background:#155a5a}
 .spotlight img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .spotlight::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 28%,rgba(5,22,30,.80))}
@@ -259,7 +259,7 @@ h1,h2,h3{letter-spacing:-.035em}
 .spotlight-caption span{color:#f8d89a;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:800}
 .spotlight-caption strong{color:#fff;font:800 34px/1.2 'Fraunces',Georgia,serif}
 .spotlight-caption small{color:#e0efed;font-size:13px}
-.spotlight-note{position:absolute;z-index:3;top:22px;left:-15px;padding:10px 13px;border:1px solid rgba(255,255,255,.45);border-radius:11px;background:rgba(255,255,255,.93);box-shadow:0 10px 22px rgba(10,45,40,.17);font-size:12px;font-weight:800;color:#1b5049}
+
 body.is-home .tiles{display:none}
 .home-intro{padding:23px 0 0}
 .home-proof{display:flex;justify-content:center;flex-wrap:wrap;gap:14px;padding:15px 20px;background:#fff;border:1px solid var(--ui-border);border-radius:14px;box-shadow:0 8px 25px rgba(19,62,63,.04)}
