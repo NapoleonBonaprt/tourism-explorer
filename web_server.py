@@ -1,4 +1,4 @@
-"""Public WanderClimate application for Render.
+"""Public WanderClimate application for PythonAnywhere and Render.
 
 Serve a strict set of frontend files, city artwork and the original FastAPI
 endpoints on a single HTTPS origin. Never expose the project's CSV/Notebook
@@ -23,6 +23,8 @@ PUBLIC_FILES = (
     "adaptive.html",
     "dashboard-site.css",
     "dashboard-site.js",
+    "experience-v4.css",
+    "experience-v4.js",
     "theme.js",
     "trip-pdf.js",
 )
