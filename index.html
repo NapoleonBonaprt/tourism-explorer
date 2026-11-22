@@ -312,13 +312,18 @@ const CITY_PHOTOS = {
   "vienna": [], // Vienna
 };
 
-// Local city images: put a JPEG in assets/cities/ using the city name in
-// lowercase, with spaces replaced by hyphens (e.g. rio-de-janeiro.jpg).
-// Local images take priority. The original remote photos remain fallbacks.
+// All 41 destinations are backed by local artwork. Some cities did not have
+// a committed JPEG, so we include an illustrated SVG for those destinations.
+// Madrid's existing JPEG accidentally duplicates Barcelona's photograph;
+// prefer Madrid's dedicated city illustration instead.
+// Remote photos are optional fallbacks, never required for the UI to render.
+const LOCAL_CITY_ILLUSTRATIONS = new Set(["cairo", "lisbon", "madrid", "paris", "rome", "tokyo"]);
 function cityImageCandidates(city) {
   const key = String(city || "").trim().toLowerCase();
   const slug = key.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  return slug ? [`assets/cities/${slug}.jpg`, ...(CITY_PHOTOS[key] || [])] : [];
+  if (!slug) return [];
+  const extension = LOCAL_CITY_ILLUSTRATIONS.has(slug) ? "svg" : "jpg";
+  return [`assets/cities/${slug}.${extension}`, ...(CITY_PHOTOS[key] || [])];
 }
 function tryNextCityCardPhoto(img) {
   const images = cityImageCandidates(img.dataset.city);
@@ -337,7 +342,13 @@ function setHero(key) {
   (function next(i) {
     if (i >= list.length) return;
     const img = new Image();
-    img.onload = () => { if (hero.dataset.key === key) { hero.style.backgroundImage = `url('${list[i]}')`; hero.classList.add("has-photo"); } };
+    img.onload = () => {
+      if (!img.naturalWidth || !img.naturalHeight) { next(i + 1); return; }
+      if (hero.dataset.key === key) {
+        hero.style.backgroundImage = `url("${list[i]}")`;
+        hero.classList.add("has-photo");
+      }
+    };
     img.onerror = () => next(i + 1);
     img.src = list[i];
   })(0);
