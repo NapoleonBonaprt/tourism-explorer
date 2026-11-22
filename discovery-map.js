@@ -20,7 +20,8 @@
     matching: [],
     markers: new Map(),
     initStarted: false,
-    coordsReady: false
+    coordsReady: false,
+    recentering: false
   };
 
   const normalize = value => String(value || "").trim().toLocaleLowerCase();
@@ -166,15 +167,22 @@
       return;
     }
     if (recenter) {
-      const bounds = L.latLngBounds(locations.map(item => item.position));
-      if (locations.length === 1) {
-        state.map.setView(locations[0].position, 9, {animate: false});
-      } else {
-        state.map.fitBounds(bounds.pad(.16), {
-          maxZoom: 7,
-          animate: false,
-          padding: [38, 38]
-        });
+      // fitBounds can fire zoomend synchronously; avoid two marker layers
+      // being built at once while the new viewport is being established.
+      state.recentering = true;
+      try {
+        const bounds = L.latLngBounds(locations.map(item => item.position));
+        if (locations.length === 1) {
+          state.map.setView(locations[0].position, 9, {animate: false});
+        } else {
+          state.map.fitBounds(bounds.pad(.16), {
+            maxZoom: 7,
+            animate: false,
+            padding: [38, 38]
+          });
+        }
+      } finally {
+        state.recentering = false;
       }
     }
 
@@ -246,7 +254,7 @@
       });
       L.control.zoom({position: "bottomright"}).addTo(state.map);
       state.layer = L.layerGroup().addTo(state.map);
-      state.map.on("zoomend", () => paintMarkers(false));
+      state.map.on("zoomend", () => { if (!state.recentering) paintMarkers(false); });
       makeTiles();
 
       // Leaflet must recalculate the viewport if its panel changes size.
