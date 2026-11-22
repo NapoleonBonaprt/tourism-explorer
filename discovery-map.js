@@ -193,7 +193,7 @@
         // Open at a readable Eastern Mediterranean / Egypt regional scale,
         // rather than forcing the visitor to click a clustered number.
         center: [33, 29],
-        zoom: window.matchMedia("(max-width: 760px)").matches ? 4.25 : 5,
+        zoom: window.matchMedia("(max-width: 760px)").matches ? 4.5 : 5.5,
         zoomSnap: .25,
         minZoom: 2,
         maxZoom: 14,
