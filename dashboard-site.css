@@ -210,22 +210,17 @@ h1,h2,h3{letter-spacing:-.033em}
 .mobile-nav-toggle{display:none}
 .theme-toggle:hover,.mobile-nav-toggle:hover{background:rgba(255,255,255,.18)}
 .shell{max-width:1230px;padding:32px 25px 75px}
-/* Destination photography gets a near-homepage-sized canvas.
-   Keep the compact information panel anchored at the bottom left. */
 .page-heading{
-  position:relative;isolation:isolate;display:flex;align-items:flex-end;
-  justify-content:flex-start;
-  min-height:clamp(500px,72svh,640px);
-  margin-bottom:24px;
+  position:relative;isolation:isolate;display:flex;align-items:center;
+  justify-content:flex-start;min-height:325px;margin-bottom:24px;
   padding:clamp(19px,3.2vw,38px);
   border:1px solid rgba(32,82,81,.15);border-radius:23px;
   overflow:hidden;color:#fff;box-shadow:0 18px 42px rgba(11,51,60,.11);
-  background-color:#114853;background-size:cover;background-repeat:no-repeat;
-  background-position:center 45%;
+  background-color:#114853;background-size:cover;background-position:center 45%;
 }
 .page-heading__content{
   position:relative;z-index:1;min-width:0;
-  width:min(660px,65%);max-width:100%;
+  width:min(730px,68%);max-width:100%;
   padding:clamp(22px,3vw,34px);
   border:1px solid rgba(233,251,246,.22);border-radius:17px;
   background:linear-gradient(115deg,rgba(7,35,46,.77),rgba(12,43,50,.62));
@@ -361,9 +356,8 @@ tbody tr:hover{background:#f5faf7}
   .nav-actions{gap:5px}
   .theme-toggle [data-theme-label]{display:none}
   .page-heading{
-    min-height:clamp(400px,65svh,540px);
-    padding:13px;border-radius:18px;
-    background-position:center 43%;
+    min-height:264px;padding:13px;border-radius:18px;
+    background-position:center;
   }
   .page-heading__content{
     width:100%;padding:20px;
@@ -388,10 +382,6 @@ tbody tr:hover{background:#f5faf7}
   :root[data-theme=dark] .vista-dock a{color:#bcded6}
   :root[data-theme=dark] .vista-dock a[aria-current=page]{background:#315c60;color:#bffff0}
   .footer{padding-bottom:90px}
-}
-@media(min-width:761px) and (max-width:1080px){
-  .page-heading{min-height:clamp(460px,68svh,570px)}
-  .page-heading__content{width:min(600px,76%)}
 }
 @media(max-width:390px){.brand img{width:142px}.summary-grid{gap:7px}.metric strong{font-size:23px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.vista-reveal.vista-ready{opacity:1;transform:none}}
