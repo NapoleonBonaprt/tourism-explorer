@@ -284,6 +284,10 @@ thead th{background:#eaf7f2;color:#22655e}
 :root[data-theme="dark"] .metric:nth-child(3n) strong{color:#c2deff}
 :root[data-theme="dark"] .metric span{color:#d1e9e4}
 :root[data-theme="dark"] .filters{background:rgba(35,83,89,.8);border-color:#4a7778}
+:root[data-theme="dark"] .field label{color:#d9efea}
+:root[data-theme="dark"] .page-heading{background-color:#173c45}
+:root[data-theme="dark"] .page-heading .eyebrow{color:#ffe6a4}
+:root[data-theme="dark"] .page-heading h1,:root[data-theme="dark"] .page-heading .lead{color:#fff}
 :root[data-theme="dark"] .field select,:root[data-theme="dark"] .field input{background:#2c5861;color:#f0fff9;border-color:#4f8280}
 :root[data-theme="dark"] .btn{background:linear-gradient(110deg,#087e85,#0c6e75);color:#fff}
 :root[data-theme="dark"] .btn.secondary{background:#315f60;color:#e6f8f0;border-color:#4e8a80}
