@@ -307,6 +307,142 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
   #api{grid-row:2;grid-column:2;justify-self:end}
   .hero-copy{padding-top:38px}
 }
+/* Travel Discovery redesign: editorial hero, actionable CTAs, accessible mobile navigation */
+.home-menu-toggle{display:none}
+.hero header{
+  position:relative;z-index:20;flex-wrap:nowrap;
+  margin-top:16px;padding:11px 16px;
+  border:1px solid rgba(255,255,255,.42);border-radius:16px;
+  color:#1a322b;background:rgba(250,250,248,.95);
+  box-shadow:0 16px 36px rgba(4,18,17,.14);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+}
+.hero header .logo{font-size:22px;color:inherit}
+.hero header nav{gap:clamp(10px,1.4vw,23px);align-items:center;font-size:13px}
+.hero header nav a{padding:9px 2px;white-space:nowrap;border-bottom:0;opacity:.8}
+.hero header nav a:hover{opacity:1;color:#7a5400}
+.hero header nav a.nav-plan{padding:10px 15px;border-radius:9px;opacity:1;background:#e9b44f;color:#213225;font-weight:800}
+.hero header .hero-theme-toggle{color:#223c32;background:rgba(27,58,44,.06);border-color:rgba(36,65,51,.25)}
+.hero header .hero-theme-toggle:hover{background:rgba(27,58,44,.14)}
+.hero header #api{color:#254638;background:rgba(36,83,58,.08);white-space:nowrap}
+.is-home .hero{min-height:min(98svh,900px);background-color:#18384c}
+.is-home .hero-in{min-height:inherit}
+.is-home .hero.has-photo:before{
+  background:linear-gradient(180deg,rgba(9,32,50,.38) 0%,rgba(12,34,59,.54) 38%,rgba(7,25,40,.72) 100%);
+}
+.is-home .hero-copy{
+  margin:auto 0;padding:clamp(66px,10vh,130px) 0 clamp(36px,6vh,70px);
+  text-align:center;display:flex;flex-direction:column;align-items:center;
+}
+.hero-badge{
+  display:inline-block;padding:8px 17px;border:1px solid rgba(237,194,104,.45);
+  color:#ffe0a0;background:rgba(37,62,60,.55);border-radius:99px;
+  text-transform:uppercase;letter-spacing:.085em;font-size:12px;font-weight:800;
+}
+.is-home .hero h1{
+  font-size:clamp(46px,6.4vw,93px);line-height:1.06;max-width:15ch;
+  margin:22px auto 0;text-wrap:balance;text-shadow:0 4px 24px rgba(0,0,0,.25);
+}
+.is-home .hero h1 em{font-style:normal;color:#f0bf5d}
+.is-home .hero .lead{
+  font-size:clamp(16px,1.7vw,20px);max-width:58ch;
+  margin:21px auto 25px;color:rgba(255,255,255,.94);text-wrap:balance;
+}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:0 0 23px}
+.hero-ctas a{
+  min-height:48px;padding:12px 22px;border-radius:10px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;text-decoration:none;transition:transform .18s,background .18s;
+}
+.hero-ctas a:hover{transform:translateY(-2px)}
+.hero-cta-primary{color:#1e2d23;background:#efbd59;box-shadow:0 12px 20px rgba(0,0,0,.14)}
+.hero-cta-secondary{color:#fff;border:1px solid rgba(255,255,255,.68);background:rgba(255,255,255,.13);backdrop-filter:blur(8px)}
+.is-home .search{width:min(100%,640px);margin:0 auto;background:rgba(255,255,255,.96);border-radius:14px}
+.is-home .search input{color:#1e332b}
+.is-home .go{background:#efbd59;color:#192b22}
+.is-home .chips{justify-content:center;margin-top:15px}
+.is-home .chips button{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.53);color:#fff}
+.is-home .chips button:hover{background:rgba(255,255,255,.85);color:#173024}
+.is-home .dashboard-cta a{border-color:rgba(255,255,255,.42);background:rgba(0,0,0,.13)}
+.home-stats{
+  margin:31px auto 0;width:min(100%,660px);
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;
+  border-top:1px solid rgba(255,255,255,.24);padding-top:20px;
+}
+.home-stats div{display:flex;flex-direction:column;align-items:center;gap:1px}
+.home-stats strong{font:800 clamp(26px,3.4vw,39px)/1.2 'Figtree',sans-serif;color:#fff}
+.home-stats span{font-size:12px;color:rgba(255,255,255,.82)}
+:root[data-theme="dark"] .hero header{background:rgba(21,37,32,.96);border-color:rgba(255,255,255,.16);color:#f3f7f2}
+:root[data-theme="dark"] .hero header nav a:hover{color:#f0bf5d}
+:root[data-theme="dark"] .hero header .hero-theme-toggle{color:#f3f7f2;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+:root[data-theme="dark"] .hero header #api{color:#d3e9d7;background:rgba(255,255,255,.10)}
+:root[data-theme="dark"] .is-home .search{background:rgba(26,46,39,.96)}
+:root[data-theme="dark"] .is-home .search input{color:#fff}
+:root[data-theme="dark"] .is-home .go{color:#182a20;background:#efbd59}
+@media(max-width:1050px){
+  .hero header nav{gap:10px;font-size:12px}
+  .hero header nav a.nav-plan{padding:9px 10px}
+}
+@media(max-width:900px){
+  .hero header{position:relative;gap:10px}
+  .hero header .home-menu-toggle{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:58px;height:40px;padding:0 10px;
+    border-radius:9px;border:1px solid rgba(28,61,43,.22);
+    background:rgba(22,58,42,.07);color:inherit;font-size:13px;font-weight:800;
+  }
+  .hero header nav.only-home,.hero header nav.only-results{display:none}
+  .hero header nav.only-home.open,.hero header nav.only-results.open{
+    display:flex;flex-direction:column;align-items:stretch;
+    position:absolute;top:calc(100% + 8px);left:0;right:0;
+    z-index:30;gap:3px;padding:12px;border-radius:13px;
+    background:#fcfcf7;color:#1a322b;border:1px solid #dce6dc;
+    box-shadow:0 18px 28px rgba(0,0,0,.25);
+  }
+  .hero header nav.open a{display:block;padding:12px 14px;font-size:15px;border-radius:8px}
+  .hero header nav.open a:hover{background:#f0f3e9}
+  .hero header nav.open a.nav-plan{background:#e9b44f;text-align:center}
+  :root[data-theme="dark"] .hero header nav.open{background:#1a2f27;border-color:#3c5947;color:#f5fbf5}
+  :root[data-theme="dark"] .hero header nav.open a:hover{background:#2a4a39}
+  :root[data-theme="dark"] .hero header .home-menu-toggle{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.28)}
+}
+@media(max-width:600px){
+  .hero header{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;padding:10px 11px;margin-top:10px;border-radius:13px}
+  .hero header .logo{grid-column:1;grid-row:1;font-size:clamp(17px,4.8vw,21px);white-space:nowrap;gap:6px}
+  .hero header .logo img{width:29px;height:29px}
+  .hero header .header-actions{display:flex;grid-column:2;grid-row:1;gap:5px;align-items:center;justify-self:end;flex-wrap:nowrap}
+  .hero header .hero-theme-toggle{width:38px;height:38px;min-height:38px;padding:0;grid-column:auto;grid-row:auto}
+  .hero header .home-menu-toggle{min-width:50px;height:38px;font-size:12px;padding:0 7px}
+  .hero header #api{
+    display:inline-flex;grid-row:auto;grid-column:auto;min-height:22px;
+    width:22px;max-width:22px;height:22px;padding:0;
+    align-items:center;justify-content:center;border-radius:50%;
+  }
+  .hero header #api b{width:9px;height:9px;flex:0 0 9px}
+  .hero header #api span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .is-home .hero{min-height:max(100svh,780px)}
+  .is-home .hero-copy{margin:auto 0;padding:66px 0 40px;text-align:center}
+  .is-home .hero h1{font-size:clamp(42px,11vw,64px);margin-top:18px;max-width:14ch}
+  .is-home .hero .lead{font-size:16px;line-height:1.6;margin:15px auto 21px}
+  .hero-badge{font-size:10px;padding:7px 10px}
+  .hero-ctas{width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:16px}
+  .hero-ctas a{font-size:12px;padding:11px 7px;min-width:0;min-height:46px}
+  .is-home .search{max-width:100%;padding:8px;background:rgba(255,255,255,.96)}
+  .is-home .search input{min-height:44px;font-size:16px;padding:8px 12px}
+  .is-home .chips{gap:8px;margin-top:12px}
+  .is-home .chips button{font-size:13px;min-height:39px;padding:7px 5px}
+  .home-stats{margin-top:20px;padding-top:14px}
+  .home-stats strong{font-size:24px}
+  .home-stats span{font-size:10px;line-height:1.3}
+  .is-home .dashboard-cta{margin-top:11px!important}
+  .is-home .dashboard-cta a{font-size:12px;padding:10px 12px}
+}
+@media(max-width:360px){
+  .hero header .logo{grid-column:1;grid-row:1;font-size:16px}
+  .hero header .header-actions{grid-column:2;grid-row:1}
+  .hero-copy{padding-top:40px}
+}
+
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -326,23 +462,35 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
         <img src="assets/wanderclimate-logo.svg" width="40" height="40" alt="" aria-hidden="true">
         WanderClimate
       </a>
-      <nav class="only-home"><a href="#places">Places</a><a href="#browse">All destinations</a><a href="#analytics">Dashboard</a><a href="#how">How it works</a></nav>
-      <nav class="only-results"><a href="#hero" onclick="goHome();return false">All places</a><a href="#results">Best time</a><a href="#months">Month by month</a><a href="#trend">Sun and rain</a><a href="overview.html">Analytics Dashboard</a></nav>
+      <nav class="only-home" id="homeNav" aria-label="Main navigation"><a href="#places">Destinations</a><a href="#browse">Explore cities</a><a href="#analytics">Climate insights</a><a href="#how">How it works</a><a class="nav-plan" href="adaptive.html">Plan Your Trip</a></nav>
+      <nav class="only-results" id="resultNav" aria-label="Results navigation"><a href="#hero" onclick="goHome();return false">All places</a><a href="#results">Best time</a><a href="#months">Month by month</a><a href="#trend">Sun and rain</a><a href="overview.html">Dashboard</a></nav>
       <div class="header-actions">
+        <button type="button" class="home-menu-toggle" id="homeMenuToggle" aria-controls="homeNav" aria-expanded="false" aria-label="Open navigation">Menu</button>
         <button type="button" class="theme-toggle hero-theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode"><span data-theme-icon aria-hidden="true">☾</span><span data-theme-label>Dark mode</span></button>
         <div id="api" class="off"><b></b><span>checking server</span></div>
       </div>
     </header>
 
     <div class="hero-copy">
-      <h1 id="heroCity">Find the best month to visit.</h1>
-      <p class="lead" id="heroLead">Search a city to see which months have the best sun, warmth and rain.</p>
+      <span class="hero-badge only-home">✦ Your climate-smart travel companion</span>
+      <h1 id="heroCity">Discover the world at the <em>perfect time.</em></h1>
+      <p class="lead" id="heroLead">Find your next destination, discover its best travel season, and plan unforgettable days with confidence.</p>
+      <div class="hero-ctas only-home">
+        <a class="hero-cta-primary" href="#places">Explore Destinations</a>
+        <a class="hero-cta-secondary" href="adaptive.html">Plan Your Trip</a>
+      </div>
       <div class="search">
         <input id="city" list="availableCities" placeholder="Search a city: Lisbon, Cairo, Tokyo…" autocomplete="off" aria-label="City name">
         <datalist id="availableCities"></datalist>
         <button class="go" onclick="explore()">Find best time</button>
       </div>
-      <div class="chips" id="chips"></div><p class="lead dashboard-cta" style="font-size:15px;margin-top:18px"><a href="overview.html">Explore the full Analytics Dashboard</a></p>
+      <div class="chips" id="chips"></div>
+      <div class="home-stats only-home" aria-label="Platform capabilities">
+        <div><strong>12</strong><span>Months of climate insights</span></div>
+        <div><strong>5</strong><span>Explorer &amp; planning tools</span></div>
+        <div><strong>1–7</strong><span>Days of adaptive trips</span></div>
+      </div>
+      <p class="lead dashboard-cta" style="font-size:15px;margin-top:18px"><a href="overview.html">Explore the full Analytics Dashboard</a></p>
     </div>
   </div>
 </section>
@@ -557,7 +705,7 @@ function tryNextCityCardPhoto(img) {
 function setHero(key) {
   const hero = $("hero");
   hero.dataset.key = key; hero.classList.remove("has-photo"); hero.style.backgroundImage = "";
-  const list = cityImageCandidates(key);
+  const list = cityImageCandidates(key || "dubai");
   (function next(i) {
     if (i >= list.length) return;
     const img = new Image();
@@ -578,12 +726,31 @@ function cancelClimateRequest() {
   }
   return climateRequestNumber;
 }
+function closeHomeMenu() {
+  document.querySelectorAll("header nav.open").forEach(nav => nav.classList.remove("open"));
+  const toggle = document.getElementById("homeMenuToggle");
+  if (toggle) {
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Open navigation");
+  }
+}
+document.getElementById("homeMenuToggle").addEventListener("click", () => {
+  const toggle = document.getElementById("homeMenuToggle");
+  const nav = document.getElementById(document.body.classList.contains("is-home") ? "homeNav" : "resultNav");
+  const opened = nav.classList.toggle("open");
+  toggle.setAttribute("aria-controls", nav.id);
+  toggle.setAttribute("aria-expanded", String(opened));
+  toggle.setAttribute("aria-label", opened ? "Close navigation" : "Open navigation");
+});
+document.querySelectorAll("header nav a").forEach(link => link.addEventListener("click", closeHomeMenu));
+document.addEventListener("keydown", event => { if (event.key === "Escape") closeHomeMenu(); });
 function goHome() {
   cancelClimateRequest();
   document.body.classList.add("is-home");
   applyTheme("default"); STATE = null; setHero("");
-  $("heroCity").textContent = "Find the best month to visit.";
-  $("heroLead").textContent = "Search a city to see which months have the best sun, warmth and rain.";
+  $("heroCity").innerHTML = "Discover the world at the <em>perfect time.</em>";
+  $("heroLead").textContent = "Find your next destination, discover its best travel season, and plan unforgettable days with confidence.";
+  closeHomeMenu();
   $("city").value = "";
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
@@ -939,6 +1106,7 @@ async function explore(cityArg, initial = false, selectedCountry = "") {
   STATE = null;
 
   document.body.classList.remove("is-home");
+  closeHomeMenu();
   applyTheme(themeKey(country));
   $("heroCity").textContent = name;
   $("heroLead").textContent = `Checking climate information for ${name}…`;
