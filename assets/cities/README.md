@@ -14,9 +14,9 @@ The website supports **41 destinations**. Photo selection is implemented in
   `barcelona.jpg`** in this repository. This is intentional to reproduce
   the previously used Madrid image exactly, not a corrected Madrid photo.
 
-Six SVG artwork files created during the temporary fallback experiment may
-still exist in this folder, but the site no longer uses them for these
-six cities. They are not original photographs.
+The six temporary SVG illustrations from the fallback experiment were
+removed. The frontend uses the five original external photo sources and the
+restored original Madrid JPEG.
 
 ## Validate local image integrity
 
