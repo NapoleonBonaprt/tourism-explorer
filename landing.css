@@ -33,7 +33,7 @@ button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
 .scene{position:absolute;inset:0;width:100%;height:100%}
 .hero.has-photo .scene{display:none}
 .hero.has-photo:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--deep) 60%,transparent),color-mix(in srgb,var(--deep) 15%,transparent) 40%,color-mix(in srgb,var(--deep) 85%,transparent))}
-.tiles{height:40px;background:var(--tile) 0 0/40px 40px repeat-x;border-top:3px solid var(--moss);border-bottom:3px solid var(--moss)}
+
 .hero-in{position:relative;display:flex;flex-direction:column;width:100%;padding-bottom:44px}
 header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 0;flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:10px;font:800 24px 'Fraunces',serif;text-decoration:none}
@@ -161,7 +161,7 @@ body.is-home .only-results,body:not(.is-home) .only-home{display:none}
 .country-option:hover,.country-option:focus-visible{background:#FFE1D8}
 .loading{color:var(--mut);padding:40px 0}
 
-footer{margin-top:56px;border-top:1px solid var(--line)}
+footer{margin-top:56px;border-top:1px solid var(--line);background:transparent}
 footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-top:26px;padding-bottom:44px;color:var(--mut);font-size:14px}
 
 @media(max-width:900px){
@@ -198,7 +198,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 :root[data-theme="dark"] .msg{background:#35221f;color:#ffcebf;border-color:#7b4a3f}
 :root[data-theme="dark"] .units button[aria-pressed="true"]{background:#416f4c;color:#fff}
 :root[data-theme="dark"] .verdict{background:#294635}
-:root[data-theme="dark"] .tiles{filter:brightness(.6)}
+
 :root[data-theme="dark"] .panel svg text{fill:var(--mut)}
 :root[data-theme="dark"] .panel svg line{stroke:var(--line)}
 .dashboard-cta a{display:inline-block;padding:8px 15px;border:1px solid #ffffffaa;border-radius:11px;text-decoration:none;background:#ffffff18}
@@ -438,4 +438,16 @@ footer{color:#627878}
 #vista-progress{position:fixed;left:0;top:0;width:100%;height:3px;z-index:9999;pointer-events:none;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#13a59b,#f3c877,#ee8868)}
 .vista-reveal.vista-ready{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
 .vista-reveal.vista-visible{opacity:1;transform:none}
+
+/* Same clean section boundary as the homepage and the results hero. */
+footer{
+  position:relative;
+  margin-top:clamp(36px,5vw,58px);
+  border-top:1px solid var(--ui-border);
+  background:transparent;
+  box-shadow:none;
+}
+footer .wrap{align-items:center;padding-top:28px;padding-bottom:38px}
+:root[data-theme="dark"] footer{border-color:#3e666a}
+@media(max-width:720px){footer .wrap{padding-top:22px;padding-bottom:30px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.vista-reveal.vista-ready{opacity:1;transform:none}}
