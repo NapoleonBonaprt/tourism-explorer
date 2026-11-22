@@ -23,6 +23,7 @@ PUBLIC_FILES = (
     "adaptive.html",
     "dashboard-site.css",
     "dashboard-site.js",
+    "landing.css",
     "experience-v4.css",
     "experience-v4.js",
     "theme.js",
