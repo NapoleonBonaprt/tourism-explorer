@@ -443,6 +443,213 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
   .hero-copy{padding-top:40px}
 }
 
+/* WanderClimate v2: cohesive editorial travel interface */
+:root{
+  --brand-forest:#13392e;
+  --brand-ink:#16352c;
+  --brand-gold:#e8b85c;
+  --brand-cream:#f8f7f2;
+  --brand-border:#e4e8df;
+}
+body{background:var(--brand-cream)}
+.wrap{max-width:1200px}
+.is-home .hero{
+  min-height:720px;
+  max-height:none;
+  border-radius:0 0 28px 28px;
+  overflow:visible;
+  background-color:#153a43;
+}
+.is-home .hero-in{min-height:720px;padding-bottom:0}
+.is-home .hero.has-photo:before{
+  background:linear-gradient(180deg,rgba(6,26,35,.35) 0%,rgba(8,29,35,.49) 42%,rgba(8,28,34,.75) 100%);
+  pointer-events:none;border-radius:inherit;
+}
+.is-home .hero-copy{
+  padding:90px 0 58px;
+  max-width:850px;
+  margin:auto;
+  gap:0;
+}
+.is-home .hero h1{
+  max-width:16ch;
+  font-size:clamp(53px,6.7vw,91px);
+  letter-spacing:-.046em;
+  line-height:1.05;
+  margin-top:18px;
+}
+.is-home .hero h1 em{color:#f3c66c}
+.is-home .hero .lead{
+  max-width:49ch;
+  line-height:1.6;
+  font-size:clamp(17px,1.85vw,21px);
+  margin:21px auto 25px;
+}
+.hero-badge{
+  color:#fff0c7;
+  background:rgba(13,45,46,.45);
+  border:1px solid rgba(243,198,108,.55);
+  text-transform:none;
+  letter-spacing:.04em;
+}
+.hero-ctas{margin:0 0 26px;gap:13px}
+.hero-ctas a{min-height:49px;padding:12px 24px;border-radius:11px}
+.hero-cta-primary{background:var(--brand-gold);color:#19332a}
+.hero-cta-secondary{background:rgba(255,255,255,.12)}
+.is-home .search{
+  width:min(100%,620px);padding:7px;border:1px solid rgba(255,255,255,.55);
+  border-radius:15px;box-shadow:0 20px 42px rgba(0,0,0,.18);
+}
+.is-home .search input{font-size:16px}
+.is-home .go{min-height:49px;border-radius:10px;background:var(--brand-gold)}
+.hero-assurance{margin:13px 0 0;color:rgba(255,255,255,.88);font-size:12px;letter-spacing:.015em}
+body.is-home .tiles{display:none}
+.is-home .hero header{
+  border-radius:13px;padding:12px 19px;
+  margin-top:20px;background:rgba(252,252,248,.96);
+}
+.is-home .hero header nav a.nav-plan{background:var(--brand-gold)}
+.home-intro{
+  padding:0 0 18px;position:relative;margin-top:-1px;
+}
+.home-proof{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;
+  padding:27px 34px;margin:24px 0 20px;
+  border-radius:20px;border:1px solid var(--brand-border);background:#fff;
+  box-shadow:0 14px 45px rgba(18,53,45,.06);
+}
+.home-proof div{display:flex;flex-direction:column;gap:3px;align-items:center;text-align:center}
+.home-proof div+div{border-left:1px solid #e7eae4}
+.home-proof strong{font:800 33px/1.1 'Fraunces',Georgia,serif;color:var(--brand-forest)}
+.home-proof span{font-size:12px;color:#60736a}
+.quick-cities{
+  padding:19px 0 8px;display:flex;justify-content:space-between;
+  align-items:center;gap:20px;flex-wrap:wrap;
+}
+.section-kicker{display:block;color:#a47726;font-size:11px;line-height:1.5;letter-spacing:.15em;font-weight:800;margin-bottom:9px}
+.quick-cities h2{font-size:clamp(21px,2.6vw,28px);color:var(--brand-ink)}
+.quick-cities .chips{display:flex;margin:0;gap:8px;flex-wrap:wrap;justify-content:flex-start}
+.quick-cities .chips button{
+  width:auto;min-height:39px;min-width:0;padding:8px 17px;border-radius:99px;
+  color:var(--brand-forest);background:#fff;border:1px solid #dbe6dd;
+  font-size:13px;font-weight:700;backdrop-filter:none;
+}
+.quick-cities .chips button:hover{background:#e6efea;border-color:#aac9b5}
+.quick-cities .chips button:last-child:nth-child(odd){grid-column:auto;width:auto;justify-self:auto}
+.sec{padding:64px 0 0}
+.section-heading{display:flex;align-items:end;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.sec h2{font-size:clamp(30px,3.8vw,43px);color:var(--brand-ink);line-height:1.15}
+.sec .sub{color:#69776e;font-size:15px;line-height:1.65;margin-top:10px;max-width:67ch}
+.section-link{font-size:13px;font-weight:800;color:var(--brand-forest);text-decoration:none;border-bottom:1px solid #c6b188;padding:10px 0}
+.section-link:hover{color:#946116}
+.places{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:26px}
+.place{
+  min-height:320px;padding:22px 23px;border-radius:20px;
+  box-shadow:0 12px 32px rgba(15,40,31,.10);transition:transform .2s,box-shadow .2s;
+}
+.place:hover{transform:translateY(-5px);box-shadow:0 21px 40px rgba(15,40,31,.19)}
+.place::after{background:linear-gradient(180deg,transparent 30%,rgba(4,18,20,.80) 100%)}
+.place b{font-size:32px;letter-spacing:-.025em}
+.place span{font-size:13px;margin-top:5px}
+#browse{margin-top:64px;padding:46px 40px 46px;border:1px solid var(--brand-border);background:#fff;border-radius:28px}
+.browse-head{align-items:center}
+.browse-search{flex:0 1 330px}
+.browse-search input{background:#f9faf7;border-color:#d8e2d8;min-height:48px}
+.browse-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:11px}
+.browse-place{background:#f9fbf8;border-radius:13px;min-height:70px}
+.browse-place:hover{background:#edf5ee}
+#analytics .steps,#how .steps{margin-top:25px;gap:16px}
+#analytics .steps>div,#how .steps>div{
+  border:1px solid var(--brand-border);border-radius:18px;background:#fff;
+  padding:25px 22px;box-shadow:0 7px 24px rgba(21,47,40,.035);
+}
+#analytics .steps>div{border-top:3px solid #d9b265}
+#analytics .steps h3,#how .steps h3{font:800 19px/1.3 'Figtree',sans-serif;margin:0 0 10px;color:var(--brand-ink)}
+#analytics .steps h3 a{text-decoration:none}
+#analytics .steps h3 a:hover{color:#ac7d30}
+#analytics .steps p,#how .steps p{font-size:14px;color:#69776e;line-height:1.7}
+#how{padding-bottom:64px}
+#how .keyh{font-size:22px}
+footer{margin-top:48px}
+body:not(.is-home) .hero-copy{padding-bottom:24px}
+body:not(.is-home) .hero{min-height:clamp(370px,58vh,560px)}
+body:not(.is-home) .hero-in{padding-bottom:35px}
+body:not(.is-home) .hero h1{font-size:clamp(49px,9vw,100px)}
+:root[data-theme="dark"]{
+  --brand-cream:#101b18;
+  --brand-border:#2c493b;
+  --brand-forest:#dcefe4;
+  --brand-ink:#ecf4e9;
+}
+:root[data-theme="dark"] body{background:var(--brand-cream)}
+:root[data-theme="dark"] .home-proof,
+:root[data-theme="dark"] #browse,
+:root[data-theme="dark"] #analytics .steps>div,
+:root[data-theme="dark"] #how .steps>div{
+  color:#ecf4e9;background:#1a3027;border-color:#2c493b;
+}
+:root[data-theme="dark"] .home-proof div+div{border-left-color:#34513e}
+:root[data-theme="dark"] .home-proof strong{color:#edf4e8}
+:root[data-theme="dark"] .home-proof span,
+:root[data-theme="dark"] .sec .sub,
+:root[data-theme="dark"] #analytics .steps p,
+:root[data-theme="dark"] #how .steps p{color:#b9c9bf}
+:root[data-theme="dark"] .quick-cities .chips button{background:#253f32;border-color:#3e614d;color:#ecf4e9}
+:root[data-theme="dark"] .quick-cities .chips button:hover{background:#365743}
+:root[data-theme="dark"] .browse-place{background:#253b30;border-color:#365443}
+:root[data-theme="dark"] .browse-place:hover{background:#345742}
+:root[data-theme="dark"] .browse-search input{background:#253a30;color:#ecf4e9;border-color:#3e5948}
+:root[data-theme="dark"] .is-home .hero header{background:rgba(22,39,32,.97)}
+@media(max-width:900px){
+  .is-home .hero{min-height:690px}
+  .is-home .hero-in{min-height:690px}
+  .places{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #browse{padding:32px 26px}
+}
+@media(max-width:600px){
+  .wrap{padding-inline:18px}
+  .is-home .hero{min-height:0;border-radius:0 0 22px 22px}
+  .is-home .hero-in{min-height:0}
+  .is-home .hero header{margin-top:12px;padding:9px 10px;border-radius:13px}
+  .is-home .hero-copy{margin:0;padding:80px 0 52px;gap:0}
+  .is-home .hero h1{font-size:clamp(42px,11vw,58px);line-height:1.08;margin-top:16px;letter-spacing:-.04em}
+  .is-home .hero .lead{font-size:16px;line-height:1.6;margin:17px auto 22px}
+  .hero-badge{font-size:10px;padding:7px 12px}
+  .hero-ctas{margin-bottom:20px;gap:8px}
+  .hero-ctas a{font-size:12px;padding:10px 7px;min-height:44px}
+  .is-home .search{padding:8px;gap:5px;background:#fff}
+  .is-home .search input{min-height:43px}
+  .is-home .go{min-height:44px}
+  .hero-assurance{font-size:10px;line-height:1.5;margin-top:12px;max-width:35ch}
+  .home-proof{padding:19px 8px;margin-top:16px;gap:4px;border-radius:16px}
+  .home-proof strong{font-size:26px}
+  .home-proof span{font-size:10px;line-height:1.4}
+  .home-proof div{padding:0 5px}
+  .quick-cities{align-items:start;padding-top:16px;gap:16px}
+  .quick-cities .chips{display:flex;gap:7px;justify-content:start}
+  .quick-cities .chips button{width:auto;min-height:35px;padding:7px 13px;font-size:12px}
+  .sec{padding-top:49px}
+  .sec h2{font-size:clamp(28px,8vw,35px)}
+  .places{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:20px}
+  .place{min-height:195px;padding:14px;border-radius:15px}
+  .place b{font-size:24px;overflow-wrap:anywhere}
+  .place span{font-size:11px}
+  #browse{padding:25px 18px 30px;margin-top:46px;border-radius:21px}
+  .browse-head{gap:18px}
+  .browse-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .browse-place{min-height:66px;padding:10px}
+  .browse-place strong{font-size:14px}
+  .browse-place small{font-size:11px}
+  .section-kicker{font-size:10px}
+  #analytics .steps>div,#how .steps>div{padding:20px}
+}
+@media(max-width:360px){
+  .is-home .hero h1{font-size:40px}
+  .places{grid-template-columns:1fr}
+  .place{min-height:250px}
+  .browse-grid{grid-template-columns:1fr}
+}
+
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -473,8 +680,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
     <div class="hero-copy">
       <span class="hero-badge only-home">✦ Your climate-smart travel companion</span>
-      <h1 id="heroCity">Discover the world at the <em>perfect time.</em></h1>
-      <p class="lead" id="heroLead">Find your next destination, discover its best travel season, and plan unforgettable days with confidence.</p>
+      <h1 id="heroCity">See more of the world.<br><em>At the right time.</em></h1>
+      <p class="lead" id="heroLead">Discover beautiful places, find their ideal season, and plan a trip that feels just right.</p>
       <div class="hero-ctas only-home">
         <a class="hero-cta-primary" href="#places">Explore Destinations</a>
         <a class="hero-cta-secondary" href="adaptive.html">Plan Your Trip</a>
@@ -484,22 +691,30 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
         <datalist id="availableCities"></datalist>
         <button class="go" onclick="explore()">Find best time</button>
       </div>
-      <div class="chips" id="chips"></div>
-      <div class="home-stats only-home" aria-label="Platform capabilities">
-        <div><strong>12</strong><span>Months of climate insights</span></div>
-        <div><strong>5</strong><span>Explorer &amp; planning tools</span></div>
-        <div><strong>1–7</strong><span>Days of adaptive trips</span></div>
-      </div>
-      <p class="lead dashboard-cta" style="font-size:15px;margin-top:18px"><a href="overview.html">Explore the full Analytics Dashboard</a></p>
+      <p class="hero-assurance only-home">Historical climate insights · Live forecast trip planning · No signup required</p>
     </div>
   </div>
 </section>
 <div class="tiles" aria-hidden="true"></div>
 
 <main class="wrap">
+  <section class="home-intro only-home" aria-label="Explore WanderClimate">
+    <div class="home-proof" aria-label="What you can explore">
+      <div><strong>12</strong><span>Months of climate insight</span></div>
+      <div><strong>5</strong><span>Ways to explore and plan</span></div>
+      <div><strong>1–7</strong><span>Day weather-aware itineraries</span></div>
+    </div>
+    <div class="quick-cities">
+      <div><span class="section-kicker">WHERE TO NEXT?</span><h2>Start with a city you love.</h2></div>
+      <div class="chips" id="chips"></div>
+    </div>
+  </section>
   <section class="sec only-home" id="places">
-    <h2>Popular places</h2>
-    <p class="sub">Every country gets its own colours. Pick one, or search any city above.</p>
+    <div class="section-heading">
+      <div><span class="section-kicker">CURATED INSPIRATION</span><h2>Destinations worth exploring.</h2>
+        <p class="sub">Explore the world's cities and find the season that suits your kind of trip.</p></div>
+      <a class="section-link" href="#browse">All destinations <span aria-hidden="true">↗</span></a>
+    </div>
     <div class="places" id="placeGrid"></div>
   </section>
 
@@ -507,8 +722,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
   <section class="sec only-home" id="browse" aria-labelledby="browseTitle">
     <div class="browse-head">
       <div>
-        <h2 id="browseTitle">Browse all destinations</h2>
-        <p class="sub">Explore every city in the climate dataset, or filter by city or country.</p>
+        <span class="section-kicker">THE FULL COLLECTION</span>
+        <h2 id="browseTitle">Find your next destination.</h2>
+        <p class="sub">Search destinations from our climate data to see when the weather feels just right.</p>
       </div>
       <label class="browse-search" for="browseQuery">
         <input id="browseQuery" type="search" placeholder="Filter cities or countries..." aria-label="Filter destinations by city or country" autocomplete="off">
@@ -520,8 +736,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
 
 
   <section class="sec only-home" id="analytics">
-    <h2>Advanced tourism intelligence</h2>
-    <p class="sub">Explore the full analysis, recommendation maps, and trip-planning tools powered by our cleaned datasets and Python engines.</p>
+    <span class="section-kicker">MORE THAN A TRAVEL GUIDE</span>
+    <h2>Travel smarter, from start to finish.</h2>
+    <p class="sub">Go from inspiration to a weather-aware itinerary with our interactive planning tools.</p>
     <div class="steps" style="margin-top:28px">
       <div><h3><a href="overview.html">Executive Overview</a></h3><p>Key metrics, TCI category distribution, project objectives and country summaries.</p></div>
       <div><h3><a href="climate.html">Climate &amp; TCI Analytics</a></h3><p>Monthly and historical climate charts, temperature, precipitation, sunshine and TCI data tables.</p></div>
@@ -532,7 +749,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
   </section>
 
   <section class="sec only-home" id="how">
-    <h2>How it works</h2>
+    <span class="section-kicker">SIMPLE BY DESIGN</span>
+    <h2>Better travel in three steps.</h2>
     <div class="steps">
       <div><h3>Search a city</h3><p>Type any city. We look up its monthly climate averages.</p></div>
       <div><h3>Check the comfort score</h3><p>Each month gets a score out of 100 from temperature, sunshine, rain and humidity.</p></div>
@@ -749,8 +967,8 @@ function goHome() {
   cancelClimateRequest();
   document.body.classList.add("is-home");
   applyTheme("default"); STATE = null; setHero("");
-  $("heroCity").innerHTML = "Discover the world at the <em>perfect time.</em>";
-  $("heroLead").textContent = "Find your next destination, discover its best travel season, and plan unforgettable days with confidence.";
+  $("heroCity").innerHTML = "See more of the world.<br><em>At the right time.</em>";
+  $("heroLead").textContent = "Discover beautiful places, find their ideal season, and plan a trip that feels just right.";
   closeHomeMenu();
   $("city").value = "";
   window.scrollTo({ top: 0, behavior: "smooth" });
