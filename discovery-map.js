@@ -20,8 +20,7 @@
     matching: [],
     markers: new Map(),
     initStarted: false,
-    coordsReady: false,
-    recentering: false
+    coordsReady: false
   };
 
   const normalize = value => String(value || "").trim().toLocaleLowerCase();
@@ -79,6 +78,12 @@
         iconAnchor: [11, 11]
       })
     });
+    marker.bindTooltip(escapeHtml(place.city), {
+      direction: "top",
+      offset: [0, -12],
+      opacity: 0.96,
+      className: "discovery-city-tooltip"
+    });
     marker.bindPopup(
       '<div class="discovery-popup"><strong>' + escapeHtml(place.city) + '</strong>'
       + '<small>' + escapeHtml(place.country || "Country unavailable") + '</small>'
@@ -126,22 +131,16 @@
     }
 
     if (recenter) {
-      // Recenter only after an explicit search or View all action. The first
-      // visit opens already zoomed into a detailed regional street map.
-      state.recentering = true;
-      try {
-        const bounds = L.latLngBounds(locations.map(item => item.position));
-        if (locations.length === 1) {
-          state.map.setView(locations[0].position, 9, {animate: false});
-        } else {
-          state.map.fitBounds(bounds.pad(.16), {
-            maxZoom: 7,
-            animate: false,
-            padding: [38, 38]
-          });
-        }
-      } finally {
-        state.recentering = false;
+      // Only an explicit search or View all recenters the map.
+      const bounds = L.latLngBounds(locations.map(item => item.position));
+      if (locations.length === 1) {
+        state.map.setView(locations[0].position, 9, {animate: false});
+      } else {
+        state.map.fitBounds(bounds.pad(.16), {
+          maxZoom: 7,
+          animate: false,
+          padding: [38, 38]
+        });
       }
     }
 
