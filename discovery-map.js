@@ -242,7 +242,10 @@
   function setup() {
     document.addEventListener("wanderclimate:directory-updated", event => {
       state.matching = Array.isArray(event.detail?.matching) ? event.detail.matching : [];
-      paintMarkers(true);
+      // Initial directory/API updates must not override the detailed first view.
+      // Explicit search results should focus the matching locations.
+      const query = document.getElementById("browseQuery")?.value.trim() || "";
+      paintMarkers(Boolean(query));
     });
 
     document.getElementById("discoveryReset")?.addEventListener("click", () => {
@@ -251,6 +254,9 @@
         input.value = "";
         input.dispatchEvent(new Event("input", {bubbles: true}));
       }
+      // Unlike clearing the search manually, View all intentionally fits
+      // every available destination into the viewport.
+      paintMarkers(true);
     });
 
     const list = document.getElementById("browseGrid");
