@@ -338,6 +338,34 @@ tbody tr:hover{background:#f5faf7}
 @media(max-width:390px){.brand img{width:142px}.summary-grid{gap:7px}.metric strong{font-size:23px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.vista-reveal.vista-ready{opacity:1;transform:none}}
 
+
+/* Compact premium branding, harmonized with the dashboard navigation. */
+.topbar .brand{display:inline-flex;align-items:center;gap:8px;width:auto;min-width:0;max-width:100%;flex-shrink:0;white-space:nowrap;line-height:1;text-decoration:none}
+.topbar .brand .brand-emblem{position:relative;display:block;flex:0 0 37px;width:37px;height:37px;overflow:hidden;border-radius:9px;background:#164548}
+.topbar .brand .brand-emblem img{
+  position:absolute;display:block;top:0;left:-2px;
+  width:194px;height:37px;min-width:194px;max-width:none;max-height:none;
+  object-fit:fill;border:0;border-radius:0;box-shadow:none;filter:none;transform:none;
+}
+.topbar .brand .brand-label{
+  display:inline-block;font-family:'Figtree',system-ui,sans-serif;
+  font-size:clamp(18px,1.65vw,21px);font-weight:800;letter-spacing:-.045em;
+  line-height:1;color:#f1f8f5;text-shadow:none;
+}
+.topbar .brand .brand-label span{color:#f3cb7c}
+.topbar .brand:hover .brand-label{color:#fff}
+.topbar .brand:hover .brand-label span{color:#ffe4a8}
+@media(max-width:760px){
+  .topbar .brand{gap:7px}
+  .topbar .brand .brand-emblem{flex-basis:32px;width:32px;height:32px;border-radius:8px}
+  .topbar .brand .brand-emblem img{width:168px;min-width:168px;height:32px;left:-2px}
+  .topbar .brand .brand-label{font-size:clamp(16px,4.5vw,19px)}
+}
+@media(max-width:360px){
+  .topbar .brand .brand-emblem{flex-basis:29px;width:29px;height:29px}
+  .topbar .brand .brand-emblem img{width:152px;min-width:152px;height:29px}
+  .topbar .brand .brand-label{font-size:15px}
+}
 @media print{
   @page{size:A4;margin:14mm 14mm 16mm}
   :root{color-scheme:light!important}
