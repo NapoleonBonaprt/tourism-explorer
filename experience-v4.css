@@ -391,51 +391,177 @@ thead th{background:#eaf7f2;color:#22655e}
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
   .vista-reveal.vista-ready{opacity:1;transform:none;filter:none}
 }
-/* Premium WanderClimate illustrated wordmark: one logo, no duplicate text. */
-.hero header .logo,
-.topbar .brand{
+/* Integrated premium header: keep the illustrated logo visually connected to the navbar.
+   The wordmark has its own dark artwork, so do not frame it in a white card. */
+.is-home .hero header,
+body:not(.is-home) .topbar {
+  color:#eefaf5;
+  background:linear-gradient(110deg,rgba(12,45,49,.92),rgba(17,62,65,.89));
+  border:1px solid rgba(168,219,209,.23);
+  box-shadow:0 12px 34px rgba(7,35,42,.20);
+  -webkit-backdrop-filter:blur(18px);
+  backdrop-filter:blur(18px);
+}
+body:not(.is-home) .topbar {border-width:0 0 1px}
+.is-home .hero header .logo,
+.topbar .brand {
+  position:relative;
   display:inline-flex;
   align-items:center;
   flex:0 1 auto;
   min-width:0;
   max-width:100%;
+  line-height:1;
   padding:0;
+  color:#f3faf6;
   text-decoration:none;
   background:transparent;
-  line-height:1;
+  box-shadow:none;
+  border:0;
 }
-.hero header .logo img,
-.topbar .brand img{
+.is-home .hero header .logo img,
+.topbar .brand img {
   display:block;
-  width:clamp(183px,19.5vw,255px);
-  height:auto;
+  width:clamp(180px,19.5vw,244px);
   max-width:100%;
+  height:auto;
   aspect-ratio:450/86;
   object-fit:contain;
-  border:1px solid rgba(231,197,128,.39);
+  border:0;
+  border-radius:8px;
+  box-shadow:none;
+  transform:none;
+  filter:none;
+  transition:filter .2s ease;
+}
+.is-home .hero header .logo::after,
+.topbar .brand::after {
+  content:"";
+  position:absolute;
+  height:2px;
+  bottom:-7px;
+  left:8px;
+  right:8px;
+  border-radius:2px;
+  background:linear-gradient(90deg,#5cd1c6,#f6c76b);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .22s ease;
+  pointer-events:none;
+}
+.is-home .hero header .logo:hover img,
+.topbar .brand:hover img {
+  transform:none;
+  border:0;
+  box-shadow:none;
+  filter:brightness(1.08) saturate(1.05);
+}
+.is-home .hero header .logo:hover::after,
+.is-home .hero header .logo:focus-visible::after,
+.topbar .brand:hover::after,
+.topbar .brand:focus-visible::after {transform:scaleX(1)}
+/* Keep text/buttons legible against the same dark glass surface in both themes. */
+.is-home .hero header nav a,
+body:not(.is-home) .primary-nav a {
+  color:#e1f0ec;
+  transition:color .18s ease,background-color .18s ease;
+}
+.is-home .hero header nav a:hover,
+body:not(.is-home) .primary-nav a:hover {
+  color:#ffe1a0;
+  background:rgba(255,255,255,.10);
+}
+.is-home .hero header nav a.nav-plan {
+  color:#183b36;
+  background:linear-gradient(120deg,#f0bb5b,#f7d27c);
   border-radius:10px;
-  box-shadow:0 6px 18px rgba(7,41,43,.18);
-  transition:transform .22s ease,box-shadow .22s ease;
 }
-.hero header .logo:hover img,
-.topbar .brand:hover img{
-  transform:translateY(-2px);
-  box-shadow:0 10px 22px rgba(7,41,43,.25);
+.is-home .hero header nav a.nav-plan:hover {
+  color:#14372f;
+  background:#ffe09a;
 }
+body:not(.is-home) .primary-nav a[aria-current="page"] {
+  color:#b4fff1;
+  background:rgba(67,178,167,.17);
+  box-shadow:inset 0 -2px #70d4c6;
+}
+.is-home .hero header .hero-theme-toggle,
+.is-home .hero header .home-menu-toggle,
+body:not(.is-home) .theme-toggle,
+body:not(.is-home) .mobile-nav-toggle {
+  color:#edfaf4;
+  background:rgba(218,251,240,.10);
+  border:1px solid rgba(199,242,228,.28);
+}
+.is-home .hero header .hero-theme-toggle:hover,
+.is-home .hero header .home-menu-toggle:hover,
+body:not(.is-home) .theme-toggle:hover,
+body:not(.is-home) .mobile-nav-toggle:hover {
+  color:#fff;
+  background:rgba(218,251,240,.19);
+}
+.is-home .hero header #api {
+  color:#d5f5ea;
+  background:rgba(175,231,213,.12);
+}
+/* In dark mode retain the photography and use a richer teal glass surface. */
+:root[data-theme="dark"] .is-home .hero header,
+:root[data-theme="dark"] body:not(.is-home) .topbar {
+  color:#f1fffa;
+  background:linear-gradient(115deg,rgba(13,46,57,.96),rgba(20,64,69,.94));
+  border-color:rgba(155,220,211,.28);
+  box-shadow:0 12px 34px rgba(1,18,28,.3);
+}
+:root[data-theme="dark"] .is-home .hero header nav a,
+:root[data-theme="dark"] body:not(.is-home) .primary-nav a {color:#e3f6f0}
+:root[data-theme="dark"] .is-home .hero header nav a:hover,
+:root[data-theme="dark"] body:not(.is-home) .primary-nav a:hover {color:#ffe4ad;background:rgba(255,255,255,.10)}
+:root[data-theme="dark"] .is-home .hero header nav a.nav-plan {color:#183b36;background:#f1c773}
+:root[data-theme="dark"] body:not(.is-home) .primary-nav a[aria-current="page"] {color:#b4fff1;background:rgba(67,178,167,.17)}
+:root[data-theme="dark"] .is-home .hero header .hero-theme-toggle,
+:root[data-theme="dark"] .is-home .hero header .home-menu-toggle,
+:root[data-theme="dark"] body:not(.is-home) .theme-toggle,
+:root[data-theme="dark"] body:not(.is-home) .mobile-nav-toggle {
+  color:#edf9f5;
+  background:rgba(218,251,240,.10);
+  border-color:rgba(199,242,228,.28);
+}
+:root[data-theme="dark"] .is-home .hero header #api {color:#dcf9ed;background:rgba(175,231,213,.12)}
 @media(max-width:900px){
-  .hero header .logo img,.topbar .brand img{width:clamp(180px,25vw,228px)}
+  .is-home .hero header .logo img,
+  .topbar .brand img {width:clamp(175px,25vw,220px)}
+  /* Opened navigation needs its own opaque panel and high-contrast links. */
+  .is-home .hero header nav.only-home.open,
+  .is-home .hero header nav.only-results.open,
+  body:not(.is-home) .primary-nav.open {
+    background:#123d43;
+    color:#eaf8f3;
+    border:1px solid rgba(166,221,210,.32);
+    box-shadow:0 18px 30px rgba(3,24,33,.30);
+  }
+  .is-home .hero header nav.open a,
+  body:not(.is-home) .primary-nav.open a {color:#ecf8f3}
+  .is-home .hero header nav.open a:hover,
+  body:not(.is-home) .primary-nav.open a:hover {
+    color:#ffe4ad;
+    background:rgba(255,255,255,.11);
+  }
+  .is-home .hero header nav.open a.nav-plan {color:#173b35}
 }
 @media(max-width:600px){
-  .hero header .logo img,.topbar .brand img{
-    width:clamp(157px,44vw,198px);
-    border-radius:8px;
-  }
-  .hero header .logo{min-width:0;grid-column:1;grid-row:1}
-  .topbar .brand{min-width:0}
-  .topbar .nav-wrap{gap:8px}
+  .is-home .hero header .logo img,
+  .topbar .brand img {width:clamp(150px,43vw,194px);border-radius:7px}
+  .is-home .hero header .logo {min-width:0;grid-column:1;grid-row:1}
+  .topbar .brand {min-width:0}
+  .topbar .nav-wrap {gap:8px}
 }
 @media(max-width:360px){
-  .hero header .logo img,.topbar .brand img{width:clamp(145px,42vw,165px)}
+  .is-home .hero header .logo img,
+  .topbar .brand img {width:clamp(140px,41vw,161px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .is-home .hero header .logo img,.topbar .brand img,
+  .is-home .hero header .logo::after,.topbar .brand::after {transition:none}
 }
 @media print{
   #vista-progress,.vista-dock{display:none!important}
