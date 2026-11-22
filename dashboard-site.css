@@ -186,6 +186,196 @@ tbody tr:last-child td{border-bottom:0}
 :root[data-theme="dark"] .route-disclaimer{background:#363623;color:#f6e2b5}
 :root[data-theme="dark"] .popup-actions a{color:#98dcb5}
 @media(max-width:760px){.map-section-heading,.itinerary-actions-head{display:block}.map-filter-actions,.export-buttons{margin:10px 0}.map-result{max-width:100%}}
+/* WanderClimate v2 shared design system: clean travel editorial UI */
+:root{
+  --wc-surface:#ffffff;
+  --wc-soft:#f1f5ef;
+  --wc-title:#193b30;
+  --wc-accent:#dba84b;
+  --wc-card-border:#e2e9df;
+  --paper:#f8f7f2;
+  --line:#e2e9df;
+  --moss:#275c45;
+  --deep:#1a3a2f;
+  --mut:#66766c;
+  --shadow:0 9px 30px rgba(19,47,36,.05);
+}
+body{background:var(--paper);line-height:1.6}
+h1,h2,h3{letter-spacing:-.025em}
+.topbar{
+  background:#fbfcf8;color:#19382e;
+  border-bottom:1px solid #e4e9e1;
+  box-shadow:0 3px 13px rgba(23,52,41,.04);
+}
+.nav-wrap{
+  max-width:1290px;gap:24px;
+  min-height:76px;padding:12px 28px;
+}
+.brand{font-size:23px;letter-spacing:-.025em;color:#1c3b30}
+.brand img{width:37px;height:37px}
+.primary-nav{gap:3px;flex-wrap:nowrap}
+.primary-nav a{
+  color:#45574b;font-size:12px;font-weight:700;
+  padding:9px 10px;border-radius:9px;
+  transition:color .16s,background .16s;
+}
+.primary-nav a:hover,.primary-nav a[aria-current="page"]{
+  color:#1b513b;background:#ecf2ea;
+}
+.primary-nav a[aria-current="page"]{box-shadow:inset 0 -2px #b99447}
+.theme-toggle{
+  border-color:#d8e4d9;color:#1f4334;
+  background:#f0f4ee;border-radius:12px;min-height:40px;
+}
+.theme-toggle:hover{background:#e4efe5}
+.mobile-nav-toggle{
+  color:#244235;border-color:#d3dfd2;background:#edf3ec;
+  min-height:40px;font-weight:800;font-size:13px;
+}
+.shell{max-width:1230px;padding:42px 28px 90px}
+.page-heading{
+  margin:0 0 30px;
+  padding:31px 35px 33px;
+  border-radius:23px;
+  background:linear-gradient(115deg,#193b30,#285d4a);
+  color:#fff;
+  position:relative;overflow:hidden;
+}
+.page-heading::after{
+  content:"";pointer-events:none;
+  position:absolute;width:230px;height:230px;border:1px solid rgba(255,255,255,.14);
+  border-radius:50%;right:-55px;top:-100px;
+  box-shadow:0 0 0 70px rgba(255,255,255,.035),0 0 0 135px rgba(255,255,255,.026);
+}
+.page-heading .eyebrow{color:#f2c977;font-size:11px;letter-spacing:.15em;margin-bottom:11px}
+.page-heading h1{font-size:clamp(29px,3.6vw,47px);max-width:21ch;line-height:1.13}
+.page-heading .lead{color:#dce9e0;font-size:15px;line-height:1.65;max-width:70ch;margin-top:11px}
+.card,.attraction-card,.day-card{
+  background:var(--wc-surface);
+  border:1px solid var(--wc-card-border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+}
+.card{padding:26px}
+.card h2{font-size:clamp(21px,2.3vw,28px);color:var(--wc-title)}
+.card h3{color:var(--wc-title)}
+.card p{color:var(--mut);line-height:1.7}
+.metric{
+  min-height:120px;border:1px solid #dce9dd;
+  background:#fff;color:#183b2f;
+  box-shadow:var(--shadow);
+  border-radius:16px;padding:20px;
+}
+.metric span{color:#697c6e;font-size:12px;font-weight:700}
+.metric strong{color:#1b503d;font:800 30px/1.25 'Figtree',sans-serif;letter-spacing:-.025em;margin-top:12px}
+.metric small{color:#65796c}
+.summary-grid{gap:14px}
+.filters{
+  padding:18px;background:#f5f7f1;
+  border:1px solid #e1e8dd;border-radius:16px;
+  gap:13px;
+}
+.card .filters{margin-top:10px}
+.field label{font-size:12px;color:#50685a}
+.field select,.field input{
+  border-radius:10px;min-height:46px;height:46px;
+  border:1px solid #d5e0d4;background:#fff;color:#183b2f;
+}
+.field select:focus,.field input:focus{outline:2px solid #75a38a;outline-offset:1px}
+.btn{
+  background:#235940;color:white;border-radius:10px;
+  min-height:45px;font-weight:800;transition:filter .16s,transform .16s;
+}
+.btn:hover:not([disabled]){filter:brightness(1.12);transform:translateY(-1px)}
+.btn.secondary{background:#eaf2e9;color:#204331;border:1px solid #dce8dc}
+.status{border-radius:12px}
+.table-scroller{border-radius:12px;border-color:var(--wc-card-border)}
+thead th{background:#f2f6ef;color:#4d6858}
+tbody tr:hover{background:#f4f7f1}
+.map,.map.large{border-radius:15px}
+.dest-card{background:#f7faf5;border-color:#e0e9df;border-radius:14px}
+.attraction-card{overflow:hidden}
+.day-card{border-radius:14px}
+.day-card h3{font-family:'Figtree',sans-serif;font-size:18px}
+.section-gap{margin-top:23px}
+.footer{background:#f3f5ee;border-top:1px solid #e3e9e0}
+.footer-inner{color:#718175}
+:root[data-theme="dark"]{
+  --deep:#edf5ed;--paper:#101c18;--mut:#b8c9be;--line:#334b3f;
+  --moss:#76b18b;--wc-surface:#1a2e26;--wc-soft:#243b2e;
+  --wc-title:#f0f6ed;--wc-card-border:#344d3e;
+}
+:root[data-theme="dark"] body{background:#101c18;color:#edf5ed}
+:root[data-theme="dark"] .topbar{background:#172a21;color:#f0f6ed;border-color:#344d3e}
+:root[data-theme="dark"] .brand{color:#f2f6ef}
+:root[data-theme="dark"] .primary-nav a{color:#e0eadf}
+:root[data-theme="dark"] .primary-nav a:hover,
+:root[data-theme="dark"] .primary-nav a[aria-current="page"]{background:#2a4836;color:#f4cc78}
+:root[data-theme="dark"] .theme-toggle,
+:root[data-theme="dark"] .mobile-nav-toggle{background:#284335;color:#f0f7ec;border-color:#45654e}
+:root[data-theme="dark"] .page-heading{background:linear-gradient(115deg,#1b3b2e,#254734);border:1px solid #3b5a43}
+:root[data-theme="dark"] .page-heading .lead{color:#d6e5d8}
+:root[data-theme="dark"] .card,
+:root[data-theme="dark"] .attraction-card,
+:root[data-theme="dark"] .day-card{background:var(--wc-surface);border-color:var(--wc-card-border);color:#e8f2e7}
+:root[data-theme="dark"] .card h2,
+:root[data-theme="dark"] .card h3{color:#f0f6ed}
+:root[data-theme="dark"] .metric{background:#254436;border-color:#3b5a44;color:#f1f7ed}
+:root[data-theme="dark"] .metric span{color:#b9d1c0}
+:root[data-theme="dark"] .metric strong{color:#f0c775}
+:root[data-theme="dark"] .metric small{color:#c2d2c5}
+:root[data-theme="dark"] .filters{background:#21382d;border-color:#35533d}
+:root[data-theme="dark"] .field select,
+:root[data-theme="dark"] .field input{background:#2a4434;color:#f3f7ef;border-color:#4b6853}
+:root[data-theme="dark"] .btn{background:#3c7955;color:#fff}
+:root[data-theme="dark"] .btn.secondary{background:#334e3c;color:#eaf2e7;border-color:#49674e}
+:root[data-theme="dark"] .dest-card{background:#223b2e;border-color:#35523e}
+:root[data-theme="dark"] thead th{background:#2a4334;color:#dfeddb}
+:root[data-theme="dark"] tbody tr:hover{background:#284333}
+:root[data-theme="dark"] .footer{background:#15271e;border-color:#334b3d}
+:root[data-theme="dark"] .footer-inner{color:#b1c9b4}
+@media(max-width:1120px){
+  .nav-wrap{gap:12px}
+  .primary-nav a{padding:9px 7px;font-size:11px}
+}
+@media(max-width:900px){
+  .nav-wrap{flex-wrap:wrap}
+  .brand{font-size:21px}
+  .primary-nav{
+    display:none;position:absolute;top:100%;left:0;right:0;
+    padding:13px 18px 18px;flex-direction:column;align-items:stretch;
+    gap:3px;border:1px solid #e0e8de;
+    background:#fff;color:#173729;
+    box-shadow:0 18px 26px rgba(15,42,31,.16);
+    z-index:1300;
+  }
+  .primary-nav.open{display:flex}
+  .primary-nav a{font-size:15px;color:#294737;padding:12px 14px}
+  .mobile-nav-toggle{display:block}
+  :root[data-theme="dark"] .primary-nav{background:#192e24;border-color:#34523e}
+  :root[data-theme="dark"] .primary-nav a{color:#eaf3e8}
+  .shell{padding:28px 19px 65px}
+}
+@media(max-width:600px){
+  .nav-wrap{min-height:65px;padding:11px 14px}
+  .brand{font-size:clamp(18px,5.2vw,22px)}
+  .brand img{width:32px;height:32px}
+  .nav-actions{gap:7px}
+  .theme-toggle{min-height:39px;padding:7px 10px}
+  .shell{padding:18px 13px 55px}
+  .page-heading{border-radius:18px;padding:25px 22px 28px;margin-bottom:21px}
+  .page-heading h1{font-size:clamp(28px,7vw,38px)}
+  .page-heading .lead{font-size:14px}
+  .card{padding:18px;border-radius:16px}
+  .summary-grid{gap:9px}
+  .metric{padding:15px;min-height:104px}
+  .metric strong{font-size:26px}
+  .filters{padding:13px;gap:11px}
+  .field{flex-basis:100%;min-width:0}
+  .chart-box{height:275px}
+  .map,.map.large{height:370px}
+}
+
 @media print{
   @page{size:A4;margin:14mm 14mm 16mm}
   :root{color-scheme:light!important}
