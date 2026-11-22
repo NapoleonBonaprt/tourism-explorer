@@ -121,19 +121,22 @@
   background:#f18869;transform:scale(1.23);
   box-shadow:0 3px 15px rgba(3,50,52,.36),0 0 0 3px rgba(241,136,105,.25);
 }
-/* Numbered city groups keep the world view tidy. Click to zoom in. */
-.wc-map-cluster{background:transparent;border:0;cursor:pointer}
-.wc-map-cluster span{
-  display:grid;place-items:center;
-  width:43px;height:43px;
-  border:3px solid #fff;border-radius:50%;
-  background:#0b827b;color:#fff;
-  font:850 14px/1 'Figtree',system-ui,sans-serif;
-  box-shadow:0 4px 18px rgba(4,52,57,.3),0 0 0 4px rgba(19,144,136,.18);
-  transition:transform .18s ease,background-color .18s ease;
+/* Clear, lightweight city labels on desktop hover and keyboard focus. */
+.discovery-map .discovery-city-tooltip{
+  background:rgba(255,255,255,.97);
+  color:#184947;
+  border:1px solid #c9e3d9;
+  border-radius:8px;
+  box-shadow:0 4px 15px rgba(12,54,58,.15);
+  padding:5px 9px;
+  font:800 12px/1.3 'Figtree',system-ui,sans-serif;
 }
-.wc-map-cluster:hover span{
-  transform:scale(1.08);background:#d46e4e;
+.discovery-map .discovery-city-tooltip::before{
+  border-top-color:rgba(255,255,255,.97);
+}
+:root[data-theme="dark"] .discovery-map .discovery-city-tooltip{
+  color:#173e3a;
+  background:rgba(255,255,255,.97);
 }
 .discovery-map .leaflet-control-zoom{
   border:1px solid rgba(40,104,101,.21);
@@ -215,5 +218,5 @@
   .discovery-directory{padding:14px}
 }
 @media(prefers-reduced-motion:reduce){
-  .wc-map-pin span,.wc-map-cluster span,.discovery-directory .browse-place{transition:none}
+  .wc-map-pin span,.discovery-directory .browse-place{transition:none}
 }
