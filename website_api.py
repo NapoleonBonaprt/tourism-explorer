@@ -116,6 +116,37 @@ def filters() -> dict:
     }
 
 
+@lru_cache(maxsize=1)
+def _destination_city_coordinates() -> dict[str, dict[str, float]]:
+    """Load only city centroids, not the full dashboard filter datasets."""
+    places = pd.read_csv(
+        data_path("places_with_clusters.csv"),
+        usecols=["City", "Latitude", "Longitude"],
+        low_memory=False,
+    )
+    for column in ("Latitude", "Longitude"):
+        places[column] = pd.to_numeric(places[column], errors="coerce")
+    places = places.dropna(subset=["City", "Latitude", "Longitude"])
+    places = places[
+        places["Latitude"].between(-90, 90)
+        & places["Longitude"].between(-180, 180)
+    ]
+    centers = places.groupby("City", sort=True)[["Latitude", "Longitude"]].mean()
+    return {
+        str(city): {
+            "latitude": float(row["Latitude"]),
+            "longitude": float(row["Longitude"]),
+        }
+        for city, row in centers.iterrows()
+    }
+
+
+@router.get("/destination-coordinates")
+def destination_coordinates() -> dict:
+    """Aggregated city positions for the public map, not raw attraction data."""
+    return {"coordinates": _destination_city_coordinates()}
+
+
 @router.get("/overview")
 def overview() -> dict:
     tourism = frame("tourism_final_clean.csv")
