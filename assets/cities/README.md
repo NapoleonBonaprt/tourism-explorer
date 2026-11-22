@@ -1,36 +1,35 @@
-# WanderClimate city images
+# WanderClimate city photos
 
-The site supports 41 destinations. Images are selected by
+The website supports **41 destinations**. Photo selection is implemented in
 `cityImageCandidates()` in `index.html`.
 
-- **35 destinations** use locally stored JPEG photos, named
-  `assets/cities/<city-slug>.jpg`.
-- **Five destinations** use their **original externally hosted photographs**,
-  as requested: Cairo, Lisbon, Paris, Rome and Tokyo. Their original
-  Pexels/Unsplash links remain in `CITY_PHOTOS` within `index.html`.
-  These images need an internet connection; they may fail if the external
-  provider is unavailable. The site has a built-in illustrated fallback
-  for failed destination-card images.
-- **Madrid** uses its local `madrid.svg` landmark illustration because
-  the previous `madrid.jpg` was an accidental duplicate of Barcelona.
+- **36 destinations** use their original local JPEG files in
+  `assets/cities/<city-slug>.jpg`. This includes **Madrid**, restored
+  from Git history at the user's request.
+- **Five destinations** use their original externally hosted photos:
+  **Cairo, Lisbon, Paris, Rome and Tokyo**. Their Pexels/Unsplash URLs
+  remain in `CITY_PHOTOS`. These require the external image providers
+  to be reachable and may occasionally fail to load.
+- The restored original `madrid.jpg` has the **same file contents as
+  `barcelona.jpg`** in this repository. This is intentional to reproduce
+  the previously used Madrid image exactly, not a corrected Madrid photo.
 
-The original five photos were restored after the temporary local SVG
-illustrations were removed. No new photographs have been invented or
-substituted for those five images.
+Six SVG artwork files created during the temporary fallback experiment may
+still exist in this folder, but the site no longer uses them for these
+six cities. They are not original photographs.
 
-## Verify the local images
+## Validate local image integrity
 
-From the repository root, run:
+From the project root:
 
 ```bash
 python scripts/verify_city_assets.py
 ```
 
-This checks all **36 locally served visuals** for missing files, basic JPEG
-completeness, SVG correctness and duplicates. If Pillow is installed,
-it also verifies full JPEG decoding. The script lists the five remote-only
-destinations separately; it does not test live third-party image URLs.
+The script checks **36 local JPEGs** for basic completeness, optionally
+performs full JPEG decoding with Pillow, and reports duplicate file content.
+It lists the five remote-image cities separately and cannot validate their
+external URLs without network access.
 
-To replace a remote image with a properly licensed local photograph in the
-future, commit it to `assets/cities/<slug>.jpg` and update
-`cityImageCandidates()` in `index.html`.
+If a local image file is missing or truncated after deployment,
+run `git pull --ff-only origin main` and then re-run the audit.
