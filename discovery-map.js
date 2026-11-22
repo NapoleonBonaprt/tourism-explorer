@@ -15,6 +15,7 @@
     layer: null,
     tileLayer: null,
     tilesUnavailable: false,
+    resizeObserver: null,
     coords: new Map(),
     matching: [],
     markers: new Map(),
@@ -41,17 +42,18 @@
   }
 
   function makeTiles() {
-    // CARTO now requires an API key and returns watermarked tiles without one.
-    // Use the public OSM standard basemap with visible attribution instead.
-    // Dark styling is handled by CSS on the tile pane, without reloading tiles.
+    // A standard, unfiltered street map keeps country borders, place names
+    // and roads readable in both light and dark UI themes.
     if (!state.map || !window.L || state.tileLayer) return;
     const layer = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       minZoom: 0,
       maxZoom: 19,
       tileSize: 256,
       detectRetina: false,
-      updateWhenIdle: true,
-      keepBuffer: 2,
+      updateWhenIdle: false, // Fetch neighboring tiles while dragging
+      updateInterval: 150,
+      keepBuffer: 4,         // Prevent empty edges during a quick pan
+      noWrap: true,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
     state.tileLayer = layer;
@@ -96,36 +98,106 @@
     return marker;
   }
 
-  function paintMarkers() {
+  // Aggregate overlapping city pins at low zoom rather than covering Europe
+  // with several indistinguishable markers. Clusters expand on click.
+  function groupPlaces(places, zoom) {
+    const groups = [];
+    const radius = zoom < 7 ? 48 : 0;
+    for (const item of places) {
+      const pixel = state.map.project(item.position, zoom);
+      const group = radius && groups.find(candidate => {
+        const dx = candidate.pixel.x - pixel.x;
+        const dy = candidate.pixel.y - pixel.y;
+        return dx * dx + dy * dy < radius * radius;
+      });
+      if (group) {
+        group.members.push(item);
+        const n = group.members.length;
+        group.pixel.x += (pixel.x - group.pixel.x) / n;
+        group.pixel.y += (pixel.y - group.pixel.y) / n;
+      } else {
+        groups.push({pixel, members: [item]});
+      }
+    }
+    return groups;
+  }
+
+  function makeCluster(group) {
+    const count = group.members.length;
+    const center = state.map.unproject(group.pixel, state.map.getZoom());
+    const marker = L.marker(center, {
+      zIndexOffset: 1000,
+      title: count + " destinations. Click to zoom in.",
+      icon: L.divIcon({
+        className: "wc-map-cluster",
+        html: '<span aria-hidden="true">' + count + '</span>',
+        iconSize: [43, 43],
+        iconAnchor: [21, 21]
+      })
+    });
+    marker.on("click", () => {
+      const nextZoom = Math.min(11, Math.max(5, state.map.getZoom() + 2));
+      state.map.setView(center, nextZoom, {animate: false});
+    });
+    marker.addTo(state.layer);
+  }
+
+  function paintMarkers(recenter = false) {
     if (!state.map || !state.coordsReady) return;
     state.layer.clearLayers();
     state.markers.clear();
 
-    const bounds = [];
+    const locations = [];
     for (const place of state.matching) {
       const point = state.coords.get(normalize(place.city));
       if (!validCoordinate(point)) continue;
-      const position = [Number(point.latitude), Number(point.longitude)];
-      const marker = makeMarker(place, position);
-      marker.addTo(state.layer);
-      state.markers.set(markerKey(place), marker);
-      bounds.push(position);
+      locations.push({
+        place,
+        position: [Number(point.latitude), Number(point.longitude)]
+      });
     }
 
     if (!state.matching.length) {
       setStatus("No destinations match your search.");
-    } else if (!bounds.length) {
-      setStatus("Map locations are unavailable for these cities. Use the directory.");
-    } else {
-      if (!state.tilesUnavailable) {
-        setStatus("Showing " + bounds.length + " of " + state.matching.length
-          + " matching cities on the map. Select a pin to explore.");
-      }
-      if (bounds.length === 1) {
-        state.map.setView(bounds[0], 6, {animate: false});
+      return;
+    }
+    if (!locations.length) {
+      setStatus("City locations are unavailable. Use the searchable directory.");
+      return;
+    }
+    if (recenter) {
+      const bounds = L.latLngBounds(locations.map(item => item.position));
+      if (locations.length === 1) {
+        state.map.setView(locations[0].position, 9, {animate: false});
       } else {
-        state.map.fitBounds(L.latLngBounds(bounds).pad(.18), {maxZoom: 5, animate: false});
+        state.map.fitBounds(bounds.pad(.16), {
+          maxZoom: 7,
+          animate: false,
+          padding: [38, 38]
+        });
       }
+    }
+
+    const groups = groupPlaces(locations, state.map.getZoom());
+    for (const group of groups) {
+      if (group.members.length > 1) {
+        makeCluster(group);
+      } else {
+        const item = group.members[0];
+        const marker = makeMarker(item.place, item.position);
+        marker.addTo(state.layer);
+        state.markers.set(markerKey(item.place), marker);
+      }
+    }
+
+    if (!state.tilesUnavailable) {
+      const clustered = groups.some(group => group.members.length > 1);
+      setStatus(
+        locations.length + " destinations on the map. "
+        + (clustered
+          ? "Select a numbered cluster or zoom in to see cities and streets."
+          : "Select a city pin for climate details.")
+      );
     }
   }
 
@@ -144,7 +216,7 @@
       }
       if (!state.coords.size) throw new Error("No usable coordinates");
       state.coordsReady = true;
-      paintMarkers();
+      paintMarkers(true);
     } catch (error) {
       setStatus("Map locations are temporarily unavailable. The city search still works.");
       console.warn("Destination map coordinates unavailable:", error);
@@ -161,19 +233,38 @@
 
     try {
       state.map = L.map(mapElement, {
-        center: [22, 12],
+        center: [20, 10],
         zoom: 2,
         zoomSnap: .25,
-        minZoom: 1.5,
-        maxZoom: 12,
+        minZoom: 2,
+        maxZoom: 14,
         scrollWheelZoom: false,
-        worldCopyJump: true,
+        worldCopyJump: false,
+        maxBounds: [[-84, -179.9], [84, 179.9]],
+        maxBoundsViscosity: .85,
         zoomControl: false
       });
       L.control.zoom({position: "bottomright"}).addTo(state.map);
       state.layer = L.layerGroup().addTo(state.map);
+      state.map.on("zoomend", () => paintMarkers(false));
       makeTiles();
-      window.addEventListener("resize", () => state.map.invalidateSize(), {passive: true});
+
+      // Leaflet must recalculate the viewport if its panel changes size.
+      // The observer handles responsive layout and browser zoom changes.
+      const refreshSize = () => {
+        if (!state.map || !mapElement.getBoundingClientRect().width) return;
+        state.map.invalidateSize({pan: false, animate: false});
+      };
+      if ("ResizeObserver" in window) {
+        state.resizeObserver = new ResizeObserver(refreshSize);
+        state.resizeObserver.observe(mapElement);
+      }
+      window.addEventListener("resize", refreshSize, {passive: true});
+      document.addEventListener("visibilitychange", () => {
+        if (!document.hidden) requestAnimationFrame(refreshSize);
+      });
+      requestAnimationFrame(refreshSize);
+      state.map.whenReady(refreshSize);
       setStatus("Loading city locations...");
       loadCoordinates();
     } catch (error) {
@@ -191,7 +282,7 @@
   function setup() {
     document.addEventListener("wanderclimate:directory-updated", event => {
       state.matching = Array.isArray(event.detail?.matching) ? event.detail.matching : [];
-      paintMarkers();
+      paintMarkers(true);
     });
 
     document.getElementById("discoveryReset")?.addEventListener("click", () => {
