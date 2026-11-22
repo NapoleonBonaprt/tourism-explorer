@@ -1,0 +1,173 @@
+/* WanderClimate · Interactive Map Discovery
+   Works alongside the existing city directory and climate search. */
+#browse.discovery-section{
+  margin-top:76px;padding:0;background:transparent;border:0;
+  border-radius:0;box-shadow:none;scroll-margin-top:100px;
+}
+.discovery-section .browse-head{align-items:end;margin-bottom:24px}
+.discovery-section .browse-head h2{max-width:22ch}
+.discovery-layout{
+  display:grid;grid-template-columns:minmax(0,1.34fr) minmax(310px,.83fr);
+  gap:17px;align-items:stretch;min-width:0;
+}
+.discovery-map-panel,
+.discovery-directory{
+  min-width:0;border-radius:21px;overflow:hidden;border:1px solid #dce9e4;
+  background:#fff;box-shadow:0 14px 42px rgba(12,58,60,.075);
+}
+.discovery-map-panel{position:relative;min-height:530px;background:#e2efec}
+.discovery-map{height:530px;width:100%;z-index:0;background:#e2efec}
+.discovery-map-title{
+  position:absolute;z-index:600;left:17px;top:17px;right:17px;display:flex;
+  align-items:center;justify-content:space-between;gap:10px;pointer-events:none;
+}
+.discovery-map-heading{
+  padding:11px 14px;border-radius:12px;background:rgba(255,255,255,.95);
+  color:#174844;border:1px solid rgba(216,238,230,.85);
+  box-shadow:0 7px 22px rgba(11,44,41,.14);backdrop-filter:blur(10px);
+}
+.discovery-map-heading strong{display:block;font-size:13px;line-height:1.25;font-weight:850}
+.discovery-map-heading small{display:block;margin-top:3px;font-size:11px;color:#587b73}
+.discovery-reset{
+  flex-shrink:0;pointer-events:auto;padding:9px 13px;min-height:38px;
+  background:#fff;color:#0c6f68;border:1px solid #cde5dc;border-radius:10px;
+  font-size:12px;font-weight:850;box-shadow:0 6px 17px rgba(11,44,41,.12);
+}
+.discovery-reset:hover{background:#e6f8f1;border-color:#8bc5b6}
+.discovery-map-status{
+  position:absolute;z-index:600;left:15px;bottom:29px;
+  max-width:min(75%,420px);padding:9px 12px;
+  color:#1c544c;background:rgba(255,255,255,.94);border:1px solid #cde6dd;
+  border-radius:10px;font-size:11px;font-weight:650;line-height:1.45;
+  box-shadow:0 7px 19px rgba(10,53,49,.11);
+}
+.discovery-directory{
+  padding:22px;display:flex;flex-direction:column;
+  min-height:530px;max-height:530px;
+}
+.discovery-directory-heading h3{
+  font:850 22px/1.25 'Figtree',system-ui,sans-serif;
+  letter-spacing:-.035em;color:#173d40;
+}
+.discovery-directory-heading p{font-size:12px;line-height:1.6;color:#6a817d;margin-top:7px}
+.discovery-directory .browse-search{display:block;position:relative;flex:0 0 auto;margin-top:17px}
+.discovery-directory .browse-search input{
+  display:block;width:100%;min-height:47px;height:47px;
+  padding:11px 15px 11px 41px;border-radius:12px;
+  border:1px solid #d5e7df;background:#f9fcfa;color:#173d3d;
+  font-size:14px;font-weight:650;
+}
+.discovery-directory .browse-search input:focus{outline:2px solid #6db4a7;outline-offset:1px}
+.discovery-search-icon{
+  position:absolute;left:14px;top:50%;width:18px;height:18px;
+  transform:translateY(-50%);fill:none;stroke:#668981;stroke-width:2;
+  pointer-events:none;
+}
+.discovery-directory .browse-count{
+  flex-shrink:0;margin:12px 0 11px;color:#63817c;font-size:12px;font-weight:700;
+}
+.discovery-directory .browse-grid{
+  display:flex;flex-direction:column;gap:7px;flex:1;min-height:0;overflow-y:auto;
+  padding:1px 4px 2px 1px;margin:0;scrollbar-width:thin;scrollbar-color:#bdd9ce transparent;
+  overscroll-behavior:contain;
+}
+.discovery-directory .browse-place{
+  width:100%;min-width:0;min-height:59px;flex:0 0 auto;
+  display:flex;flex-direction:row;align-items:center;justify-content:space-between;
+  gap:10px;text-align:left;padding:10px 13px;border:1px solid #e4eee9;
+  border-radius:11px;background:#fbfdfa;
+  transition:background .16s,border-color .16s,transform .16s;
+}
+.discovery-directory .browse-place:hover,
+.discovery-directory .browse-place:focus-visible{
+  background:#eaf8f3;border-color:#8bc7b8;transform:none;
+}
+.discovery-place-name{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
+.discovery-place-name strong{font-size:14px;line-height:1.25;color:#194542;overflow-wrap:anywhere}
+.discovery-place-name small{font-size:11px;color:#738983}
+.discovery-place-action{
+  flex-shrink:0;color:#108278;background:#eaf6f0;padding:6px 9px;
+  border-radius:8px;font-size:11px;font-weight:850;
+}
+.discovery-directory .browse-empty{margin:5px 0;background:#f9fcfa;border:1px solid #dcebe4;border-radius:11px}
+.discovery-map .leaflet-container{font-family:'Figtree',system-ui,sans-serif}
+.discovery-map .leaflet-popup-content-wrapper{border-radius:14px;box-shadow:0 12px 36px rgba(9,46,43,.22)}
+.discovery-map .leaflet-popup-content{margin:14px;min-width:146px}
+.discovery-popup strong{display:block;color:#194946;font:850 15px/1.4 'Figtree',system-ui,sans-serif}
+.discovery-popup small{display:block;color:#6e8780;font-size:12px;margin:2px 0 10px}
+.discovery-popup button{
+  display:block;width:100%;border:0;border-radius:8px;min-height:35px;
+  padding:8px 11px;color:white;background:#087e78;font-weight:800;font-size:12px;
+}
+.discovery-popup button:hover{background:#046863}
+.wc-map-pin{background:transparent;border:0}
+.wc-map-pin span{
+  display:block;width:22px;height:22px;border-radius:50%;
+  background:#0b8e88;border:3px solid #fff;
+  box-shadow:0 3px 13px rgba(3,50,52,.34),0 0 0 2px rgba(11,141,135,.28);
+  transition:transform .16s ease,background .16s ease;
+}
+.wc-map-pin:hover span,.wc-map-pin.is-highlighted span{
+  background:#f18869;transform:scale(1.23);
+  box-shadow:0 3px 15px rgba(3,50,52,.36),0 0 0 3px rgba(241,136,105,.25);
+}
+.discovery-map .leaflet-control-zoom a{color:#205e58}
+.discovery-map .leaflet-control-attribution{font-size:9px}
+:root[data-theme="dark"] .discovery-map-panel,
+:root[data-theme="dark"] .discovery-directory{
+  background:#20434c;border-color:#42676c;box-shadow:0 16px 42px rgba(1,18,27,.18);
+}
+:root[data-theme="dark"] .discovery-map{background:#24444b}
+:root[data-theme="dark"] .discovery-directory-heading h3{color:#edf9f4}
+:root[data-theme="dark"] .discovery-directory-heading p,
+:root[data-theme="dark"] .discovery-directory .browse-count{color:#bfd9d2}
+:root[data-theme="dark"] .discovery-directory .browse-search input{
+  background:#1b3943;color:#f2faf6;border-color:#51767b;
+}
+:root[data-theme="dark"] .discovery-directory .browse-search input::placeholder{color:#b0cfca}
+:root[data-theme="dark"] .discovery-directory .browse-place{
+  background:#294c56;border-color:#40646a;color:#edf9f5;
+}
+:root[data-theme="dark"] .discovery-directory .browse-place:hover,
+:root[data-theme="dark"] .discovery-directory .browse-place:focus-visible{
+  background:#345e65;border-color:#78b7aa;
+}
+:root[data-theme="dark"] .discovery-place-name strong{color:#edf9f4}
+:root[data-theme="dark"] .discovery-place-name small{color:#b9d6d0}
+:root[data-theme="dark"] .discovery-place-action{background:#356a66;color:#dcfff3}
+:root[data-theme="dark"] .discovery-map-heading,
+:root[data-theme="dark"] .discovery-map-status,
+:root[data-theme="dark"] .discovery-reset{
+  background:rgba(28,63,71,.96);color:#ecf9f3;border-color:#507e7c;
+}
+:root[data-theme="dark"] .discovery-map-heading small{color:#c3e3d9}
+:root[data-theme="dark"] .discovery-reset:hover{background:#35616a}
+:root[data-theme="dark"] .discovery-map .leaflet-popup-content-wrapper,
+:root[data-theme="dark"] .discovery-map .leaflet-popup-tip{background:#294850;color:#f3fcf7}
+:root[data-theme="dark"] .discovery-popup strong{color:#f3fcf7}
+:root[data-theme="dark"] .discovery-popup small{color:#b5d7cf}
+@media(max-width:980px){
+  .discovery-layout{grid-template-columns:minmax(0,1fr) minmax(270px,.78fr);gap:12px}
+  .discovery-directory{padding:17px}
+}
+@media(max-width:760px){
+  #browse.discovery-section{margin-top:52px}
+  .discovery-layout{grid-template-columns:minmax(0,1fr);gap:13px}
+  .discovery-map-panel{min-height:345px}
+  .discovery-map{height:345px}
+  .discovery-directory{min-height:340px;max-height:405px;padding:18px}
+  .discovery-map-title{left:12px;right:12px;top:12px}
+  .discovery-map-heading{padding:9px 11px}
+  .discovery-map-heading small{font-size:10px}
+  .discovery-reset{font-size:11px}
+  .discovery-map-status{left:10px;bottom:25px;max-width:76%;font-size:10px}
+  .discovery-directory .browse-grid{min-height:0}
+}
+@media(max-width:390px){
+  .discovery-map-heading small{display:none}
+  .discovery-map-heading strong{font-size:12px}
+  .discovery-directory{padding:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  .wc-map-pin span,.discovery-directory .browse-place{transition:none}
+}
