@@ -210,19 +210,58 @@ h1,h2,h3{letter-spacing:-.033em}
 .mobile-nav-toggle{display:none}
 .theme-toggle:hover,.mobile-nav-toggle:hover{background:rgba(255,255,255,.18)}
 .shell{max-width:1230px;padding:32px 25px 75px}
-.page-heading{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;min-height:264px;margin-bottom:22px;padding:34px clamp(24px,4vw,50px);border:1px solid rgba(32,82,81,.13);border-radius:21px;overflow:hidden;color:#fff;box-shadow:0 20px 46px rgba(11,51,60,.12);background-color:#114853;background-size:cover;background-position:center}
-body[data-page=overview] .page-heading{background-image:linear-gradient(90deg,rgba(7,31,45,.91),rgba(8,44,54,.44)),url('assets/cities/kyoto.jpg')}
-body[data-page=climate] .page-heading{background-image:linear-gradient(90deg,rgba(7,34,48,.91),rgba(7,45,56,.47)),url('assets/cities/barcelona.jpg')}
-body[data-page=explorer] .page-heading{background-image:linear-gradient(90deg,rgba(7,31,45,.90),rgba(7,45,56,.45)),url('assets/cities/dubai.jpg')}
-body[data-page=planner] .page-heading{background-image:linear-gradient(90deg,rgba(7,31,45,.92),rgba(7,45,56,.44)),url('assets/cities/venice.jpg')}
-body[data-page=adaptive] .page-heading{background-image:linear-gradient(90deg,rgba(7,31,45,.91),rgba(7,45,56,.45)),url('assets/cities/alexandria.jpg')}
+.page-heading{
+  position:relative;isolation:isolate;display:flex;align-items:center;
+  justify-content:flex-start;min-height:325px;margin-bottom:24px;
+  padding:clamp(19px,3.2vw,38px);
+  border:1px solid rgba(32,82,81,.15);border-radius:23px;
+  overflow:hidden;color:#fff;box-shadow:0 18px 42px rgba(11,51,60,.11);
+  background-color:#114853;background-size:cover;background-position:center 45%;
+}
+.page-heading__content{
+  position:relative;z-index:1;min-width:0;
+  width:min(730px,68%);max-width:100%;
+  padding:clamp(22px,3vw,34px);
+  border:1px solid rgba(233,251,246,.22);border-radius:17px;
+  background:linear-gradient(115deg,rgba(7,35,46,.77),rgba(12,43,50,.62));
+  box-shadow:0 12px 35px rgba(0,18,25,.13);
+  -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
+}
+body[data-page=overview] .page-heading{background-image:linear-gradient(90deg,rgba(7,31,45,.24),rgba(8,44,54,.04)),url('assets/cities/kyoto.jpg')}
+body[data-page=climate] .page-heading{background-image:linear-gradient(90deg,rgba(7,34,48,.25),rgba(7,45,56,.04)),url('assets/cities/barcelona.jpg')}
+body[data-page=explorer] .page-heading{background-image:linear-gradient(90deg,rgba(7,31,45,.23),rgba(7,45,56,.05)),url('assets/cities/dubai.jpg')}
+body[data-page=planner] .page-heading{background-image:linear-gradient(90deg,rgba(7,31,45,.24),rgba(7,45,56,.04)),url('assets/cities/venice.jpg')}
+body[data-page=adaptive] .page-heading{background-image:linear-gradient(90deg,rgba(7,31,45,.26),rgba(7,45,56,.04)),url('assets/cities/alexandria.jpg')}
 .page-heading::after{display:none}
-.page-heading .eyebrow{display:inline-flex;align-items:center;color:#fee0a3;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:850;margin:0 0 13px}
-.page-heading h1{max-width:25ch;font-size:clamp(35px,4.3vw,57px);line-height:1.1;color:#fff;overflow-wrap:break-word}
-.page-heading .lead{max-width:69ch;margin:12px 0 0;color:#e2f2f0;font-size:15px;line-height:1.62}
+.page-heading .eyebrow{
+  display:inline-flex;align-items:center;gap:9px;margin:0 0 13px;
+  color:#ffdc9c;font:800 10px/1.3 'Figtree',system-ui,sans-serif;
+  letter-spacing:.14em;text-transform:uppercase;
+}
+.page-heading .eyebrow::before{
+  content:"";display:block;width:18px;height:2px;
+  background:#f4c978;border-radius:2px;flex:0 0 auto;
+}
+.page-heading h1{
+  max-width:22ch;color:#fff;
+  font:800 clamp(31px,3.3vw,45px)/1.13 'Figtree',system-ui,sans-serif;
+  letter-spacing:-.042em;text-wrap:balance;
+  overflow-wrap:normal;text-shadow:0 2px 13px rgba(0,24,31,.1);
+}
+.page-heading .lead{
+  max-width:57ch;margin:13px 0 0;
+  color:#e8f3f1;font:500 clamp(13px,1.15vw,15px)/1.63 'Figtree',system-ui,sans-serif;
+  text-wrap:pretty;
+}
 .page-heading .vista-signpost{display:none}
-.page-cta{display:inline-flex;align-items:center;justify-content:center;margin-top:18px;min-height:40px;padding:9px 15px;color:#113735;background:#f4c978;border-radius:9px;text-decoration:none;font-size:12px;font-weight:850}
-.page-cta:hover{background:#ffe0a1;transform:translateY(-2px)}
+.page-cta{
+  display:inline-flex;align-items:center;justify-content:center;margin-top:21px;
+  min-height:40px;padding:9px 17px;color:#183c38;background:#f4c978;
+  border:1px solid rgba(255,226,162,.6);
+  border-radius:9px;text-decoration:none;
+  font:800 12px/1.35 'Figtree',system-ui,sans-serif;
+}
+.page-cta:hover{background:#ffe1a2;transform:translateY(-2px)}
 .main-grid{gap:20px}
 .summary-grid{gap:13px}
 .card,.attraction-card,.day-card{background:#fff;border:1px solid var(--ui-border);border-radius:18px;box-shadow:var(--ui-shadow)}
@@ -316,9 +355,18 @@ tbody tr:hover{background:#f5faf7}
   .brand img{width:clamp(146px,39vw,195px)}
   .nav-actions{gap:5px}
   .theme-toggle [data-theme-label]{display:none}
-  .page-heading{min-height:220px;padding:26px 22px;border-radius:17px}
-  .page-heading h1{font-size:clamp(32px,7vw,43px)}
-  .page-heading .lead{font-size:14px}
+  .page-heading{
+    min-height:264px;padding:13px;border-radius:18px;
+    background-position:center;
+  }
+  .page-heading__content{
+    width:100%;padding:20px;
+    border-radius:13px;background:linear-gradient(110deg,rgba(7,35,46,.85),rgba(12,43,50,.68));
+  }
+  .page-heading .eyebrow{margin-bottom:10px;font-size:9px}
+  .page-heading h1{font-size:clamp(26px,6.8vw,36px);line-height:1.17}
+  .page-heading .lead{font-size:13px;line-height:1.55}
+  .page-heading .page-cta{margin-top:14px;min-height:38px}
   .card{padding:18px}
   .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .metric{min-height:104px;padding:14px}
