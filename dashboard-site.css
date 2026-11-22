@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600;700;800;900&display=swap');
 :root{--deep:#1e2b22;--moss:#3f6b4a;--sage:#5b8f94;--ochre:#e0b65a;--paper:#f6f7f3;--mut:#59685d;--line:#dce6dc;--white:#fff;--shadow:0 8px 28px rgba(30,43,34,.06)}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -413,6 +413,60 @@ tbody tr:hover{background:#f5faf7}
   .topbar .brand .brand-emblem{flex-basis:29px;width:29px;height:29px}
   .topbar .brand .brand-emblem img{width:152px;min-width:152px;height:29px}
   .topbar .brand .brand-label{font-size:15px}
+}
+/* Shared dashboard typography
+   Use the same clear Figtree hierarchy as the updated photo headings.
+   Typography is scoped to dashboard content: no change to hero dimensions,
+   hero text treatment, routes, maps, or print-specific typography. */
+body[data-page]{
+  --dashboard-font:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-family:var(--dashboard-font);
+}
+body[data-page] #pageContent :is(h2,h3,h4),
+body[data-page] #pageContent .itinerary-print-head h2{
+  font-family:var(--dashboard-font);
+  font-weight:800;
+  letter-spacing:-.035em;
+  line-height:1.26;
+  text-wrap:balance;
+  overflow-wrap:break-word;
+}
+body[data-page] #pageContent h2{
+  font-size:clamp(21px,2.2vw,27px);
+}
+body[data-page] #pageContent h3{
+  font-size:clamp(17px,1.55vw,20px);
+}
+body[data-page] #pageContent h4{
+  font-size:16px;
+}
+body[data-page] #pageContent :is(.metric strong,.dest-card b,.day-card h3){
+  font-family:var(--dashboard-font);
+  font-weight:800;
+}
+body[data-page] #pageContent .metric strong{
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-.025em;
+}
+body[data-page] #pageContent :is(.field label,th,.cluster-controls legend){
+  font-family:var(--dashboard-font);
+  font-weight:800;
+  letter-spacing:.005em;
+  line-height:1.4;
+}
+body[data-page] #pageContent :is(.attraction-card summary,.day-type,.btn,.map-result){
+  font-family:var(--dashboard-font);
+  font-weight:800;
+}
+body[data-page] #pageContent :is(input,select,textarea,button,td){
+  font-family:var(--dashboard-font);
+}
+body[data-page] #pageContent :is(.card p,.note,.helper,.prose,.attraction-card .inner){
+  line-height:1.7;
+}
+@media(max-width:760px){
+  body[data-page] #pageContent h2{font-size:clamp(20px,5.3vw,25px)}
+  body[data-page] #pageContent h3{font-size:clamp(17px,4.5vw,19px)}
 }
 @media print{
   @page{size:A4;margin:14mm 14mm 16mm}
