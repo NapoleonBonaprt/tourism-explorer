@@ -360,6 +360,72 @@ footer{color:#627878}
 }
 @media(max-width:480px){.hero-ctas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.hero-ctas a{text-align:center;padding:10px 6px;font-size:12px}.search{flex-direction:column;padding:8px;gap:6px}.search input{width:100%;min-height:45px;font-size:16px}.go{width:100%;min-height:44px}.browse-grid{grid-template-columns:1fr}#browse{padding:18px}}
 @media(max-width:360px){.hero header .logo img{width:131px}.hero h1,.is-home .hero h1{font-size:40px}.places{grid-template-columns:1fr}}
+
+/* Compact split wordmark: preserve the premium illustrated mark, without its
+   large embedded rectangle, and use navigation-sized live typography. */
+.hero header .logo{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  width:auto;
+  max-width:100%;
+  min-width:0;
+  flex-shrink:0;
+  text-decoration:none;
+  white-space:nowrap;
+  line-height:1;
+}
+.hero header .logo .brand-emblem{
+  position:relative;
+  display:block;
+  flex:0 0 37px;
+  width:37px;
+  height:37px;
+  overflow:hidden;
+  border-radius:9px;
+  background:#164548;
+}
+.hero header .logo .brand-emblem img{
+  position:absolute;
+  display:block;
+  left:-2px;
+  top:0;
+  width:194px;
+  height:37px;
+  min-width:194px;
+  max-width:none;
+  max-height:none;
+  object-fit:fill;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  filter:none;
+  transform:none;
+}
+.hero header .logo .brand-label{
+  display:inline-block;
+  color:#f1f8f5;
+  font-family:'Figtree',system-ui,sans-serif;
+  font-size:clamp(18px,1.65vw,21px);
+  font-weight:800;
+  letter-spacing:-.045em;
+  line-height:1;
+  text-shadow:none;
+}
+.hero header .logo .brand-label span{color:#f3cb7c}
+.hero header .logo:hover .hero header .logo .brand-label{color:#fff}
+.hero header .logo:hover .hero header .logo .brand-label span{color:#ffe4a8}
+@media(max-width:760px){
+  .hero header .logo{gap:7px}
+  .hero header .logo .brand-emblem{flex-basis:32px;width:32px;height:32px;border-radius:8px}
+  .hero header .logo .brand-emblem img{width:168px;min-width:168px;height:32px;left:-2px}
+  .hero header .logo .brand-label{font-size:clamp(16px,4.5vw,19px)}
+}
+@media(max-width:360px){
+  .hero header .logo .brand-emblem{flex-basis:29px;width:29px;height:29px}
+  .hero header .logo .brand-emblem img{width:152px;min-width:152px;height:29px}
+  .hero header .logo .brand-label{font-size:15px}
+}
 #vista-progress{position:fixed;left:0;top:0;width:100%;height:3px;z-index:9999;pointer-events:none;transform:scaleX(0);transform-origin:left;background:linear-gradient(90deg,#13a59b,#f3c877,#ee8868)}
 .vista-reveal.vista-ready{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
 .vista-reveal.vista-visible{opacity:1;transform:none}
