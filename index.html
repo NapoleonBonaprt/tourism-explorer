@@ -11,6 +11,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="landing.css?v=20261122-hero-clean">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="discovery-map.css?v=20261122-map-v1">
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script defer src="discovery-map.js?v=20261122-map-v1"></script>
 <script defer src="experience-v4.js?v=20261122-01"></script>
 </head>
 <body class="is-home">
@@ -80,19 +84,39 @@
   </section>
 
 
-  <section class="sec only-home" id="browse" aria-labelledby="browseTitle">
+  <section class="sec only-home discovery-section" id="browse" aria-labelledby="browseTitle">
     <div class="browse-head">
       <div>
-        <span class="section-kicker">THE FULL COLLECTION</span>
-        <h2 id="browseTitle">Find your next destination.</h2>
-        <p class="sub">Search destinations from our climate data to see when the weather feels just right.</p>
+        <span class="section-kicker">INTERACTIVE DESTINATION DISCOVERY</span>
+        <h2 id="browseTitle">Your next destination, on the map.</h2>
+        <p class="sub">Explore the cities in our climate dataset. Select a map pin or search the directory to see when to visit.</p>
       </div>
-      <label class="browse-search" for="browseQuery">
-        <input id="browseQuery" type="search" placeholder="Filter cities or countries..." aria-label="Filter destinations by city or country" autocomplete="off">
-      </label>
     </div>
-    <p class="browse-count" id="browseCount" role="status" aria-live="polite">Loading destinations...</p>
-    <div class="browse-grid" id="browseGrid"></div>
+    <div class="discovery-layout">
+      <div class="discovery-map-panel">
+        <div class="discovery-map-title">
+          <div class="discovery-map-heading">
+            <strong>Explore the world</strong>
+            <small>Choose a city marker to explore</small>
+          </div>
+          <button class="discovery-reset" id="discoveryReset" type="button">View all</button>
+        </div>
+        <div class="discovery-map" id="discoveryMap" role="region" aria-label="Interactive map showing available destinations"></div>
+        <p class="discovery-map-status" id="discoveryMapStatus" role="status" aria-live="polite">Map will load as you scroll.</p>
+      </div>
+      <div class="discovery-directory">
+        <div class="discovery-directory-heading">
+          <h3>Explore all destinations</h3>
+          <p>Search by city or country, then select a destination for climate details.</p>
+        </div>
+        <label class="browse-search" for="browseQuery">
+          <svg class="discovery-search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
+          <input id="browseQuery" type="search" placeholder="Search cities or countries..." aria-label="Search destinations by city or country" autocomplete="off">
+        </label>
+        <p class="browse-count" id="browseCount" role="status" aria-live="polite">Loading destinations...</p>
+        <div class="browse-grid" id="browseGrid" aria-label="Available destinations"></div>
+      </div>
+    </div>
   </section>
 
 
@@ -446,9 +470,11 @@ function renderBrowse() {
     : `Showing ${matching.length} of ${PLACE_LIST.length} destinations`;
   $("browseGrid").innerHTML = matching.length
     ? matching.map(p => `<button type="button" class="browse-place" data-city="${esc(p.city)}" data-country="${esc(p.country || "")}" aria-label="Explore ${esc(p.city)}, ${esc(p.country || "")}">
-        <strong>${esc(p.city)}</strong><small>${esc(p.country || "Country unavailable")}</small>
+        <span class="discovery-place-name"><strong>${esc(p.city)}</strong><small>${esc(p.country || "Country unavailable")}</small></span>
+        <span class="discovery-place-action" aria-hidden="true">Explore</span>
       </button>`).join("")
     : `<p class="browse-empty">No destinations match "${esc($("browseQuery").value.trim())}". Try another city or country.</p>`;
+  document.dispatchEvent(new CustomEvent("wanderclimate:directory-updated", {detail: {matching}}));
 }
 // Try configured photo fallbacks, then reveal the city illustration.
 document.addEventListener("error", event => {
@@ -489,6 +515,7 @@ async function loadPlaces() {
 renderPlaces();
 renderBrowse();
 $("browseQuery").addEventListener("input", renderBrowse);
+document.addEventListener("wanderclimate:map-ready", renderBrowse);
 loadPlaces();
 $("key").innerHTML = [[85,"Ideal","80+"],[75,"Very good","70–79"],[65,"Good","60–69"],[55,"Fair","50–59"],[45,"Tough","40–49"],[30,"Avoid","under 40"]]
   .map(([v, l, r]) => `<span><i style="background:${colorFor(v)}"></i>${l} <small>${r}</small></span>`).join("");
