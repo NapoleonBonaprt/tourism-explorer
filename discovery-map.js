@@ -128,13 +128,13 @@
 
   async function loadCoordinates() {
     try {
-      const response = await fetch(apiRoot + "/website/filters", {
+      const response = await fetch(apiRoot + "/website/destination-coordinates", {
         headers: {Accept: "application/json"},
         cache: "default"
       });
       if (!response.ok) throw new Error("Coordinates API returned " + response.status);
       const data = await response.json();
-      const coordinates = data && data.adaptive_coordinates;
+      const coordinates = data && data.coordinates;
       if (!coordinates || typeof coordinates !== "object") throw new Error("No city coordinates");
       for (const [city, position] of Object.entries(coordinates)) {
         if (validCoordinate(position)) state.coords.set(normalize(city), position);
