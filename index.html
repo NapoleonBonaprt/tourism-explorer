@@ -312,17 +312,16 @@ const CITY_PHOTOS = {
   "vienna": [], // Vienna
 };
 
-// Restore the original photographic sources for these five cities.
-// All other cities use the committed local photos, except Madrid, whose
-// original JPEG duplicated Barcelona and still uses its own local illustration.
+// Use the original external photos for Cairo, Lisbon, Paris, Rome and Tokyo.
+// Every other destination, including Madrid, uses its original local JPEG.
+// Keep existing remote URLs as fallbacks when a local JPEG cannot load.
 const ORIGINAL_REMOTE_PHOTOS = new Set(["cairo", "lisbon", "paris", "rome", "tokyo"]);
 function cityImageCandidates(city) {
   const key = String(city || "").trim().toLowerCase();
   const slug = key.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   if (!slug) return [];
   if (ORIGINAL_REMOTE_PHOTOS.has(slug)) return CITY_PHOTOS[key] || [];
-  const extension = slug === "madrid" ? "svg" : "jpg";
-  return [`assets/cities/${slug}.${extension}`, ...(CITY_PHOTOS[key] || [])];
+  return [`assets/cities/${slug}.jpg`, ...(CITY_PHOTOS[key] || [])];
 }
 function tryNextCityCardPhoto(img) {
   const images = cityImageCandidates(img.dataset.city);
