@@ -66,14 +66,14 @@
     document.title = `${title[PAGE][0]} | WanderClimate`;
     $("siteHeader").innerHTML = `<div class="nav-wrap">
       <a class="brand" href="index.html"><img src="assets/wanderclimate-logo.svg" width="38" height="38" alt="" aria-hidden="true">WanderClimate</a>
-      <div class="nav-actions">
-        <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode"><span data-theme-icon aria-hidden="true">☾</span><span data-theme-label>Dark mode</span></button>
-        <button id="navToggle" class="mobile-nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="siteNav" aria-expanded="false">Menu</button>
-      </div>
       <nav class="primary-nav" id="siteNav" aria-label="Main navigation">
         <a href="index.html">Home</a>
         ${PAGES.map(([key,label,href])=>`<a href="${href}"${key===PAGE ? ' aria-current="page"' : ""}>${label}</a>`).join("")}
       </nav>
+      <div class="nav-actions">
+        <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Switch to dark mode"><span data-theme-icon aria-hidden="true">☾</span><span data-theme-label>Dark mode</span></button>
+        <button id="navToggle" class="mobile-nav-toggle" type="button" aria-label="Toggle navigation" aria-controls="siteNav" aria-expanded="false">Menu</button>
+      </div>
     </div>`;
     $("siteFooter").innerHTML = `<div class="footer-inner"><span>WanderClimate · Tourism Climate Index and spatial analytics</span>
        <span>Historical climate suitability is not a live forecast. Adaptive planning uses forecast data.</span></div>`;
@@ -82,9 +82,20 @@
       <p class="lead">${safe(title[PAGE][1])}</p></div>
       <div class="status" id="pageStatus" role="status" aria-live="polite" hidden></div>
       <div id="pageContent"></div>`;
-    $("navToggle").addEventListener("click", () => {
-      const open = $("siteNav").classList.toggle("open");
-      $("navToggle").setAttribute("aria-expanded", String(open));
+    const navToggle = $("navToggle");
+    const siteNav = $("siteNav");
+    function closeNav() {
+      siteNav.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+    }
+    navToggle.addEventListener("click", () => {
+      const open = siteNav.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", String(open));
+    });
+    siteNav.querySelectorAll("a").forEach(link => link.addEventListener("click", closeNav));
+    document.addEventListener("keydown", event => { if (event.key === "Escape") closeNav(); });
+    document.addEventListener("click", event => {
+      if (siteNav.classList.contains("open") && !siteNav.contains(event.target) && !navToggle.contains(event.target)) closeNav();
     });
   }
   function syncChartTheme() {
