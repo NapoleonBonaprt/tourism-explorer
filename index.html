@@ -312,17 +312,16 @@ const CITY_PHOTOS = {
   "vienna": [], // Vienna
 };
 
-// All 41 destinations are backed by local artwork. Some cities did not have
-// a committed JPEG, so we include an illustrated SVG for those destinations.
-// Madrid's existing JPEG accidentally duplicates Barcelona's photograph;
-// prefer Madrid's dedicated city illustration instead.
-// Remote photos are optional fallbacks, never required for the UI to render.
-const LOCAL_CITY_ILLUSTRATIONS = new Set(["cairo", "lisbon", "madrid", "paris", "rome", "tokyo"]);
+// Restore the original photographic sources for these five cities.
+// All other cities use the committed local photos, except Madrid, whose
+// original JPEG duplicated Barcelona and still uses its own local illustration.
+const ORIGINAL_REMOTE_PHOTOS = new Set(["cairo", "lisbon", "paris", "rome", "tokyo"]);
 function cityImageCandidates(city) {
   const key = String(city || "").trim().toLowerCase();
   const slug = key.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   if (!slug) return [];
-  const extension = LOCAL_CITY_ILLUSTRATIONS.has(slug) ? "svg" : "jpg";
+  if (ORIGINAL_REMOTE_PHOTOS.has(slug)) return CITY_PHOTOS[key] || [];
+  const extension = slug === "madrid" ? "svg" : "jpg";
   return [`assets/cities/${slug}.${extension}`, ...(CITY_PHOTOS[key] || [])];
 }
 function tryNextCityCardPhoto(img) {
