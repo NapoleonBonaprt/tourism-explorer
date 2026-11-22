@@ -65,7 +65,7 @@
   function renderShell() {
     document.title = `${title[PAGE][0]} | WanderClimate`;
     $("siteHeader").innerHTML = `<div class="nav-wrap">
-      <a class="brand" href="index.html"><img src="assets/wanderclimate-logo.svg" width="38" height="38" alt="" aria-hidden="true">WanderClimate</a>
+      <a class="brand" href="index.html" aria-label="WanderClimate home"><img src="assets/wanderclimate-wordmark.webp" width="450" height="86" alt="WanderClimate"></a>
       <nav class="primary-nav" id="siteNav" aria-label="Main navigation">
         <a href="index.html">Home</a>
         ${PAGES.map(([key,label,href])=>`<a href="${href}"${key===PAGE ? ' aria-current="page"' : ""}>${label}</a>`).join("")}
