@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="landing.css?v=20261122-v5">
+<link rel="stylesheet" href="landing.css?v=20261122-v5-1">
 <script defer src="experience-v4.js?v=20261122-01"></script>
 </head>
 <body class="is-home">
@@ -71,10 +71,10 @@
 
 <main class="wrap">
   <section class="home-intro only-home" aria-label="Explore WanderClimate">
-    <div class="home-proof" aria-label="Platform features">
-      <span>Monthly climate analysis</span>
-      <span>City and attraction maps</span>
-      <span>Weather-aware trip plans</span>
+    <div class="home-proof" aria-label="Platform capabilities">
+      <span><strong>12</strong> months of climate insight</span>
+      <span><strong>5</strong> exploration and planning tools</span>
+      <span><strong>1–7</strong> day adaptive itineraries</span>
     </div>
     <div class="quick-cities">
       <div><span class="section-kicker">WHERE TO NEXT?</span><h2>Start with a city you love.</h2></div>
@@ -360,6 +360,10 @@ document.getElementById("homeMenuToggle").addEventListener("click", () => {
 });
 document.querySelectorAll("header nav a").forEach(link => link.addEventListener("click", closeHomeMenu));
 document.addEventListener("keydown", event => { if (event.key === "Escape") closeHomeMenu(); });
+document.addEventListener("click", event => {
+  const header = document.querySelector(".hero header");
+  if (header && !header.contains(event.target)) closeHomeMenu();
+});
 function goHome() {
   cancelClimateRequest();
   document.body.classList.add("is-home");
