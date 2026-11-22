@@ -210,22 +210,35 @@ h1,h2,h3{letter-spacing:-.033em}
 .mobile-nav-toggle{display:none}
 .theme-toggle:hover,.mobile-nav-toggle:hover{background:rgba(255,255,255,.18)}
 .shell{max-width:1230px;padding:32px 25px 75px}
+/* Slim landscape photo banner, not a glass-panel card. */
 .page-heading{
-  position:relative;isolation:isolate;display:flex;align-items:center;
-  justify-content:flex-start;min-height:370px;margin-bottom:24px;
-  padding:clamp(19px,3.2vw,38px);
-  border:1px solid rgba(32,82,81,.15);border-radius:23px;
-  overflow:hidden;color:#fff;box-shadow:0 18px 42px rgba(11,51,60,.11);
-  background-color:#114853;background-size:cover;background-position:center 45%;
+  position:relative;isolation:isolate;
+  display:flex;align-items:center;justify-content:flex-start;
+  min-height:290px;margin-bottom:24px;
+  padding:clamp(22px,3.1vw,36px);
+  border:1px solid rgba(32,82,81,.15);border-radius:20px;
+  overflow:hidden;color:#fff;
+  box-shadow:0 13px 33px rgba(11,51,60,.10);
+  background-color:#114853;background-size:cover;
+  background-repeat:no-repeat;background-position:center 45%;
+}
+/* Darken just the text side, leaving the city photograph unobstructed. */
+.page-heading::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(
+    90deg,
+    rgba(6,29,39,.79) 0%,
+    rgba(6,29,39,.63) 31%,
+    rgba(6,29,39,.22) 66%,
+    rgba(6,29,39,.04) 100%
+  );
 }
 .page-heading__content{
-  position:relative;z-index:1;min-width:0;
-  width:min(730px,68%);max-width:100%;
-  padding:clamp(22px,3vw,34px);
-  border:1px solid rgba(233,251,246,.22);border-radius:17px;
-  background:linear-gradient(115deg,rgba(7,35,46,.77),rgba(12,43,50,.62));
-  box-shadow:0 12px 35px rgba(0,18,25,.13);
-  -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);
+  position:relative;z-index:1;
+  min-width:0;width:min(780px,78%);max-width:100%;
+  margin:0;padding:0;
+  border:0;border-radius:0;background:transparent;
+  box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;
 }
 body[data-page=overview] .page-heading{background-image:linear-gradient(90deg,rgba(7,31,45,.24),rgba(8,44,54,.04)),url('assets/cities/kyoto.jpg')}
 body[data-page=climate] .page-heading{background-image:linear-gradient(90deg,rgba(7,34,48,.25),rgba(7,45,56,.04)),url('assets/cities/barcelona.jpg')}
@@ -356,17 +369,26 @@ tbody tr:hover{background:#f5faf7}
   .nav-actions{gap:5px}
   .theme-toggle [data-theme-label]{display:none}
   .page-heading{
-    min-height:264px;padding:13px;border-radius:18px;
-    background-position:center;
+    min-height:285px;padding:22px 18px;border-radius:17px;
+    background-position:center 44%;
+  }
+  .page-heading::before{
+    background:linear-gradient(
+      90deg,
+      rgba(6,29,39,.80) 0%,
+      rgba(6,29,39,.58) 58%,
+      rgba(6,29,39,.22) 100%
+    );
   }
   .page-heading__content{
-    width:100%;padding:20px;
-    border-radius:13px;background:linear-gradient(110deg,rgba(7,35,46,.85),rgba(12,43,50,.68));
+    width:100%;margin:0;padding:0;
+    border:0;border-radius:0;background:transparent;
+    box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;
   }
-  .page-heading .eyebrow{margin-bottom:10px;font-size:9px}
-  .page-heading h1{font-size:clamp(26px,6.8vw,36px);line-height:1.17}
-  .page-heading .lead{font-size:13px;line-height:1.55}
-  .page-heading .page-cta{margin-top:14px;min-height:38px}
+  .page-heading .eyebrow{margin-bottom:9px;font-size:9px}
+  .page-heading h1{font-size:clamp(25px,6.4vw,35px);line-height:1.15}
+  .page-heading .lead{margin-top:10px;font-size:12.5px;line-height:1.5}
+  .page-heading .page-cta{margin-top:13px;min-height:37px}
   .card{padding:18px}
   .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
   .metric{min-height:104px;padding:14px}
