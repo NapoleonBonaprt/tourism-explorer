@@ -77,9 +77,19 @@
     </div>`;
     $("siteFooter").innerHTML = `<div class="footer-inner"><span>WanderClimate · Tourism Climate Index and spatial analytics</span>
        <span>Historical climate suitability is not a live forecast. Adaptive planning uses forecast data.</span></div>`;
+    const actionText = {
+      overview: "Explore the overview",
+      climate: "Explore climate data",
+      explorer: "Explore the map",
+      planner: "Plan your itinerary",
+      adaptive: "Build an itinerary",
+    }[PAGE];
     $("dashboardRoot").innerHTML = `<div class="page-heading">
-      <span class="eyebrow">Tourism Intelligence Platform</span><h1>${safe(title[PAGE][0])}</h1>
-      <p class="lead">${safe(title[PAGE][1])}</p></div>
+      <span class="eyebrow">WanderClimate / Tourism intelligence</span>
+      <h1>${safe(title[PAGE][0])}</h1>
+      <p class="lead">${safe(title[PAGE][1])}</p>
+      <a class="page-cta" href="#pageContent">${safe(actionText)}</a>
+    </div>
       <div class="status" id="pageStatus" role="status" aria-live="polite" hidden></div>
       <div id="pageContent"></div>`;
     const navToggle = $("navToggle");
