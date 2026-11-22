@@ -24,6 +24,8 @@ PUBLIC_FILES = (
     "dashboard-site.css",
     "dashboard-site.js",
     "landing.css",
+    "discovery-map.css",
+    "discovery-map.js",
     "experience-v4.css",
     "experience-v4.js",
     "theme.js",
