@@ -30,7 +30,7 @@ CITY_SLUGS = (
 )
 # The five cities below intentionally use their original remote photos.
 REMOTE_PHOTO_SLUGS = {"cairo", "lisbon", "paris", "rome", "tokyo"}
-ILLUSTRATED_SLUGS = {"madrid"}
+ILLUSTRATED_SLUGS = set()  # All locally selected visuals use original JPEGs.
 
 
 def main() -> int:
