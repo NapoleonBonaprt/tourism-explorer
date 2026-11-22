@@ -119,6 +119,11 @@
   background:#20434c;border-color:#42676c;box-shadow:0 16px 42px rgba(1,18,27,.18);
 }
 :root[data-theme="dark"] .discovery-map{background:#24444b}
+/* Transform only the OSM raster tiles. Keep markers, controls and labels natural. */
+:root[data-theme="dark"] .discovery-map .leaflet-tile-pane{
+  filter:invert(.89) hue-rotate(175deg) saturate(.52) brightness(.81) contrast(.92);
+}
+.discovery-map .leaflet-tile-pane{transition:filter .22s ease}
 :root[data-theme="dark"] .discovery-directory-heading h3{color:#edf9f4}
 :root[data-theme="dark"] .discovery-directory-heading p,
 :root[data-theme="dark"] .discovery-directory .browse-count{color:#bfd9d2}
