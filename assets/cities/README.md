@@ -1,52 +1,36 @@
 # WanderClimate city images
 
-The site now has **a local visual for all 41 supported destinations**. Images
-are served from `assets/cities/` by the FastAPI static-files mount, so normal
-page rendering does not depend on Unsplash or Pexels being available.
+The site supports 41 destinations. Images are selected by
+`cityImageCandidates()` in `index.html`.
 
-## Image format and naming
+- **35 destinations** use locally stored JPEG photos, named
+  `assets/cities/<city-slug>.jpg`.
+- **Five destinations** use their **original externally hosted photographs**,
+  as requested: Cairo, Lisbon, Paris, Rome and Tokyo. Their original
+  Pexels/Unsplash links remain in `CITY_PHOTOS` within `index.html`.
+  These images need an internet connection; they may fail if the external
+  provider is unavailable. The site has a built-in illustrated fallback
+  for failed destination-card images.
+- **Madrid** uses its local `madrid.svg` landmark illustration because
+  the previous `madrid.jpg` was an accidental duplicate of Barcelona.
 
-City names use lowercase, hyphen-separated slugs (for example,
-`rio-de-janeiro.jpg`).
+The original five photos were restored after the temporary local SVG
+illustrations were removed. No new photographs have been invented or
+substituted for those five images.
 
-- **35 destinations:** locally stored JPEG photographs named `<city>.jpg`.
-- **6 destinations:** original, city-specific SVG landmark illustrations named
-  `<city>.svg`: **Cairo, Lisbon, Madrid, Paris, Rome, Tokyo**. These are
-  **illustrations, not photographic representations**. They cover five formerly
-  missing local photographs and the incorrect Madrid image.
-- The former `madrid.jpg` was identical to `barcelona.jpg` and has been removed.
-  Madrid now displays `madrid.svg` instead of a wrong-city photograph.
-- Existing optional external photographic fallbacks remain available when
-  configured, but the local image is always preferred.
+## Verify the local images
 
-The frontend selects the appropriate local extension in
-`index.html` (`cityImageCandidates`). If a file fails to load, existing
-remote fallbacks (where configured) or the built-in card illustration remain
-available. The site must never show a broken-image icon in the city cards.
-
-## Validate files after cloning or deploying
-
-From the repository root:
+From the repository root, run:
 
 ```bash
 python scripts/verify_city_assets.py
 ```
 
-The script checks the presence of all 41 primary image files, validates SVG
-syntax, checks JPEG start/end markers, and performs a full image integrity
-check if Pillow is installed.
+This checks all **36 locally served visuals** for missing files, basic JPEG
+completeness, SVG correctness and duplicates. If Pillow is installed,
+it also verifies full JPEG decoding. The script lists the five remote-only
+destinations separately; it does not test live third-party image URLs.
 
-If a local photograph has been corrupted or was only partially downloaded,
-remove the incomplete local copy and run `git restore assets/cities/<filename>`
-from a complete clone or fetch a fresh copy from GitHub. Avoid copying
-`*.jpg` files through a text editor.
-
-## Replacing an illustration with a photograph
-
-1. Add a properly licensed local JPEG named `<slug>.jpg` (web-optimized
-   landscape format, preferably 1200px or wider and under 500KB when practical).
-2. Remove that slug from `LOCAL_CITY_ILLUSTRATIONS` in `index.html`.
-3. Verify, commit and push the image and HTML changes together.
-4. Deploy with `git pull --ff-only origin main` and reload the website.
-
-Keep attribution and licensing records for any third-party photographs.
+To replace a remote image with a properly licensed local photograph in the
+future, commit it to `assets/cities/<slug>.jpg` and update
+`cityImageCandidates()` in `index.html`.
