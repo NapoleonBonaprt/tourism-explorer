@@ -113,6 +113,7 @@
 }
 .discovery-map .leaflet-control-zoom a{color:#205e58}
 .discovery-map .leaflet-control-attribution{font-size:9px}
+:root[data-theme="dark"] #browse.discovery-section{background:transparent;border:0;box-shadow:none}
 :root[data-theme="dark"] .discovery-map-panel,
 :root[data-theme="dark"] .discovery-directory{
   background:#20434c;border-color:#42676c;box-shadow:0 16px 42px rgba(1,18,27,.18);
