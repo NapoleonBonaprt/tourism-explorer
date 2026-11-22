@@ -294,7 +294,16 @@ body.is-home .tiles{display:none}
 #how .steps p{font-size:14px;line-height:1.7;color:#687e7b}
 #how{padding-bottom:60px}
 #results{padding:60px 0}
-body:not(.is-home) .hero{min-height:360px}
+/* Results use the same clean, rounded hero-to-content transition as Home. */
+body:not(.is-home) .hero{
+  min-height:360px;
+  border-radius:0 0 26px 26px;
+}
+body:not(.is-home) #results{padding-top:48px}
+@media(max-width:720px){
+  body:not(.is-home) .hero{border-radius:0 0 20px 20px}
+  body:not(.is-home) #results{padding-top:32px}
+}
 body:not(.is-home) .hero-layout{display:block;padding:48px 0 10px;flex:1}
 body:not(.is-home) .hero-copy{max-width:700px}
 body:not(.is-home) .hero h1{font-size:clamp(48px,8vw,88px)}
