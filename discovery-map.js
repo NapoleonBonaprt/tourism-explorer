@@ -99,50 +99,8 @@
     return marker;
   }
 
-  // Aggregate overlapping city pins at low zoom rather than covering Europe
-  // with several indistinguishable markers. Clusters expand on click.
-  function groupPlaces(places, zoom) {
-    const groups = [];
-    const radius = zoom < 7 ? 48 : 0;
-    for (const item of places) {
-      const pixel = state.map.project(item.position, zoom);
-      const group = radius && groups.find(candidate => {
-        const dx = candidate.pixel.x - pixel.x;
-        const dy = candidate.pixel.y - pixel.y;
-        return dx * dx + dy * dy < radius * radius;
-      });
-      if (group) {
-        group.members.push(item);
-        const n = group.members.length;
-        group.pixel.x += (pixel.x - group.pixel.x) / n;
-        group.pixel.y += (pixel.y - group.pixel.y) / n;
-      } else {
-        groups.push({pixel, members: [item]});
-      }
-    }
-    return groups;
-  }
-
-  function makeCluster(group) {
-    const count = group.members.length;
-    const center = state.map.unproject(group.pixel, state.map.getZoom());
-    const marker = L.marker(center, {
-      zIndexOffset: 1000,
-      title: count + " destinations. Click to zoom in.",
-      icon: L.divIcon({
-        className: "wc-map-cluster",
-        html: '<span aria-hidden="true">' + count + '</span>',
-        iconSize: [43, 43],
-        iconAnchor: [21, 21]
-      })
-    });
-    marker.on("click", () => {
-      const nextZoom = Math.min(11, Math.max(5, state.map.getZoom() + 2));
-      state.map.setView(center, nextZoom, {animate: false});
-    });
-    marker.addTo(state.layer);
-  }
-
+  // Render city pins individually at every zoom level. Visitors should
+  // never have to click a numbered group just to reveal a location.
   function paintMarkers(recenter = false) {
     if (!state.map || !state.coordsReady) return;
     state.layer.clearLayers();
@@ -166,9 +124,10 @@
       setStatus("City locations are unavailable. Use the searchable directory.");
       return;
     }
+
     if (recenter) {
-      // fitBounds can fire zoomend synchronously; avoid two marker layers
-      // being built at once while the new viewport is being established.
+      // Recenter only after an explicit search or View all action. The first
+      // visit opens already zoomed into a detailed regional street map.
       state.recentering = true;
       try {
         const bounds = L.latLngBounds(locations.map(item => item.position));
@@ -186,25 +145,16 @@
       }
     }
 
-    const groups = groupPlaces(locations, state.map.getZoom());
-    for (const group of groups) {
-      if (group.members.length > 1) {
-        makeCluster(group);
-      } else {
-        const item = group.members[0];
-        const marker = makeMarker(item.place, item.position);
-        marker.addTo(state.layer);
-        state.markers.set(markerKey(item.place), marker);
-      }
+    for (const item of locations) {
+      const marker = makeMarker(item.place, item.position);
+      marker.addTo(state.layer);
+      state.markers.set(markerKey(item.place), marker);
     }
 
     if (!state.tilesUnavailable) {
-      const clustered = groups.some(group => group.members.length > 1);
       setStatus(
-        locations.length + " destinations on the map. "
-        + (clustered
-          ? "Select a numbered cluster or zoom in to see cities and streets."
-          : "Select a city pin for climate details.")
+        locations.length + " destinations available. "
+        + "Select a teal city pin, or move and zoom the map to explore."
       );
     }
   }
@@ -224,7 +174,7 @@
       }
       if (!state.coords.size) throw new Error("No usable coordinates");
       state.coordsReady = true;
-      paintMarkers(true);
+      paintMarkers(false);
     } catch (error) {
       setStatus("Map locations are temporarily unavailable. The city search still works.");
       console.warn("Destination map coordinates unavailable:", error);
@@ -241,8 +191,10 @@
 
     try {
       state.map = L.map(mapElement, {
-        center: [20, 10],
-        zoom: 2,
+        // Open at a readable Eastern Mediterranean / Egypt regional scale,
+        // rather than forcing the visitor to click a clustered number.
+        center: [33, 29],
+        zoom: window.matchMedia("(max-width: 760px)").matches ? 4.25 : 5,
         zoomSnap: .25,
         minZoom: 2,
         maxZoom: 14,
@@ -254,7 +206,8 @@
       });
       L.control.zoom({position: "bottomright"}).addTo(state.map);
       state.layer = L.layerGroup().addTo(state.map);
-      state.map.on("zoomend", () => { if (!state.recentering) paintMarkers(false); });
+      // Markers are geographical points, so Leaflet maintains their correct
+      // position automatically during drag and zoom (no regrouping required).
       makeTiles();
 
       // Leaflet must recalculate the viewport if its panel changes size.
