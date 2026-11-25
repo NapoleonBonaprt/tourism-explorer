@@ -6,3 +6,7 @@ __pycache__/
 *.pyc
 full.csv
 places_with_clusters.csv
+
+# Local weather refresh staging (not training data)
+cleaned_data/climate_refresh/
+.ipynb_checkpoints/
