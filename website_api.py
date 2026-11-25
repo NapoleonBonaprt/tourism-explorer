@@ -422,11 +422,14 @@ def weather_for(city: str, days: int, supplied_forecast: BrowserForecast | None 
         if any(len(values) != days for values in forecast.values()):
             raise HTTPException(status_code=422, detail="Forecast must contain exactly the requested number of days.")
         try:
-            from datetime import date
             parsed = [date.fromisoformat(value) for value in forecast["time"]]
             if parsed != expected:
                 raise ValueError("Forecast dates must exactly match the requested trip")
-            data = add_day_type(pd.DataFrame(forecast))
+            data = pd.DataFrame(forecast)
+            numeric = data[["temperature_2m_max","precipitation_sum","wind_speed_10m_max"]]
+            if not numeric.apply(lambda col: col.map(lambda v: pd.notna(v) and abs(v) != float("inf"))).all().all() or (numeric[["precipitation_sum","wind_speed_10m_max"]] < 0).any().any():
+                raise ValueError("Invalid daily forecast values")
+            data = add_day_type(data)
         except (ValueError, TypeError) as exc:
             raise HTTPException(status_code=422, detail="Invalid daily forecast supplied.") from exc
     else:
