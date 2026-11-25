@@ -593,21 +593,29 @@
 
   let adaptiveState=null;
   let adaptiveMapFilter="all";
+  let adaptiveMaxDate="";
+  const localISODate=()=>{const now=new Date();return new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);};
+  const addDateDays=(value,n)=>{const d=new Date(value+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10);};
   async function runAdaptive(){
     $("pageContent").innerHTML=`
       <section class="card">
         <form id="adaptiveForm" class="filters" style="margin-bottom:0">
           <div class="field"><label for="adaptiveCity">City</label><select id="adaptiveCity"></select></div>
+          <div class="field"><label for="adaptiveStartDate">Trip Start Date</label><input type="date" id="adaptiveStartDate" required></div>
           <div class="field"><label for="adaptiveDays">Days</label><select id="adaptiveDays">${options([1,2,3,4,5,6,7],5)}</select></div>
           <div class="field"><label for="adaptiveStops">Maximum Stops per Day</label><select id="adaptiveStops">${options([2,3,4,5],3)}</select></div>
           <button type="submit" class="btn" id="adaptiveBuild">Build itinerary</button>
         </form>
-        <p class="note">Live forecast: Open-Meteo. Nearby places are ordered by geographical proximity, not road travel time.</p>
+        <p class="note">Trips within the next seven days use Open-Meteo daily forecasts. Later trips use monthly ML predictions and a provisional route; daily weather is not predicted. Nearby stops are ordered geographically, not by road travel time.</p>
       </section>
       <div id="adaptiveResults" class="section-gap"><p class="status">Pick a city and press Build itinerary.</p></div>`;
     try {
-      const f=await getFilters();
+      const [f,info]=await Promise.all([getFilters(),request("forecast-info")]);
       const cities=f.adaptive_cities;
+      adaptiveMaxDate=info.max_date>addDateDays(localISODate(),6)?info.max_date:addDateDays(localISODate(),6);
+      const start=$("adaptiveStartDate");start.min=localISODate();start.max=adaptiveMaxDate;
+      const requestedDate=new URLSearchParams(location.search).get("date");
+      start.value=requestedDate&&requestedDate>=start.min&&requestedDate<=start.max?requestedDate:start.min;
       const p=new URLSearchParams(location.search);
       $("adaptiveCity").innerHTML=options(cities,cities.includes(p.get("city"))?p.get("city"):
         cities.includes("London")?"London":cities[0]);
@@ -615,19 +623,19 @@
       status("");
     } catch(e){status(e.message,"error");}
   }
-  const buildPayload=()=>({city:$("adaptiveCity").value,days:+$("adaptiveDays").value,stops:+$("adaptiveStops").value});
+  const buildPayload=()=>({city:$("adaptiveCity").value,start_date:$("adaptiveStartDate").value,days:+$("adaptiveDays").value,stops:+$("adaptiveStops").value});
   const weatherCache=new Map();
-  async function browserForecast(city, days) {
+  async function browserForecast(city, days, startDate) {
     const filters=await getFilters();
     const point=filters.adaptive_coordinates?.[city];
     if(!point || !Number.isFinite(point.latitude) || !Number.isFinite(point.longitude))
       throw new Error("Cannot locate the selected city for live forecast. Refresh the page and try again.");
-    const key=city+"|"+days;
+    const key=city+"|"+startDate+"|"+days;
     const cached=weatherCache.get(key);
     if(cached && Date.now()-cached.time<10*60*1000) return cached.forecast;
     const url=new URL("https://api.open-meteo.com/v1/forecast");
     Object.entries({
-      latitude:point.latitude,longitude:point.longitude,forecast_days:days,
+      latitude:point.latitude,longitude:point.longitude,start_date:startDate,end_date:addDateDays(startDate,days-1),
       daily:"temperature_2m_max,precipitation_sum,wind_speed_10m_max",timezone:"auto"
     }).forEach(([k,v])=>url.searchParams.set(k,String(v)));
     const controller=new AbortController();
@@ -640,6 +648,7 @@
       const fields=["time","temperature_2m_max","precipitation_sum","wind_speed_10m_max"];
       if(!data || fields.some(field=>!Array.isArray(data[field]) || data[field].length!==days))
         throw new Error("Incomplete Open-Meteo forecast");
+      if(data.time.some((d,i)=>d!==addDateDays(startDate,i))) throw new Error("Forecast dates do not match the selected trip");
       if(fields.slice(1).some(field=>data[field].some(n=>typeof n!=="number" || !Number.isFinite(n))))
         throw new Error("Invalid Open-Meteo weather values");
       const forecast=Object.fromEntries(fields.map(field=>[field,data[field]]));
@@ -650,13 +659,17 @@
   async function adaptivePayload(payload) {
     // The hosted server shares a rate-limited outbound proxy on free hosting.
     // Show the original browser error rather than silently retrying via that proxy.
-    const forecast=await browserForecast(payload.city,payload.days);
+    if(addDateDays(payload.start_date,payload.days-1)>addDateDays(localISODate(),6)) return payload;
+    const forecast=await browserForecast(payload.city,payload.days,payload.start_date);
     return {...payload,forecast};
   }
   async function buildAdaptive(){
+    if(!$("adaptiveStartDate").reportValidity())return;
+    const requested=buildPayload();
+    if(addDateDays(requested.start_date,requested.days-1)>adaptiveMaxDate){status("The entire trip must fit within the supported forecast dates.","error");return;}
     const button=$("adaptiveBuild");busy(button,true);status("Getting the forecast and building the route...");
     try{
-      const payload=await adaptivePayload(buildPayload());
+      const payload=await adaptivePayload(requested);
       const d=await request("adaptive/build",{},{
         method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)
       });
@@ -670,6 +683,7 @@
     if(!d)return;
     $("adaptiveResults").innerHTML=`
       ${d.warning?`<p class="status warning">${safe(d.warning)}</p>`:""}
+      ${(d.monthly_forecasts||[]).map(f=>`<section class="card section-gap"><h2>${safe(f.target_month)} · Predicted monthly TCI</h2><div class="summary-grid">${metric("Predicted monthly TCI",pretty(f.predicted_tci,2)+" / 100")}${metric("Suitability",f.tci_category)}</div>${forecastSummary(f)}</section>`).join("")}
       <section class="card itinerary-actions-card"><div class="itinerary-actions-head">
         <div><h2>Save or Print Your Itinerary</h2><p class="note">Keep the full daily plan, forecast and all numbered attractions.</p></div>
         <div class="export-buttons">
@@ -678,7 +692,7 @@
         </div>
       </div><p class="route-disclaimer"><strong>Route information:</strong> Lines connect stops in geographic order (straight-line distance). They are not actual driving, walking, public transport or turn-by-turn routes. The itinerary does not account for travel time, roads, traffic or attraction opening hours.</p>
       </section>
-      <section class="card itinerary-interactions"><h2>Re-check the Weather and Adapt the Plan</h2>
+      ${d.mode==="monthly"?`<section class="card itinerary-interactions"><h2>Provisional long-range trip</h2><p class="note">Daily weather and storm simulation are unavailable for these dates. Build the itinerary again when the entire trip is within the next seven days to activate daily adaptation.</p></section>`:`<section class="card itinerary-interactions"><h2>Re-check the Weather and Adapt the Plan</h2>
         <div class="filters" style="margin-bottom:12px">
           <label class="checkline"><input type="checkbox" id="simulateStorm"> Demo: simulate a storm</label>
           <div class="field hidden" id="stormDateWrap"><label for="stormDate">Day</label>
@@ -692,17 +706,13 @@
           d.changes.length? `<p class="status warning">${d.changes.length} day(s) were re-planned:</p>
             ${table(["Date","Was","Now","Why"],d.changes.map(x=>[x.date,x.from,x.to,x.reason]))}`:
           '<p class="status">Forecast unchanged: the plan stays as it is.</p>'}</div>
-      </section>
+      </section>`}
       <div class="day-layout section-gap">
         <section class="stack" id="adaptiveDayCards"><div class="itinerary-print-head"><h2>WanderClimate Trip Plan</h2><p>${safe(d.city)} · ${d.days.length} day(s)</p></div>
           ${d.days.map(day=>`<article class="day-card ${safe(day.day_type)}">
             <div class="day-meta"><h3>Day ${day.number} · ${safe(day.date)}</h3>
-              <span class="day-type">${safe(day.day_type)}</span></div>
-            <div class="day-weather">
-              <span>High: ${pretty(day.weather.temperature_2m_max,0)}°C</span>
-              <span>Rain: ${pretty(day.weather.precipitation_sum)} mm</span>
-              <span>Wind: ${pretty(day.weather.wind_speed_10m_max,0)} km/h</span>
-            </div>
+              <span class="day-type">${safe(day.day_type)}${d.mode==="monthly"?" preference":""}</span></div>
+            <div class="day-weather">${d.mode==="monthly"?`<span>Monthly TCI: ${pretty(day.monthly_forecast.predicted_tci,2)} / 100</span><span>Daily weather unavailable</span>`:`<span>High: ${pretty(day.weather.temperature_2m_max,0)}°C</span><span>Rain: ${pretty(day.weather.precipitation_sum)} mm</span><span>Wind: ${pretty(day.weather.wind_speed_10m_max,0)} km/h</span>`}</div>
             ${day.stops.length?day.stops.map(stop=>`<div class="stop"><span class="stop-num">${stop.order}</span>
               <span>${safe(stop.name)}</span><span class="stop-slot">${safe(stop.slot)}</span></div>`).join(""):
               '<p class="note">No more attractions available for this day.</p>'}
@@ -722,11 +732,11 @@
       </div>`;
     $("downloadItineraryPdf").addEventListener("click", downloadItineraryPdf);
     $("printItinerary").addEventListener("click", () => window.print());
-    $("simulateStorm").addEventListener("change",e=>{
+    $("simulateStorm")?.addEventListener("change",e=>{
       $("stormDateWrap").classList.toggle("hidden",!e.target.checked);
       $("stormRainWrap").classList.toggle("hidden",!e.target.checked);
     });
-    $("adaptiveRecheck").addEventListener("click",recheckAdaptive);
+    $("adaptiveRecheck")?.addEventListener("click",recheckAdaptive);
     $("adaptiveDayFilter").value=adaptiveMapFilter;
     $("adaptiveDayFilter").addEventListener("change",e=>{adaptiveMapFilter=e.target.value;drawAdaptiveMap();});
     drawAdaptiveMap();
@@ -815,7 +825,7 @@
     }
   }
   async function recheckAdaptive(){
-    if(!adaptiveState)return;
+    if(!adaptiveState||adaptiveState.mode==="monthly")return;
     const button=$("adaptiveRecheck");
     const storm=$("simulateStorm").checked;
     const weatherDate=$("stormDate").value;
@@ -829,7 +839,7 @@
       }))
     }));
     try{
-      const payload=await adaptivePayload({city:adaptiveState.city,days:adaptiveState.days.length,
+      const payload=await adaptivePayload({city:adaptiveState.city,start_date:adaptiveState.days[0].date,days:adaptiveState.days.length,
         stops:adaptiveState.requested_stops,previous,simulate_storm:storm,storm_date:storm?weatherDate:null,rain_mm:rain});
       const d=await request("adaptive/recheck",{},{
         method:"POST",headers:{"Content-Type":"application/json"},
