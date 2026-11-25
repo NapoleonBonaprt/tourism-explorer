@@ -1,18 +1,21 @@
 """Stage complete new climate months; never invent TCI or replace training data.
 
 Run from repo root: python scripts/refresh_climate.py
-The original TCI scoring implementation must calculate the target columns before
-the staged observations can be appended and the notebook retrained.
+Reconstruct and verify TCI before appending new observations; --apply is explicit.
 """
 from pathlib import Path
 from datetime import date, timedelta
 import argparse
 import importlib.util
 import time
+import sys
+import shutil
 import pandas as pd
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT))
+from tci_scoring import score_tci, verify_original
 HISTORY = ROOT / "cleaned_data" / "city_month_features.csv"
 STAGING = ROOT / "cleaned_data" / "climate_refresh"
 KEY = ["Country_dest","City"]
@@ -24,8 +27,10 @@ WEATHER = ["Temp_Max_Mean","Temp_Min_Mean","Temp_Mean","RH_Mean","RH_Min_Mean",
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--through", help="Last complete month YYYY-MM (default: latest safely available)")
+    parser.add_argument("--apply", action="store_true", help="Append verified scored observations, then retrain before serving")
     args = parser.parse_args()
     history = pd.read_csv(HISTORY)
+    print("Original scoring parity:",verify_original(history))
     observed = pd.to_datetime(dict(year=history.Year,month=history.Month,day=1)).dt.to_period("M")
     origin = observed.max()
     safe = pd.Period(date.today()-timedelta(days=7),"M")-1
@@ -89,8 +94,34 @@ def main():
     output = folder/"new_weather_observations.csv"
     staged.to_csv(output,index=False)
     print(f"Staged {len(staged)} rows in {output}")
-    print("STOP: calculate CID, CIA, P_score, S_score, W_score and TCI using the original scoring method.")
-    print("Do not replace history or deploy until target scores are verified and models retrained.")
+    scored=score_tci(staged)
+    scored=scored[history.columns]
+    verify_original(scored)
+    scored.to_csv(folder/"new_scored_observations.csv",index=False)
+    # All known historical scores are reproduced, but unseen extreme regimes
+    # are assumptions. Flag those rather than silently applying them.
+    for t,r in [("Temp_Max_Mean","RH_Min_Mean"),("Temp_Mean","RH_Mean")]:
+        effective=lambda df: df[t]-.4*(df[t]-10)*(1-df[r]/100)
+        previous=effective(history)
+        current=effective(scored)
+        if ((current<previous.min()) | (current>previous.max())).any():
+            print(f"WARNING: {t} effective temperature outside original observed range; review scored CSV.")
+    if ((scored.Wind_Mean_ms<history.Wind_Mean_ms.min()) | (scored.Wind_Mean_ms>history.Wind_Mean_ms.max())).any():
+        print("WARNING: wind outside original observed range; review scoring.")
+    if args.apply:
+        combined=pd.concat([history,scored],ignore_index=True).sort_values(KEY+["Year","Month"])
+        if combined.duplicated(KEY+["Year","Month"]).any():
+            raise ValueError("Duplicate month in combined history")
+        verify_original(combined)
+        backup=folder/"city_month_features_before_refresh.csv"
+        shutil.copy2(HISTORY,backup)
+        temp=HISTORY.with_suffix(".tmp")
+        combined.to_csv(temp,index=False)
+        temp.replace(HISTORY)
+        print(f"Appended {len(scored)} rows, backup: {backup}")
+        print("STOP: rerun forecasting notebook to regenerate matching artifacts before restarting/deploying.")
+    else:
+        print("Scored preview written. Inspect it; use --apply to append, then retrain.")
 
 
 if __name__=="__main__":
