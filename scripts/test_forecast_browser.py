@@ -62,6 +62,22 @@ def main():
         page.goto(BASE+"/climate.html?country=Egypt&city=Cairo&date="+target)
         expect(page.locator("#climateForecastResult")).to_contain_text("Predicted monthly TCI",timeout=60000)
         expect(page.locator("#climateResults")).to_contain_text("Historical",timeout=60000,ignore_case=True)
+        # Adaptive: choose an explicit future date (the whole trip fits inside the model window).
+        from datetime import date, timedelta
+        trip = (date.fromisoformat(target)-timedelta(days=6)).isoformat()
+        if date.fromisoformat(trip)>date.today()+timedelta(days=6):
+            page.goto(BASE+"/adaptive.html?city=Cairo&date="+trip)
+            expect(page.locator("#adaptiveStartDate")).to_have_value(trip,timeout=60000)
+            page.locator("#adaptiveDays").select_option("3")
+            page.locator("#adaptiveBuild").click()
+            expect(page.locator("#adaptiveResults")).to_contain_text("Provisional long-range trip",timeout=120000)
+            expect(page.locator("#adaptiveResults")).to_contain_text("Historical success")
+            expect(page.locator("#adaptiveDayCards")).to_contain_text(trip)
+            expect(page.locator("#adaptiveDayCards")).to_contain_text("Daily weather unavailable")
+            expect(page.locator("#adaptiveRecheck")).to_have_count(0)
+            expect(page.locator("#adaptiveMap .leaflet-marker-icon").first).to_be_visible(timeout=60000)
+            page.locator("#adaptiveDayFilter").select_option("1")
+            expect(page.locator("#adaptiveLegend")).to_contain_text("Day 1")
         # Original Folium export: real browser rendering, popup, zoom, and layer toggle.
         page.goto((ROOT/"python files/forecast_results/forecast_map.html").as_uri())
         expect(page.locator(".leaflet-interactive").first).to_be_visible(timeout=60000)
