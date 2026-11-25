@@ -47,10 +47,10 @@ def load_model(name, horizon):
 
 def forecast_info():
     try:
-        selection, origin, _ = metadata()
+        selection, origin, metrics = metadata()
         return {'origin': str(origin), 'min_date': str((origin+1).start_time.date()),
                 'max_date': str((origin+12).end_time.date()), 'model': selection['best_climate_ml'],
-                'resolution': 'monthly', 'baseline_test_better': True}
+                'resolution': 'monthly', 'baseline_test_better': bool(metrics.loc[metrics.Model.eq('Historical Mean'), 'MAE'].mean() < metrics.loc[metrics.Model.eq(selection['best_climate_ml']), 'MAE'].mean())}
     except (OSError, ValueError, KeyError, ImportError) as exc:
         raise HTTPException(503, 'Forecast artifacts unavailable or inconsistent. Retrain and deploy them together.') from exc
 
@@ -90,6 +90,8 @@ def predict_tci(country, travel_date, city=None):
         if bundle['add_season_mean']:
             values = values + X.season_mean.to_numpy()
         values = np.clip(values, 0, 100)
+        if not np.isfinite(values).all():
+            raise ValueError('Non-finite model output')
         metric = metrics.loc[metrics.Model.eq(name) & metrics.Horizon_months.eq(h)].iloc[0]
         baseline = metrics.loc[metrics.Model.eq('Historical Mean') & metrics.Horizon_months.eq(h)].iloc[0]
     except Exception as exc:
@@ -99,7 +101,7 @@ def predict_tci(country, travel_date, city=None):
         'mae': float(metric.MAE), 'error_p90': float(metric.Error_P90), 'test_n': int(metric.Test_n),
         'baseline_mae': float(baseline.MAE), 'resolution': 'monthly',
         'definition': 'Historical 2025 test share within +/-10 TCI points across all cities; not an individual probability.',
-        'warning': 'The historical mean beat this model on the 2025 test. Daily weather is not predicted by this model.'}
+        'warning': ('The historical mean had lower MAE on the 2025 test for this lead. ' if float(baseline.MAE) < float(metric.MAE) else '') + 'Daily weather is not predicted by this model.'}
     result = pd.DataFrame(keys, columns=KEY)
     result['predicted_tci'] = values
     result['historical_mean_tci'] = X.season_mean.to_numpy()
@@ -140,6 +142,8 @@ def recommend(country, travel_date, city=None, category='All'):
     scores, reliability = predict_tci(country, travel_date, city)
     data = catalog()
     selected = data.merge(scores, on=KEY, validate='many_to_one')
+    if selected.empty and not city:
+        raise HTTPException(404, 'No matching attractions for this country.')
     if category != 'All':
         selected = selected[selected.Category.eq(category)]
     selected = selected.sort_values(['predicted_tci','Sitelinks','Destination Name'], ascending=[False,False,True])
