@@ -11,6 +11,8 @@ on:
       - 'scripts/train_weather_models.py'
       - 'website_api.py'
       - 'dashboard-site.js'
+      - 'travel-calendar.js'
+      - 'travel-calendar.css'
       - 'trip-pdf.js'
       - 'trip_guide.py'
       - 'guide_cover.py'

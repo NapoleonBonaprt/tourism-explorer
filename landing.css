@@ -477,3 +477,48 @@ footer .wrap{align-items:center;padding-top:28px;padding-bottom:38px}
 :root[data-theme="dark"] footer{border-color:#3e666a}
 @media(max-width:720px){footer .wrap{padding-top:22px;padding-bottom:30px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important;scroll-behavior:auto!important}.vista-reveal.vista-ready{opacity:1;transform:none}}
+
+
+/* City climate modes and visitor-friendly future forecasts */
+#cityClimateModes[hidden],#cityForecastPanel[hidden],#out[hidden]{display:none!important}
+.city-mode-switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px;background:var(--white);border:1px solid var(--line);border-radius:17px;margin:0 0 24px;box-shadow:0 7px 23px #0a323909}
+.city-mode-switch button{display:flex;align-items:center;text-align:left;gap:13px;padding:14px 17px;border-radius:12px;border:1px solid transparent;color:var(--mut);min-width:0}
+.city-mode-switch button svg{width:25px;height:25px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.city-mode-switch strong,.city-mode-switch small{display:block}
+.city-mode-switch strong{font-size:16px;line-height:1.35}.city-mode-switch small{font-size:12px;line-height:1.5}
+.city-mode-switch button:hover{background:var(--linen)}
+.city-mode-switch button[aria-pressed=true]{background:#e6f4ed;color:#176960;border-color:#b6dbcf}
+.city-forecast{padding:clamp(18px,4vw,34px);margin-bottom:24px}
+.city-forecast-kicker{font-size:11px;font-weight:800;letter-spacing:.12em;color:#427b75;display:block;margin-bottom:6px}
+.city-forecast-intro h3{font-size:clamp(25px,3vw,34px)}
+.city-forecast-intro p,.city-forecast-summary p,.city-forecast-note{color:var(--mut);font-size:14px;margin-top:8px}
+.city-forecast-controls{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin:22px 0}
+.city-forecast-controls .field{display:flex;flex-direction:column;gap:6px;flex:1 1 220px;max-width:340px;min-width:0}
+.city-forecast-controls label{font-size:13px;font-weight:800;color:var(--mut)}
+.city-forecast-controls button[type=submit],.city-forecast-primary,.city-forecast-secondary{border-radius:10px;min-height:45px;padding:10px 18px;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.city-forecast-controls button[type=submit],.city-forecast-primary{background:#087c78;color:#fff}
+.city-forecast-controls button:disabled{opacity:.5;cursor:wait}
+.city-forecast-summary{display:flex;gap:20px;align-items:center;justify-content:space-between;padding:20px;background:var(--linen);border-radius:16px;margin-bottom:16px}
+.city-forecast-summary h3{font-size:clamp(23px,3vw,31px)}
+.city-forecast-score{display:flex;flex-direction:column;text-align:right;flex-shrink:0;color:var(--ink)}
+.city-forecast-score strong{font-size:36px;font-family:Fraunces,Georgia,serif;line-height:1.2}
+.city-forecast-score strong span{font:600 14px Figtree,sans-serif}
+.city-forecast-score small,.city-forecast-score>span{font-size:12px;color:var(--mut)}
+.city-forecast-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.city-forecast-facts .fact{margin:0}
+.city-forecast-tip{margin:18px 0 8px;padding:12px 16px;border-left:3px solid #087c78;background:var(--linen);border-radius:0 10px 10px 0}
+.city-forecast-tip p{font-size:14px;color:var(--mut)}
+.city-forecast-reliability{margin:16px 0;padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px}
+.city-forecast-reliability summary{font-weight:800;cursor:pointer}
+.city-forecast-reliability p{margin-top:8px;color:var(--mut)}
+.city-forecast-table{overflow:auto;margin-top:10px}
+.city-forecast-table table{border-collapse:collapse;width:100%;min-width:420px;text-align:left;font-size:12px}
+.city-forecast-table th,.city-forecast-table td{padding:8px;border-bottom:1px solid var(--line)}
+.city-forecast-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.city-forecast-secondary{border:1px solid var(--line);color:var(--ink)}
+#cityForecastRetry{display:inline-block;text-decoration:underline;font-weight:800}
+:root[data-theme=dark] .city-mode-switch{background:#22434e;border-color:#375e64}
+:root[data-theme=dark] .city-mode-switch button[aria-pressed=true]{background:#315f60;color:#e6f8f0;border-color:#528d84}
+:root[data-theme=dark] .city-forecast-kicker{color:#a9d9d0}
+:root[data-theme=dark] .city-forecast-summary,:root[data-theme=dark] .city-forecast-tip{background:#2b4e58}
+@media(max-width:560px){.city-mode-switch{grid-template-columns:1fr}.city-mode-switch button{padding:11px 13px}.city-forecast-controls .field{max-width:none;flex-basis:100%}.city-forecast-controls button[type=submit]{width:100%}.city-forecast-summary{padding:14px;gap:10px}.city-forecast-score strong{font-size:29px}.city-forecast-facts{grid-template-columns:1fr 1fr}}

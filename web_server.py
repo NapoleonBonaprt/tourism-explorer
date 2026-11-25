@@ -30,6 +30,8 @@ PUBLIC_FILES = (
     "experience-v4.js",
     "theme.js",
     "trip-pdf.js",
+    "travel-calendar.js",
+    "travel-calendar.css",
 )
 
 app = FastAPI(

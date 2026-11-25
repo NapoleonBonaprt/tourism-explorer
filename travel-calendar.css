@@ -1,0 +1,47 @@
+/* Shared travel calendar: same field height, palette and radius as city filters. */
+.wc-date-field{position:relative;display:flex;align-items:center;width:100%;min-width:0;height:45px;border:1px solid #d4e4df;border-radius:10px;background:#fff;color:#183c3e;transition:border-color .16s,box-shadow .16s}
+.field .wc-date-field input[type=date]{flex:1;min-width:0;width:100%;height:43px;min-height:0;padding:0 8px 0 12px;border:0!important;background:transparent!important;border-radius:10px 0 0 10px;outline:none;color:inherit;cursor:pointer;font-variant-numeric:tabular-nums}
+.wc-date-field input::-webkit-calendar-picker-indicator{display:none}
+.wc-date-field input::-webkit-datetime-edit{padding:0}
+.wc-date-field:focus-within,.wc-date-field:has(.wc-date-trigger[aria-expanded=true]){border-color:#7ac9bb;box-shadow:0 0 0 2px #7ac9bb55}
+.wc-date-trigger{display:flex;align-items:center;justify-content:center;gap:5px;height:100%;width:58px;flex:0 0 58px;border:0;border-radius:0 10px 10px 0;background:transparent;color:#427b75;padding:0 8px}
+.wc-date-trigger:hover{background:#edf7f3}.wc-date-trigger svg{width:19px;height:19px}.wc-date-trigger svg:last-child{width:14px;height:14px;transition:transform .18s}
+.wc-date-trigger[aria-expanded=true] svg:last-child{transform:rotate(180deg)}
+.wc-calendar[hidden]{display:none!important}
+.wc-calendar{position:fixed;z-index:1600;padding:15px;width:340px;max-width:calc(100vw - 24px);max-height:calc(100dvh - 16px);overflow:auto;background:#fffdf9;color:#183c3e;border:1px solid #d4e4df;border-radius:17px;box-shadow:0 16px 48px #163c3e30;font-family:var(--dashboard-font,'Figtree',system-ui,sans-serif)}
+.wc-cal-heading{display:flex;align-items:center;justify-content:space-between;margin:0 0 13px;gap:8px}
+.wc-cal-heading strong{display:block;font-size:18px;line-height:1.25;font-weight:800;letter-spacing:-.025em}
+.wc-cal-kicker{display:block;color:#587d75;font-size:10px;letter-spacing:.12em;font-weight:800;margin-bottom:3px}
+.wc-cal-close,.wc-cal-prev,.wc-cal-next{display:grid;place-items:center;border:1px solid #dce9e3;background:#f1f7f4;color:#245d58;border-radius:9px;width:34px;height:34px;padding:0;flex-shrink:0}
+.wc-cal-close{font-size:23px;background:transparent;border-color:transparent;width:30px;height:30px}
+.wc-cal-prev svg,.wc-cal-next svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.wc-cal-nav{display:grid;grid-template-columns:34px minmax(0,1fr) 75px 34px;gap:6px;align-items:center;margin:0 0 12px}
+.wc-cal-nav select{font:inherit;font-size:13px;font-weight:700;color:inherit;background:#fff;border:1px solid #d4e4df;border-radius:9px;min-width:0;width:100%;height:34px;padding:0 6px}
+.wc-cal-week,.wc-cal-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center}
+.wc-cal-week{font-size:11px;font-weight:800;color:#64837b;margin-bottom:5px}
+.wc-cal-week span{padding:5px 0}
+.wc-cal-day{height:35px;width:100%;border:1px solid transparent;background:transparent;border-radius:9px;color:inherit;font-size:13px;font-weight:650;padding:0;font-variant-numeric:tabular-nums}
+.wc-cal-day:hover:not(:disabled),.wc-cal-prev:hover:not(:disabled),.wc-cal-next:hover:not(:disabled){background:#e6f4ed;color:#176960}
+.wc-cal-day[aria-current=date]{border-color:#93c5b7;color:#176960}
+.wc-cal-day[aria-pressed=true],.wc-cal-day[aria-pressed=true]:hover:not(:disabled){background:#087c78;color:#fff;border-color:#087c78}
+.wc-calendar button:disabled{opacity:.32;cursor:not-allowed}
+.wc-cal-footer{display:flex;align-items:center;justify-content:space-between;gap:7px;border-top:1px solid #e1ebe5;margin-top:12px;padding-top:11px;color:#6a827b;font-size:11px}
+.wc-cal-today{color:#087c78;background:#eaf5ef;border:1px solid #d3e9df;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:800}
+:root[data-theme=dark] .wc-date-field{background:#254a55;color:#eff9f6;border-color:#53737b}
+:root[data-theme=dark] .wc-date-trigger{color:#a9d9d0}
+:root[data-theme=dark] .wc-date-trigger:hover{background:#315862}
+:root[data-theme=dark] .wc-calendar{background:#20414a;border-color:#53737b;color:#eff9f6;box-shadow:0 18px 48px #071c25aa}
+:root[data-theme=dark] .wc-cal-kicker,:root[data-theme=dark] .wc-cal-week,:root[data-theme=dark] .wc-cal-footer{color:#b7d0cc}
+:root[data-theme=dark] .wc-cal-nav select,:root[data-theme=dark] .wc-cal-prev,:root[data-theme=dark] .wc-cal-next{background:#254a55;border-color:#53737b;color:#eff9f6}
+:root[data-theme=dark] .wc-cal-close{color:#eff9f6}
+:root[data-theme=dark] .wc-cal-day:hover:not(:disabled),:root[data-theme=dark] .wc-cal-prev:hover:not(:disabled),:root[data-theme=dark] .wc-cal-next:hover:not(:disabled){background:#315f60;color:#e6f8f5}
+:root[data-theme=dark] .wc-cal-day[aria-current=date]{color:#a9e4d6;border-color:#6dbab0}
+:root[data-theme=dark] .wc-cal-day[aria-pressed=true],:root[data-theme=dark] .wc-cal-day[aria-pressed=true]:hover:not(:disabled){background:#0e8985;color:#fff;border-color:#0e8985}
+:root[data-theme=dark] .wc-cal-footer{border-color:#456970}
+:root[data-theme=dark] .wc-cal-today{background:#315f60;color:#a9e4d6;border-color:#53737b}
+@media(max-width:430px){.wc-calendar{padding:12px;border-radius:14px}.wc-cal-day{height:39px}.wc-cal-nav{grid-template-columns:34px minmax(0,1fr) 70px 34px}}
+@media print{.wc-calendar,.wc-date-trigger{display:none!important}}
+
+.wc-calendar,.wc-date-field{box-sizing:border-box}
+.wc-calendar *{box-sizing:border-box}
+.wc-date-field input[type=date]{font:inherit;min-width:0}
