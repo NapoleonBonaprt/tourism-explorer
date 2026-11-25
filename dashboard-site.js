@@ -49,6 +49,28 @@
     `<option value="${safe(value)}"${String(value)===String(selected) ? " selected" : ""}>${safe(value)}</option>`).join("");
   const monthOptions = (selected=8) => MONTHS.map((month,i) =>
     `<option value="${i+1}"${selected===i+1?" selected":""}>${month}</option>`).join("");
+  async function setupForecastDate(id) {
+    const info = await request("forecast-info");
+    const field = $(id);
+    field.min = info.min_date; field.max = info.max_date;
+    const today = new Date();
+    const localDate = new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+    const requested = new URLSearchParams(location.search).get("date");
+    if (requested && requested >= info.min_date && requested <= info.max_date) field.value = requested;
+    else field.value = localDate > info.max_date ? info.max_date : (localDate < info.min_date ? info.min_date : localDate);
+    if (localDate > info.max_date) throw new Error("The trained forecast window has expired. Update climate history and retrain the models.");
+  }
+  const forecastSummary = (f) => f ? `<section class="card section-gap">
+    <h2>Monthly ML forecast reliability</h2>
+    <div class="summary-grid">
+      ${metric("Model",f.model)}
+      ${metric("Forecast lead",f.horizon_months+" months","From "+f.origin)}
+      ${metric("Historical success",pretty(f.within_10_pct,2)+"%","Within ±10 TCI points")}
+      ${metric("Typical absolute error",pretty(f.mae,2)+" TCI points")}
+    </div>
+    <p class="note">${safe(f.definition)} Test samples: ${safe(f.test_n)}. 90th percentile absolute error: ${pretty(f.error_p90,2)} points. Historical-mean benchmark MAE: ${pretty(f.baseline_mae,2)}.</p>
+    <p class="note">Monthly resolution: all dates in ${safe(f.target_month)} share the same forecast. ${safe(f.warning)}</p>
+  </section>` : "";
   const metric = (label, value, description="") =>
     `<div class="metric"><span>${safe(label)}</span><strong>${safe(value)}</strong>${description ? `<small>${safe(description)}</small>` : ""}</div>`;
   const table = (headers, rows) =>
@@ -58,8 +80,8 @@
   const title = {
     overview: ["Executive Overview","An evidence-based view of global tourism, climate suitability, and geospatial insights."],
     climate: ["Climate & TCI Analytics","Explore how temperature, rainfall, humidity, and sunshine influence climate suitability month by month."],
-    explorer: ["Spatial Clustering & Map Explorer","Browse the original Top 5 TCI recommendations alongside precomputed DBSCAN attraction clusters."],
-    planner: ["Interactive Itinerary Planner","Select a destination and travel month to explore climate suitability and recommended attractions."],
+    explorer: ["Spatial Clustering & Map Explorer","Explore date-based predicted TCI recommendations alongside geographic DBSCAN attraction clusters."],
+    planner: ["Interactive Itinerary Planner","Select a destination and travel date to compute a monthly TCI prediction and recommended attractions."],
     adaptive: ["Adaptive Daily Itinerary","Build a 1–7 day itinerary using a short-range weather forecast, then re-check and adapt the plan."],
   };
   function renderShell() {
@@ -76,7 +98,7 @@
       </div>
     </div>`;
     $("siteFooter").innerHTML = `<div class="footer-inner"><span>WanderClimate · Tourism Climate Index and spatial analytics</span>
-       <span>Historical climate suitability is not a live forecast. Adaptive planning uses forecast data.</span></div>`;
+       <span>Monthly model predictions estimate TCI, not daily weather. Adaptive planning uses short-range weather forecasts.</span></div>`;
     const actionText = {
       overview: "Explore the overview",
       climate: "Explore climate data",
@@ -315,7 +337,7 @@
   async function runExplorer() {
     $("pageContent").innerHTML=`<form id="explorerForm" class="filters card">
         <div class="field"><label for="mapCountry">Country</label><select id="mapCountry"></select></div>
-        <div class="field"><label for="mapMonth">Month</label><select id="mapMonth">${monthOptions(8)}</select></div>
+        <div class="field"><label for="mapMonth">Travel Date</label><input type="date" id="mapMonth" required></div>
         <div class="field"><label for="mapLocation">City or governorate (optional)</label><input id="mapLocation" placeholder="Leave blank for all locations"></div>
         <button class="btn" type="submit" id="explorerButton">Update map</button></form>
       <div id="explorerResults"></div>`;
@@ -325,7 +347,7 @@
       const params=new URLSearchParams(location.search);
       const countries=f.map_countries;
       $("mapCountry").innerHTML=options(countries,countries.includes(params.get("country"))?params.get("country"):countries[0]);
-      if(params.has("month"))$("mapMonth").value=params.get("month");
+      await setupForecastDate("mapMonth");
       if(params.has("city"))$("mapLocation").value=params.get("city");
       $("explorerForm").addEventListener("submit",e=>{e.preventDefault();loadExplorer();});
       $("mapCountry").addEventListener("change",loadExplorer);
@@ -336,21 +358,23 @@
   }
   let explorerSeq=0;
   async function loadExplorer() {
+    if (!$("mapMonth").reportValidity()) return;
     const id=++explorerSeq; const button=$("explorerButton");busy(button,true);status("Filtering TCI rankings and mapping the DBSCAN clusters...");
     try{
-      const data=await request("explorer",{country:$("mapCountry").value,month:$("mapMonth").value,location:$("mapLocation").value.trim()});
+      const data=await request("explorer",{country:$("mapCountry").value,travel_date:$("mapMonth").value,location:$("mapLocation").value.trim()});
       if(id!==explorerSeq)return;
       const rows=data.top5.map((r,i)=>[i+1,r.destination,r.city||"—",r.country,r.month,pretty(r.tci)]);
       const uniqueClusters=pick(data.points.filter(p=>p.cluster!==null && p.cluster!==-1).map(p=>p.cluster)).sort((a,b)=>a-b);
       $("explorerResults").innerHTML=`<div class="summary-grid">
         ${metric("Recommendations",data.counts.recommendations)}
         ${metric("Selected Month",data.month_name)}
-        ${metric("Highest TCI",data.top5.length?pretty(data.top5[0].tci):"N/A")}
+        ${metric("Highest predicted TCI",data.top5.length?pretty(data.top5[0].tci):"N/A")}
         ${metric("Mapped Attractions",data.points.length)}
       </div>
-      ${data.warning?`<p class="status warning section-gap">${safe(data.warning)}</p>`:""}
+      ${forecastSummary(data.forecast)}
+      ${!data.forecast && data.warning?`<p class="status warning section-gap">${safe(data.warning)}</p>`:""}
       <section class="card section-gap"><h2>Top destinations · ${safe(data.country)} · ${safe(data.month_name)}</h2>
-        ${data.top5.length?table(["Rank","Destination","City","Country","Month","TCI"],rows):'<p>No destinations found for these filters.</p>'}
+        ${data.top5.length?table(["Rank","Destination","City","Country","Month","Predicted TCI"],rows):'<p>No destinations found for these filters.</p>'}
       </section>
       <section class="card section-gap explorer-panel">
         <div class="map-section-heading">
@@ -378,7 +402,7 @@
           <span class="legend-item"><span class="marker-top"></span>Top 5 (black outline)</span>
           <span class="legend-item"><i style="background:#808080"></i>Noise / unknown</span>
         </div>
-        <p class="note">Colored markers use the precomputed DBSCAN cluster IDs. Google Maps links open the selected attraction in a new tab.</p>
+        <p class="note">Colored markers use DBSCAN cluster IDs; the score is calculated from the selected travel date. Google Maps links open the selected attraction in a new tab.</p>
       </section>
       <div class="summary-grid section-gap">
         ${metric("Top Recommendations on Map",data.counts.on_map)}
@@ -412,7 +436,8 @@
       const extra=escapePopup([
         point.name,clusterLabel,`City: ${point.city}`,point.category,
         point.is_top?"Top 5 recommendation":"",
-        point.tci!=null?`TCI: ${pretty(point.tci)}`:""
+        point.tci!=null?`Predicted monthly TCI: ${pretty(point.tci)}`:"",
+        point.within_10_pct!=null?`Historical success within ±10: ${pretty(point.within_10_pct,2)}%`:""
       ].filter(Boolean));
       const marker=L.circleMarker([point.lat,point.lon],{
         radius:point.is_top?7:4,color:point.is_top?"#111":color,
@@ -483,14 +508,15 @@
     $("pageContent").innerHTML=`<form id="plannerForm" class="filters card">
       <div class="field"><label for="planCountry">Destination Country</label><select id="planCountry"></select></div>
       <div class="field"><label for="planCity">Destination City</label><select id="planCity"></select></div>
-      <div class="field"><label for="planMonth">Preferred Travel Month</label><select id="planMonth">${monthOptions(1)}</select></div>
+      <div class="field"><label for="planMonth">Preferred Travel Date</label><input type="date" id="planMonth" required></div>
       <div class="field"><label for="planCategory">Attraction Category</label><select id="planCategory">${options(["All","Outdoor","Indoor"],"All")}</select></div>
       <button type="submit" id="plannerButton" class="btn">Find attractions</button></form>
       <div id="plannerResults"></div>`;
     status("Loading itinerary planner filters...");
     try {
       const f=await getFilters();
-      bindCityFilter("planCountry","planCity",f.planner_cities);
+      bindCityFilter("planCountry","planCity",f.climate_cities);
+      await setupForecastDate("planMonth");
       $("plannerForm").addEventListener("submit",e=>{e.preventDefault();loadPlanner();});
       ["planCountry","planCity","planMonth","planCategory"].forEach(el=>$(el).addEventListener("change",loadPlanner));
       status("");
@@ -499,29 +525,30 @@
   }
   let plannerSeq=0;
   async function loadPlanner(){
+    if (!$("planMonth").reportValidity()) return;
     const id=++plannerSeq,button=$("plannerButton");busy(button,true);status("Finding matching attractions and climate information...");
     try {
       const d=await request("planner",{country:$("planCountry").value,city:$("planCity").value,
-        month:$("planMonth").value,category:$("planCategory").value});
+        travel_date:$("planMonth").value,category:$("planCategory").value});
       if(id!==plannerSeq)return;
       const w=d.weather;
       $("plannerResults").innerHTML=`<section class="card">
         <h2>Recommended Itinerary for ${safe(d.city)} in ${safe(d.month_name)}</h2>
         ${w?`<div class="summary-grid">
-          ${metric("Average Temperature",pretty(w.Temp_Mean)+" °C")}
-          ${metric("Monthly TCI Score",pretty(w.TCI)+" / 100")}
+          ${metric("Predicted monthly TCI",pretty(w.TCI)+" / 100")}
           ${metric("Suitability Category",w.TCI_Category||"N/A")}
-          ${metric("Sunshine Hours/Day",pretty(w.Sunshine_h_per_day)+" h")}
+          ${metric("Historical mean benchmark",pretty(w.historical_mean_tci)+" / 100","Comparison only")}
         </div><p class="note">${safe(w.source)}</p>`:
         '<p class="status warning">No monthly climate records available for this selected city.</p>'}
       </section>
+      ${forecastSummary(d.forecast)}
       <section class="card section-gap"><h2>Top Attractions to Visit</h2>
-        <p class="note">${human(d.total_matching)} matching attractions; displaying the first ${d.attractions.length}, as in the original planner.</p>
+        <p class="note">${human(d.total_matching)} matching attractions; displaying ${d.attractions.length} ranked by predicted city TCI and popularity proxy.</p>
         <div class="stack">${d.attractions.length?d.attractions.map(a=>`
           <details class="attraction-card"><summary>${safe(a.name)} <small>${safe(a.type)} · ${safe(a.category)}</small></summary>
           <div class="inner">
             <p>Coordinates: Latitude ${pretty(a.latitude,5)}, Longitude ${pretty(a.longitude,5)}</p>
-            <p>Climate Index Rating: ${pretty(a.tci)} (${safe(a.tci_category)})</p>
+            <p>Predicted monthly Climate Index Rating: ${pretty(a.tci)} (${safe(a.tci_category)})</p>
             <p>${safe(d.tip)}</p>
           </div></details>`).join(""):'<p>No attractions matching your filters were found for this city.</p>'}
         </div></section>`;
