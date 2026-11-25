@@ -28,16 +28,43 @@
   }
   const available=()=>Boolean(window.jspdf&&typeof window.jspdf.jsPDF==="function");
   const coverCache=new Map();
+  const requiredPhotos=new Set(["cairo","lisbon","paris","rome","tokyo"]);
+  const cityKey=city=>plain(city).toLowerCase();
+  async function fetchCover(url, localPhoto=false){
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
+    try {
+      const r=await fetch(url,{signal:controller.signal});
+      if(!r.ok)throw Error("Cover unavailable");
+      const blob=await r.blob();
+      if(!blob.size)throw Error("Empty cover");
+      if(!localPhoto)return {data:new Uint8Array(await blob.arrayBuffer()),kind:r.headers.get("X-Guide-Cover")};
+      const image=await createImageBitmap(blob);
+      try {
+        const canvas=document.createElement("canvas");
+        canvas.width=900;canvas.height=560;
+        const scale=Math.max(canvas.width/image.width,canvas.height/image.height);
+        const w=image.width*scale,h=image.height*scale;
+        canvas.getContext("2d").drawImage(image,(canvas.width-w)/2,(canvas.height-h)*.46,w,h);
+        const jpeg=await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error("Cover encoding failed")),"image/jpeg",.86));
+        return {data:new Uint8Array(await jpeg.arrayBuffer()),kind:"photo"};
+      }finally{image.close();}
+    }finally{clearTimeout(timer);}
+  }
   function prepareCover(city){
     if(!coverCache.has(city)){
+      const key=cityKey(city),required=requiredPhotos.has(key);
       const api=(window.WANDERCLIMATE_API_BASE ||
         (["localhost","127.0.0.1"].includes(location.hostname)&&location.port!=="8000"?"http://127.0.0.1:8000":location.origin)).replace(/\/$/,"");
-      const url=api+"/website/guide-cover?city="+encodeURIComponent(city);
-      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
-      const pending=fetch(url,{signal:controller.signal}).then(async r=>{
-        if(!r.ok)throw Error("Cover unavailable");
-        return {data:new Uint8Array(await r.arrayBuffer()),kind:r.headers.get("X-Guide-Cover")};
-      }).catch(()=>{coverCache.delete(city);return null;}).finally(()=>clearTimeout(timer));
+      const url=api+"/website/guide-cover?city="+encodeURIComponent(city)+"&v=local-photos-v5";
+      const pending=(async()=>{
+        if(required){
+          try{return await fetchCover(new URL("assets/cities/"+key+".jpg",location.href).href,true);}
+          catch(error){/* Same-origin API can supply the cropped local photograph instead. */}
+        }
+        const cover=await fetchCover(url);
+        if(required&&cover.kind!=="photo")throw Error("Destination photograph unavailable");
+        return cover;
+      })().catch(()=>{coverCache.delete(city);return null;});
       coverCache.set(city,pending);
       if(coverCache.size>8)coverCache.delete(coverCache.keys().next().value);
     }
@@ -46,6 +73,7 @@
   async function download(plan){
     if(!available()||!plan?.days?.length)throw new Error("Build a trip before exporting.");
     const cover=await prepareCover(plan.city);
+    if(requiredPhotos.has(cityKey(plan.city))&&cover?.kind!=="photo")throw Error("Destination photograph unavailable");
     const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"pt",format:"a4",compress:true});
     const W=pdf.internal.pageSize.getWidth(),H=pdf.internal.pageSize.getHeight(),M=38,CW=W-2*M,bottom=H-54;
     const days=plan.days,monthly=plan.monthly_forecasts||[],changed=new Set((plan.changes||[]).map(c=>String(c.date)));

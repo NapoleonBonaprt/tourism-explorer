@@ -9,6 +9,10 @@ ROOT = Path(__file__).resolve().parent / "assets" / "cities"
 SIZE = (900, 560)
 # The existing Madrid photo is a byte-for-byte copy of Barcelona.
 ILLUSTRATED = {"madrid"}
+REQUIRED_PHOTOS = {"cairo", "lisbon", "paris", "rome", "tokyo"}
+
+class RequiredPhotoUnavailable(OSError):
+    """A required local destination photo could not be loaded."""
 
 def slug(city):
     return re.sub(r"[^a-z0-9]+", "-", city.strip().lower()).strip("-")
@@ -97,9 +101,13 @@ def city_cover(city):
             with Image.open(photo) as img:
                 im=ImageOps.fit(ImageOps.exif_transpose(img).convert("RGB"),SIZE,Image.Resampling.LANCZOS,centering=(.5,.46))
             kind="photo"
-        except (OSError,ValueError):
+        except (OSError,ValueError) as exc:
+            if key in REQUIRED_PHOTOS:
+                raise RequiredPhotoUnavailable(f"Destination photo unavailable: {city}") from exc
             im=illustrate(key);kind="illustration"
     else:
+        if key in REQUIRED_PHOTOS:
+            raise RequiredPhotoUnavailable(f"Destination photo unavailable: {city}")
         im=illustrate(key);kind="illustration"
     out=BytesIO()
     im.save(out,format="JPEG",quality=86,optimize=True)

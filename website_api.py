@@ -607,12 +607,15 @@ class ExportRequest(BaseModel):
 def guide_cover(city: str = Query(..., min_length=1, max_length=100)):
     """Small same-origin cover JPEG; never fetch arbitrary external URLs."""
     from fastapi.responses import Response
-    from guide_cover import city_cover
+    from guide_cover import city_cover, RequiredPhotoUnavailable
     canonical = next((name for name in _destination_city_coordinates()
                       if name.casefold() == city.strip().casefold()), None)
     if canonical is None:
         raise HTTPException(404, "Unknown destination.")
-    data, kind = city_cover(canonical)
+    try:
+        data, kind = city_cover(canonical)
+    except RequiredPhotoUnavailable as exc:
+        raise HTTPException(503, str(exc)) from exc
     return Response(data, media_type="image/jpeg",
                     headers={"Cache-Control": "public, max-age=86400", "X-Guide-Cover": kind,
                              "Access-Control-Expose-Headers": "X-Guide-Cover"})
@@ -624,6 +627,11 @@ def export_adaptive_pdf(request: ExportRequest):
     import re
     from fastapi.responses import Response
     from trip_guide import make_guide
+    from guide_cover import RequiredPhotoUnavailable
     slug = re.sub(r"[^a-zA-Z0-9_-]+", "-", request.city).strip("-")[:65] or "Trip"
-    return Response(make_guide(request.model_dump()), media_type="application/pdf",
+    try:
+        guide = make_guide(request.model_dump())
+    except RequiredPhotoUnavailable as exc:
+        raise HTTPException(503, str(exc)) from exc
+    return Response(guide, media_type="application/pdf",
                     headers={"Content-Disposition": f'attachment; filename="WanderClimate-{slug}-Travel-Guide.pdf"'})
