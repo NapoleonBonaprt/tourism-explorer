@@ -690,6 +690,7 @@
   function renderAdaptive(){
     const d=adaptiveState;
     if(!d)return;
+    window.WanderClimatePDF?.prepareCover?.(d.city);
     $("adaptiveResults").innerHTML=`
       ${d.warning?`<p class="status warning">${safe(d.warning)}</p>`:""}
       ${(d.monthly_forecasts||[]).map(f=>`<section class="card section-gap"><h2>${safe(f.target_month)} · Predicted monthly TCI</h2><div class="summary-grid">${metric("Predicted monthly TCI",pretty(f.predicted_tci,2)+" / 100")}${metric("Suitability",f.tci_category)}</div>${weatherSummary(f.monthly_weather)}${forecastSummary(f)}</section>`).join("")}
@@ -759,7 +760,7 @@
     status("Preparing your travel guide...");
     if(window.WanderClimatePDF?.available()){
       try {
-        window.WanderClimatePDF.download(adaptiveState);
+        await window.WanderClimatePDF.download(adaptiveState);
         status("");
         return;
       } catch(error){

@@ -603,6 +603,21 @@ class ExportRequest(BaseModel):
     monthly_forecasts: list[ExportMonthlyForecast] = Field(default_factory=list, max_length=2)
 
 
+@router.get("/guide-cover")
+def guide_cover(city: str = Query(..., min_length=1, max_length=100)):
+    """Small same-origin cover JPEG; never fetch arbitrary external URLs."""
+    from fastapi.responses import Response
+    from guide_cover import city_cover
+    canonical = next((name for name in _destination_city_coordinates()
+                      if name.casefold() == city.strip().casefold()), None)
+    if canonical is None:
+        raise HTTPException(404, "Unknown destination.")
+    data, kind = city_cover(canonical)
+    return Response(data, media_type="image/jpeg",
+                    headers={"Cache-Control": "public, max-age=86400", "X-Guide-Cover": kind,
+                             "Access-Control-Expose-Headers": "X-Guide-Cover"})
+
+
 @router.post("/adaptive/export-pdf")
 def export_adaptive_pdf(request: ExportRequest):
     """A short, readable travel guide from the current itinerary."""

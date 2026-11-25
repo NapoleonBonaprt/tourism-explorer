@@ -27,8 +27,25 @@
     return parts.join(" | ")||"Check local weather before heading out";
   }
   const available=()=>Boolean(window.jspdf&&typeof window.jspdf.jsPDF==="function");
-  function download(plan){
+  const coverCache=new Map();
+  function prepareCover(city){
+    if(!coverCache.has(city)){
+      const api=(window.WANDERCLIMATE_API_BASE ||
+        (["localhost","127.0.0.1"].includes(location.hostname)&&location.port!=="8000"?"http://127.0.0.1:8000":location.origin)).replace(/\/$/,"");
+      const url=api+"/website/guide-cover?city="+encodeURIComponent(city);
+      const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
+      const pending=fetch(url,{signal:controller.signal}).then(async r=>{
+        if(!r.ok)throw Error("Cover unavailable");
+        return {data:new Uint8Array(await r.arrayBuffer()),kind:r.headers.get("X-Guide-Cover")};
+      }).catch(()=>{coverCache.delete(city);return null;}).finally(()=>clearTimeout(timer));
+      coverCache.set(city,pending);
+      if(coverCache.size>8)coverCache.delete(coverCache.keys().next().value);
+    }
+    return coverCache.get(city);
+  }
+  async function download(plan){
     if(!available()||!plan?.days?.length)throw new Error("Build a trip before exporting.");
+    const cover=await prepareCover(plan.city);
     const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"pt",format:"a4",compress:true});
     const W=pdf.internal.pageSize.getWidth(),H=pdf.internal.pageSize.getHeight(),M=38,CW=W-2*M,bottom=H-54;
     const days=plan.days,monthly=plan.monthly_forecasts||[],changed=new Set((plan.changes||[]).map(c=>String(c.date)));
@@ -47,19 +64,30 @@
       if(page){footer();pdf.addPage();}
       page++;
       rect(0,0,W,H,C.paper);
-      rect(0,0,W,page===1?145:87,C.ink);
-      circle(W-77,50,27,C.gold);
-      if(page===1){pdf.setFillColor(C.green);pdf.triangle(W-205,145,W-110,78,W-38,145,"F");}
+      rect(0,0,W,page===1?174:87,C.ink);
+      if(page===1&&cover){
+        const iw=279.64;
+        pdf.addImage(cover.data,"JPEG",W-iw,0,iw,174);
+        rect(W-iw-3,0,3,174,C.gold);
+        if(cover.kind==="illustration"){
+          rect(W-iw+9,151,79,15,C.ink,4);
+          text("CITY ILLUSTRATION",W-iw+14,154,6.5,C.white,true);
+        }
+      }else{
+        circle(W-77,50,27,C.gold);
+        if(page===1){pdf.setFillColor(C.green);pdf.triangle(W-205,174,W-110,78,W-38,174,"F");}
+      }
       text("WANDERCLIMATE  /  YOUR TRAVEL GUIDE",M,23,9,C.pale,true);
       const title=page===1?"Discover "+plain(plan.city):plain(plan.city)+" | Your itinerary";
       let size=page===1?32:19;font(size,true);
-      while(pdf.getTextWidth(title)>CW-88&&size>10){size--;font(size,true);}
+      const titleWidth=page===1?W-280-M-12:CW-88;
+      while(pdf.getTextWidth(title)>titleWidth&&size>10){size--;font(size,true);}
       text(title,M,43,size,C.white,true);
       if(page===1){
-        text(dateText(days[0].date)+" - "+dateText(days[days.length-1].date),M,89,12,C.white);
+        lines(dateText(days[0].date)+" - "+dateText(days[days.length-1].date),M,94,titleWidth,11,C.white,false,15);
         const count=days.reduce((n,d)=>n+d.stops.length,0);
-        text(days.length+(days.length===1?" day":" days")+"  /  "+count+" places to discover",M,111,10,C.pale);
-        y=159;
+        text(days.length+(days.length===1?" day":" days")+"  /  "+count+" places to discover",M,132,10,C.pale);
+        y=188;
       }else y=103;
     }
     function room(h){if(y+h>bottom)newPage();}
@@ -112,5 +140,5 @@
     const slug=plain(plan.city).replace(/[^a-z0-9_-]+/gi,"-").replace(/^-|-$/g,"").slice(0,65)||"Trip";
     pdf.save("WanderClimate-"+slug+"-Travel-Guide.pdf");
   }
-  window.WanderClimatePDF={available,download};
+  window.WanderClimatePDF={available,download,prepareCover};
 })();

@@ -5,7 +5,8 @@ import math
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.colors import HexColor
-from reportlab.lib.utils import simpleSplit
+from reportlab.lib.utils import simpleSplit, ImageReader
+from guide_cover import city_cover
 
 INK = '#203B35'
 GREEN = '#315C4D'
@@ -74,6 +75,7 @@ def make_guide(plan):
     days = plan['days']
     monthly = plan.get('monthly_forecasts') or []
     changed = {str(c.get('date')) for c in (plan.get('changes') or [])}
+    cover_bytes, cover_kind = city_cover(plan['city'])
     page = 0
     y = 0
 
@@ -123,25 +125,29 @@ def make_guide(plan):
             footer(); pdf.showPage()
         page += 1
         rect(0, 0, W, H, PAPER)
-        rect(0, 0, W, 145 if page == 1 else 87, INK)
-        circle(W-77, 50, 27, GOLD)
-        # A destination-neutral landscape motif, not an image of the city.
+        rect(0, 0, W, 174 if page == 1 else 87, INK)
         if page == 1:
-            pdf.setFillColor(HexColor(GREEN))
-            p = pdf.beginPath(); p.moveTo(W-205, H-145); p.lineTo(W-110, H-78); p.lineTo(W-38, H-145); p.close()
-            pdf.drawPath(p, stroke=0, fill=1)
+            image_w=279.64
+            pdf.drawImage(ImageReader(BytesIO(cover_bytes)),W-image_w,H-174,image_w,174)
+            rect(W-image_w-3,0,3,174,GOLD)
+            if cover_kind == "illustration":
+                rect(W-image_w+9,151,79,15,INK,4)
+                text("CITY ILLUSTRATION",W-image_w+14,154,6.5,WHITE,True)
+        else:
+            circle(W-77, 50, 27, GOLD)
         text('WANDERCLIMATE  /  YOUR TRAVEL GUIDE', M, 23, 9, '#DCE8D8', True)
         city = str(plan['city'])
         title = 'Discover ' + city if page == 1 else city + ' | Your itinerary'
         title_size = 32 if page == 1 else 19
-        while pdf.stringWidth(title, 'Helvetica-Bold', title_size) > CW-88 and title_size > 10:
+        title_width = W-280-M-12 if page == 1 else CW-88
+        while pdf.stringWidth(title, 'Helvetica-Bold', title_size) > title_width and title_size > 10:
             title_size -= 1
         if page == 1:
-            text(title, M, 43, title_size, WHITE, True)
-            text(f"{friendly_date(days[0]['date'])} - {friendly_date(days[-1]['date'])}", M, 89, 12, WHITE)
+            text(title, M, 47, title_size, WHITE, True)
+            lines(f"{friendly_date(days[0]['date'])} - {friendly_date(days[-1]['date'])}", M, 94, title_width, 11, WHITE, False, 15)
             count = sum(len(d['stops']) for d in days)
-            text(f"{len(days)} {'day' if len(days)==1 else 'days'}  /  {count} places to discover", M, 111, 10, '#DCE8D8')
-            y = 159
+            text(f"{len(days)} {'day' if len(days)==1 else 'days'}  /  {count} places to discover", M, 132, 10, '#DCE8D8')
+            y = 188
         else:
             text(title, M, 43, title_size, WHITE, True)
             y = 103

@@ -129,6 +129,24 @@ class API(unittest.TestCase):
         self.post("/website/adaptive/build",dict(city="Cairo",days=3,start_date="2000-01-01"),422)
         self.post("/website/adaptive/export-pdf",dict(city="Cairo",days=[]),422)
 
+    def test_07_destination_cover_images(self):
+        import hashlib
+        from PIL import Image
+        hashes = set()
+        for loc in self.filters["climate_cities"]:
+            with self.subTest(city=loc["city"]):
+                response = self.get("/website/guide-cover",{"city":loc["city"]})
+                self.assertEqual(response.headers["content-type"],"image/jpeg")
+                self.assertIn(response.headers["x-guide-cover"],["photo","illustration"])
+                with Image.open(BytesIO(response.content)) as img:
+                    img.load()
+                    self.assertEqual(img.size,(900,560))
+                hashes.add(hashlib.sha256(response.content).hexdigest())
+        self.assertEqual(len(hashes),len(self.filters["climate_cities"]))
+        self.get("/website/guide-cover",{"city":"../../etc/passwd"},404)
+        self.assertEqual(self.get("/website/guide-cover",{"city":"London"}).headers["x-guide-cover"],"photo")
+        self.assertEqual(self.get("/website/guide-cover",{"city":"Madrid"}).headers["x-guide-cover"],"illustration")
+
     def test_06_monthly_pdf_content(self):
         start=date.fromisoformat(self.info["max_date"])-timedelta(days=3)
         if start<=date.today()+timedelta(days=6):
@@ -145,6 +163,7 @@ class API(unittest.TestCase):
         for term in ["historical success","predicted monthly tci","mae","rmse","coordinates:"]:
             self.assertNotIn(term,content)
         doc=PdfReader(BytesIO(raw.content))
+        self.assertGreater(len(doc.pages[0].images),0)
         self.assertGreaterEqual(sum(len(p.get("/Annots",[])) for p in doc.pages),sum(len(d["stops"]) for d in plan["days"]))
         (OUT/"monthly-server.pdf").write_bytes(raw.content)
 
@@ -331,6 +350,7 @@ class Browser(unittest.TestCase):
         content=pdf_text(raw)
         self.assertIn(date.fromisoformat(start).strftime("%d %b %Y").lstrip("0"),content)
         self.assertIn("Cairo",content)
+        self.assertGreater(len(PdfReader(BytesIO(raw)).pages[0].images),0)
         (OUT/"daily-browser.pdf").write_bytes(raw)
         p.evaluate("window.WanderClimatePDF={available:()=>false}")
         with p.expect_download() as fallback:
@@ -366,6 +386,7 @@ class Browser(unittest.TestCase):
         for term in ["historical success","predicted monthly tci","mae","rmse","coordinates:"]:
             self.assertNotIn(term,content)
         self.assertTrue(any(p.get("/Annots") for p in PdfReader(BytesIO(raw)).pages))
+        self.assertGreater(len(PdfReader(BytesIO(raw)).pages[0].images),0)
         (OUT/"monthly-browser.pdf").write_bytes(raw)
         p.locator("#adaptiveStartDate").fill(end)
         p.locator("#adaptiveDays").select_option("7")
