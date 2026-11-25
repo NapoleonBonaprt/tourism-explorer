@@ -6,6 +6,7 @@ selected/aggregated data needed by the HTML pages, not the full CSV exports.
 from __future__ import annotations
 
 import json
+from datetime import date
 import logging
 from functools import lru_cache
 from pathlib import Path
@@ -19,6 +20,8 @@ from itinerary_engine2 import (
     add_day_type, build_itinerary, get_daily_weather,
     prepare_city, replan,
 )
+
+from forecast_service import forecast_info, predict_tci, recommend, tci_label
 
 router = APIRouter(prefix="/website", tags=["Website dashboard"])
 ROOT = Path(__file__).resolve().parent
@@ -207,11 +210,43 @@ def climate(country: str = Query(..., min_length=1),
             "years": sorted(int(x) for x in subset["Year"].dropna().unique())}
 
 
+@router.get("/forecast-info")
+def forecast_dates():
+    return forecast_info()
+
+
+@router.get("/forecast")
+def monthly_forecast(country: str, city: str, travel_date: date):
+    scores, reliability = predict_tci(country, travel_date, city)
+    return {"predictions": records(scores), "forecast": reliability}
+
+
 @router.get("/explorer")
 def explorer(country: str = Query(..., min_length=1),
              month: int = Query(8, ge=1, le=12),
-             location: str = Query("", max_length=120)) -> dict:
-    """Same Top 5 ranking and country-wide DBSCAN map as dashboard.py."""
+             location: str = Query("", max_length=120), travel_date: date | None = None) -> dict:
+    """Date-based model predictions, or legacy historical month mode."""
+    if travel_date is not None:
+        selected, reliability = recommend(country, travel_date, location or None)
+        top = selected.head(5)
+        keys = set(zip(top.City, top["Destination Name"]))
+        top5 = [{"destination": str(r["Destination Name"]), "city": str(r.City),
+                 "country": str(r.Country_dest), "month": travel_date.month,
+                 "tci": round(float(r.predicted_tci), 2)} for _, r in top.iterrows()]
+        points = [{"name": str(r["Destination Name"]), "city": str(r.City),
+                   "lat": float(r.Latitude), "lon": float(r.Longitude),
+                   "cluster": int(r.spatial_cluster), "type": str(r.Type),
+                   "category": str(r.Category), "tci": round(float(r.predicted_tci),2),
+                   "within_10_pct": reliability["within_10_pct"],
+                   "is_top": (r.City,r["Destination Name"]) in keys}
+                  for _, r in selected.iterrows()]
+        return {"country": country, "month": travel_date.month, "month_name": travel_date.strftime("%B %Y"),
+                "location": location, "warning": reliability["warning"], "forecast": reliability,
+                "top5": top5, "points": points,
+                "counts": {"recommendations":len(top5), "on_map":sum(p["is_top"] for p in points),
+                           "clustered":sum(p["cluster"] != -1 for p in points),
+                           "noise":sum(p["cluster"] == -1 for p in points), "unknown":0}}
+
     full = frame("full.csv")
     places = frame("places_with_clusters.csv")
     country_col = select_col(full, ["Country", "Country_dest", "country"])
@@ -276,7 +311,24 @@ def explorer(country: str = Query(..., min_length=1),
 def planner(country: str = Query(..., min_length=1),
             city: str = Query(..., min_length=1),
             month: int = Query(1, ge=1, le=12),
-            category: Literal["All", "Outdoor", "Indoor"] = "All") -> dict:
+            category: Literal["All", "Outdoor", "Indoor"] = "All", travel_date: date | None = None) -> dict:
+    if travel_date is not None:
+        scores, reliability = predict_tci(country, travel_date, city)
+        selected, _ = recommend(country, travel_date, city, category)
+        score = float(scores.iloc[0].predicted_tci)
+        weather = {"TCI":round(score,2), "TCI_Category":tci_label(score),
+                   "source":"Request-time monthly ML prediction; temperature and sunshine are not predicted.",
+                   "historical_mean_tci":round(float(scores.iloc[0].historical_mean_tci),2)}
+        attractions_list = [{"name":str(r["Destination Name"]), "type":str(r.Type),
+                             "category":str(r.Category), "latitude":float(r.Latitude),
+                             "longitude":float(r.Longitude), "tci":round(float(r.predicted_tci),2),
+                             "tci_category":tci_label(float(r.predicted_tci))}
+                            for _, r in selected.head(10).iterrows()]
+        return {"country":country,"city":city,"month":travel_date.month,
+                "month_name":travel_date.strftime("%B %Y"),"category":category,
+                "weather":weather,"forecast":reliability,"attractions":attractions_list,
+                "total_matching":len(selected),
+                "tip":"City-level monthly suitability; attraction popularity breaks ties. Check short-range weather before travel."}
     attractions = frame("attractions_with_clusters.csv") if (ROOT / "python files" / "processed_data" / "attractions_with_clusters.csv").exists() else frame("places_with_clusters.csv")
     climate = frame("city_month_features.csv")
     filtered = attractions.loc[eq(attractions["Country_dest"], country) & eq(attractions["City"], city)].copy()
