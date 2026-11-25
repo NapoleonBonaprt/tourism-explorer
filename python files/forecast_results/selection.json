@@ -1,0 +1,6 @@
+{
+  "selected": "Residual XGBoost",
+  "best_climate_ml": "Residual XGBoost",
+  "origin": "2025-12",
+  "selection": "lowest mean validation MAE across 12 horizons; no test-based selection"
+}

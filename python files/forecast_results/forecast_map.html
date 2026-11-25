@@ -1,0 +1,3211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_cd4caefccb05e8d6d7ff83a2eb080e0d {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    <div style="position:fixed;top:12px;left:65px;z-index:9999;background:white;color:#222;padding:10px;border:1px solid #aaa;border-radius:4px;max-width:360px"><b>Egypt | 2026-01 | Residual XGBoost</b><br>Black outline: Top 5; Gray: isolated<br>City-level TCI; climate suitability, not attraction quality.</div>
+    
+            <div class="folium-map" id="map_cd4caefccb05e8d6d7ff83a2eb080e0d" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_cd4caefccb05e8d6d7ff83a2eb080e0d = L.map(
+                "map_cd4caefccb05e8d6d7ff83a2eb080e0d",
+                {
+                    center: [27.954385274725276, 31.582332967032972],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 6,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+
+            
+
+        
+    
+            var tile_layer_f204640d36358898e246a8d3e4ad8bed = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_f204640d36358898e246a8d3e4ad8bed.addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+        
+    
+            var feature_group_d2a592aeca01b63457e2367576af40e3 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_93261c755f04ab4773e4df775101e761 = L.circleMarker(
+                [29.97915, 31.13422],
+                {"bubblingMouseEvents": true, "color": "#416dd8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#416dd8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2a592aeca01b63457e2367576af40e3);
+        
+    
+        var popup_64fdd082d4f40c8560fd7fc7b4a5d991 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_a2f3b0f2b816b08b04ef0c998253e327 = $(`<div id="html_a2f3b0f2b816b08b04ef0c998253e327" style="width: 100.0%; height: 100.0%;"><b>Great Pyramid of Giza (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 1<br>Top recommendation: No</div>`)[0];
+                popup_64fdd082d4f40c8560fd7fc7b4a5d991.setContent(html_a2f3b0f2b816b08b04ef0c998253e327);
+            
+        
+
+        circle_marker_93261c755f04ab4773e4df775101e761.bindPopup(popup_64fdd082d4f40c8560fd7fc7b4a5d991)
+        ;
+
+        
+    
+    
+            circle_marker_93261c755f04ab4773e4df775101e761.bindTooltip(
+                `<div>
+                     Great Pyramid of Giza (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_54f5f3be5b72daad3d8e3be257d4f2f0 = L.circleMarker(
+                [29.97611, 31.13278],
+                {"bubblingMouseEvents": true, "color": "#416dd8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#416dd8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2a592aeca01b63457e2367576af40e3);
+        
+    
+        var popup_f11b4748f0f005981ce007592a80881e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ab048fdcb603fced39976722318c29c1 = $(`<div id="html_ab048fdcb603fced39976722318c29c1" style="width: 100.0%; height: 100.0%;"><b>Giza pyramid complex (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 1<br>Top recommendation: No</div>`)[0];
+                popup_f11b4748f0f005981ce007592a80881e.setContent(html_ab048fdcb603fced39976722318c29c1);
+            
+        
+
+        circle_marker_54f5f3be5b72daad3d8e3be257d4f2f0.bindPopup(popup_f11b4748f0f005981ce007592a80881e)
+        ;
+
+        
+    
+    
+            circle_marker_54f5f3be5b72daad3d8e3be257d4f2f0.bindTooltip(
+                `<div>
+                     Giza pyramid complex (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_16208edbb3656d7356e9449f7fa8d26a = L.circleMarker(
+                [29.98333, 31.13333],
+                {"bubblingMouseEvents": true, "color": "#416dd8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#416dd8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2a592aeca01b63457e2367576af40e3);
+        
+    
+        var popup_1e40b09b243eb3c8e85c816b44fa283e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_694bd3aec86a67180dba79cbbe13f2fb = $(`<div id="html_694bd3aec86a67180dba79cbbe13f2fb" style="width: 100.0%; height: 100.0%;"><b>Giza Necropolis (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 1<br>Top recommendation: No</div>`)[0];
+                popup_1e40b09b243eb3c8e85c816b44fa283e.setContent(html_694bd3aec86a67180dba79cbbe13f2fb);
+            
+        
+
+        circle_marker_16208edbb3656d7356e9449f7fa8d26a.bindPopup(popup_1e40b09b243eb3c8e85c816b44fa283e)
+        ;
+
+        
+    
+    
+            circle_marker_16208edbb3656d7356e9449f7fa8d26a.bindTooltip(
+                `<div>
+                     Giza Necropolis (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_07c8d853f836ea32e66949ada35aa58b = L.circleMarker(
+                [29.97527, 31.13768],
+                {"bubblingMouseEvents": true, "color": "#416dd8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#416dd8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2a592aeca01b63457e2367576af40e3);
+        
+    
+        var popup_b9ddf299a6c15eb5a15a051f8accab0d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_cdcf57277d91f2128a51ee584ff8f885 = $(`<div id="html_cdcf57277d91f2128a51ee584ff8f885" style="width: 100.0%; height: 100.0%;"><b>The Great Sphinx (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 1<br>Top recommendation: No</div>`)[0];
+                popup_b9ddf299a6c15eb5a15a051f8accab0d.setContent(html_cdcf57277d91f2128a51ee584ff8f885);
+            
+        
+
+        circle_marker_07c8d853f836ea32e66949ada35aa58b.bindPopup(popup_b9ddf299a6c15eb5a15a051f8accab0d)
+        ;
+
+        
+    
+    
+            circle_marker_07c8d853f836ea32e66949ada35aa58b.bindTooltip(
+                `<div>
+                     The Great Sphinx (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_465ef705adef65b1189274c8b7c84e39 = L.circleMarker(
+                [29.9725, 31.12833],
+                {"bubblingMouseEvents": true, "color": "#416dd8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#416dd8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2a592aeca01b63457e2367576af40e3);
+        
+    
+        var popup_5b4b3b2712db3097eaa3e3b42a5cd711 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_eb8e279988b9a372383ab431ab8c08fd = $(`<div id="html_eb8e279988b9a372383ab431ab8c08fd" style="width: 100.0%; height: 100.0%;"><b>Egyptian pyramids (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 1<br>Top recommendation: No</div>`)[0];
+                popup_5b4b3b2712db3097eaa3e3b42a5cd711.setContent(html_eb8e279988b9a372383ab431ab8c08fd);
+            
+        
+
+        circle_marker_465ef705adef65b1189274c8b7c84e39.bindPopup(popup_5b4b3b2712db3097eaa3e3b42a5cd711)
+        ;
+
+        
+    
+    
+            circle_marker_465ef705adef65b1189274c8b7c84e39.bindTooltip(
+                `<div>
+                     Egyptian pyramids (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0781c4bb5496440730cafa9313b4585d = L.circleMarker(
+                [29.976, 31.13097],
+                {"bubblingMouseEvents": true, "color": "#416dd8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#416dd8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2a592aeca01b63457e2367576af40e3);
+        
+    
+        var popup_dd06a8e70f5fe5a073e3dc84c8d76cbf = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_e1f8619041c3c5e24719b4da25e59130 = $(`<div id="html_e1f8619041c3c5e24719b4da25e59130" style="width: 100.0%; height: 100.0%;"><b>Pyramid of Khafre (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 1<br>Top recommendation: No</div>`)[0];
+                popup_dd06a8e70f5fe5a073e3dc84c8d76cbf.setContent(html_e1f8619041c3c5e24719b4da25e59130);
+            
+        
+
+        circle_marker_0781c4bb5496440730cafa9313b4585d.bindPopup(popup_dd06a8e70f5fe5a073e3dc84c8d76cbf)
+        ;
+
+        
+    
+    
+            circle_marker_0781c4bb5496440730cafa9313b4585d.bindTooltip(
+                `<div>
+                     Pyramid of Khafre (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c4f0bd828efc9698355c766e03fc253d = L.circleMarker(
+                [29.99361, 31.11972],
+                {"bubblingMouseEvents": true, "color": "#416dd8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#416dd8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2a592aeca01b63457e2367576af40e3);
+        
+    
+        var popup_30dd3f67c215ac0c16990f15fe42e151 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_cb876d51320de812b1db4e2b79bfe5b8 = $(`<div id="html_cb876d51320de812b1db4e2b79bfe5b8" style="width: 100.0%; height: 100.0%;"><b>Grand Egyptian Museum (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 1<br>Top recommendation: No</div>`)[0];
+                popup_30dd3f67c215ac0c16990f15fe42e151.setContent(html_cb876d51320de812b1db4e2b79bfe5b8);
+            
+        
+
+        circle_marker_c4f0bd828efc9698355c766e03fc253d.bindPopup(popup_30dd3f67c215ac0c16990f15fe42e151)
+        ;
+
+        
+    
+    
+            circle_marker_c4f0bd828efc9698355c766e03fc253d.bindTooltip(
+                `<div>
+                     Grand Egyptian Museum (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_d2a592aeca01b63457e2367576af40e3.addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+        
+    
+            var feature_group_d2ce4e85e48bdc457eb6922be1a088b2 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_1f3a38e0f35a1da7affdbd46d70ed81a = L.circleMarker(
+                [29.84467, 31.25092],
+                {"bubblingMouseEvents": true, "color": "#99d841", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d841", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2ce4e85e48bdc457eb6922be1a088b2);
+        
+    
+        var popup_61c573801e677305e9cb990f429fd16c = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_55db0ed7b40d632b7b37010777e857be = $(`<div id="html_55db0ed7b40d632b7b37010777e857be" style="width: 100.0%; height: 100.0%;"><b>Memphis (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 2<br>Top recommendation: No</div>`)[0];
+                popup_61c573801e677305e9cb990f429fd16c.setContent(html_55db0ed7b40d632b7b37010777e857be);
+            
+        
+
+        circle_marker_1f3a38e0f35a1da7affdbd46d70ed81a.bindPopup(popup_61c573801e677305e9cb990f429fd16c)
+        ;
+
+        
+    
+    
+            circle_marker_1f3a38e0f35a1da7affdbd46d70ed81a.bindTooltip(
+                `<div>
+                     Memphis (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b0ebd931262a7e84a483d070af0b721d = L.circleMarker(
+                [29.85, 31.23333],
+                {"bubblingMouseEvents": true, "color": "#99d841", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d841", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2ce4e85e48bdc457eb6922be1a088b2);
+        
+    
+        var popup_0c495a1f5c668aab63acf2ecb0cc4861 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b9a65cfbf289920b2b14a044178a5cc7 = $(`<div id="html_b9a65cfbf289920b2b14a044178a5cc7" style="width: 100.0%; height: 100.0%;"><b>Saqqara (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 2<br>Top recommendation: No</div>`)[0];
+                popup_0c495a1f5c668aab63acf2ecb0cc4861.setContent(html_b9a65cfbf289920b2b14a044178a5cc7);
+            
+        
+
+        circle_marker_b0ebd931262a7e84a483d070af0b721d.bindPopup(popup_0c495a1f5c668aab63acf2ecb0cc4861)
+        ;
+
+        
+    
+    
+            circle_marker_b0ebd931262a7e84a483d070af0b721d.bindTooltip(
+                `<div>
+                     Saqqara (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7be1f8ff663373095edad8e4f5a243a7 = L.circleMarker(
+                [29.87111, 31.21667],
+                {"bubblingMouseEvents": true, "color": "#99d841", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d841", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2ce4e85e48bdc457eb6922be1a088b2);
+        
+    
+        var popup_0b1b8393bd9ecb66ba46197a6eba59a6 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_9c7230362c61fb56ddcb653f308725b1 = $(`<div id="html_9c7230362c61fb56ddcb653f308725b1" style="width: 100.0%; height: 100.0%;"><b>Pyramid of Djoser (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 2<br>Top recommendation: No</div>`)[0];
+                popup_0b1b8393bd9ecb66ba46197a6eba59a6.setContent(html_9c7230362c61fb56ddcb653f308725b1);
+            
+        
+
+        circle_marker_7be1f8ff663373095edad8e4f5a243a7.bindPopup(popup_0b1b8393bd9ecb66ba46197a6eba59a6)
+        ;
+
+        
+    
+    
+            circle_marker_7be1f8ff663373095edad8e4f5a243a7.bindTooltip(
+                `<div>
+                     Pyramid of Djoser (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_a2e6e18bf45a2a3b8a18cb025eef729a = L.circleMarker(
+                [29.89611, 31.20361],
+                {"bubblingMouseEvents": true, "color": "#99d841", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d841", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2ce4e85e48bdc457eb6922be1a088b2);
+        
+    
+        var popup_187feefbc07b0e21a982c6f394cdf19c = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_f309416f179c10ba57e17be0ddff4a59 = $(`<div id="html_f309416f179c10ba57e17be0ddff4a59" style="width: 100.0%; height: 100.0%;"><b>Abusir (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 2<br>Top recommendation: No</div>`)[0];
+                popup_187feefbc07b0e21a982c6f394cdf19c.setContent(html_f309416f179c10ba57e17be0ddff4a59);
+            
+        
+
+        circle_marker_a2e6e18bf45a2a3b8a18cb025eef729a.bindPopup(popup_187feefbc07b0e21a982c6f394cdf19c)
+        ;
+
+        
+    
+    
+            circle_marker_a2e6e18bf45a2a3b8a18cb025eef729a.bindTooltip(
+                `<div>
+                     Abusir (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_579457d95fe55d36705e9c0bfa68f49c = L.circleMarker(
+                [29.86833, 31.21472],
+                {"bubblingMouseEvents": true, "color": "#99d841", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d841", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2ce4e85e48bdc457eb6922be1a088b2);
+        
+    
+        var popup_052fbed25a14e8fc294df9297fa23fc0 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b4cab91f04655883aeadd69249f608aa = $(`<div id="html_b4cab91f04655883aeadd69249f608aa" style="width: 100.0%; height: 100.0%;"><b>Pyramid of Unas (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 2<br>Top recommendation: No</div>`)[0];
+                popup_052fbed25a14e8fc294df9297fa23fc0.setContent(html_b4cab91f04655883aeadd69249f608aa);
+            
+        
+
+        circle_marker_579457d95fe55d36705e9c0bfa68f49c.bindPopup(popup_052fbed25a14e8fc294df9297fa23fc0)
+        ;
+
+        
+    
+    
+            circle_marker_579457d95fe55d36705e9c0bfa68f49c.bindTooltip(
+                `<div>
+                     Pyramid of Unas (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_cdec5beeaa41ce8a9e05045a67bfcaf1 = L.circleMarker(
+                [29.89503, 31.20244],
+                {"bubblingMouseEvents": true, "color": "#99d841", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#99d841", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_d2ce4e85e48bdc457eb6922be1a088b2);
+        
+    
+        var popup_54dd5231ea34194a40c9b00dc8b88ad1 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_fb764a7849fd72c0e99c36af8c36c008 = $(`<div id="html_fb764a7849fd72c0e99c36af8c36c008" style="width: 100.0%; height: 100.0%;"><b>Pyramid of Neferirkare (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 2<br>Top recommendation: No</div>`)[0];
+                popup_54dd5231ea34194a40c9b00dc8b88ad1.setContent(html_fb764a7849fd72c0e99c36af8c36c008);
+            
+        
+
+        circle_marker_cdec5beeaa41ce8a9e05045a67bfcaf1.bindPopup(popup_54dd5231ea34194a40c9b00dc8b88ad1)
+        ;
+
+        
+    
+    
+            circle_marker_cdec5beeaa41ce8a9e05045a67bfcaf1.bindTooltip(
+                `<div>
+                     Pyramid of Neferirkare (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_d2ce4e85e48bdc457eb6922be1a088b2.addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+        
+    
+            var feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_53ecea5b1583470fd3cea195576b17d8 = L.circleMarker(
+                [30.12953, 31.28889],
+                {"bubblingMouseEvents": true, "color": "#777777", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#777777", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6);
+        
+    
+        var popup_860b6116d800e480b15eb95a0fe2e20d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_21a284f2eda1ed6d0e69f60013d1cd86 = $(`<div id="html_21a284f2eda1ed6d0e69f60013d1cd86" style="width: 100.0%; height: 100.0%;"><b>Heliopolis (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Noise / isolated<br>Top recommendation: No</div>`)[0];
+                popup_860b6116d800e480b15eb95a0fe2e20d.setContent(html_21a284f2eda1ed6d0e69f60013d1cd86);
+            
+        
+
+        circle_marker_53ecea5b1583470fd3cea195576b17d8.bindPopup(popup_860b6116d800e480b15eb95a0fe2e20d)
+        ;
+
+        
+    
+    
+            circle_marker_53ecea5b1583470fd3cea195576b17d8.bindTooltip(
+                `<div>
+                     Heliopolis (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e57523fdf05906ae77168d542a31a766 = L.circleMarker(
+                [30.03222, 31.07472],
+                {"bubblingMouseEvents": true, "color": "#777777", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#777777", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6);
+        
+    
+        var popup_6e8fb4a9ad3848e560f4e0fdc1ecbd60 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ef0b368b3b58c7527a9da5cc59a58c43 = $(`<div id="html_ef0b368b3b58c7527a9da5cc59a58c43" style="width: 100.0%; height: 100.0%;"><b>Abu Rawash (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Noise / isolated<br>Top recommendation: No</div>`)[0];
+                popup_6e8fb4a9ad3848e560f4e0fdc1ecbd60.setContent(html_ef0b368b3b58c7527a9da5cc59a58c43);
+            
+        
+
+        circle_marker_e57523fdf05906ae77168d542a31a766.bindPopup(popup_6e8fb4a9ad3848e560f4e0fdc1ecbd60)
+        ;
+
+        
+    
+    
+            circle_marker_e57523fdf05906ae77168d542a31a766.bindTooltip(
+                `<div>
+                     Abu Rawash (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_fff1eb8bb86689603cbcd01199f55678 = L.circleMarker(
+                [31.3, 30.08333],
+                {"bubblingMouseEvents": true, "color": "#777777", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#777777", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6);
+        
+    
+        var popup_006ddf01296d97efcbfdda300afe3252 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_116b47cbd581f6a2df9051321975cf50 = $(`<div id="html_116b47cbd581f6a2df9051321975cf50" style="width: 100.0%; height: 100.0%;"><b>Canopus (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Noise / isolated<br>Top recommendation: No</div>`)[0];
+                popup_006ddf01296d97efcbfdda300afe3252.setContent(html_116b47cbd581f6a2df9051321975cf50);
+            
+        
+
+        circle_marker_fff1eb8bb86689603cbcd01199f55678.bindPopup(popup_006ddf01296d97efcbfdda300afe3252)
+        ;
+
+        
+    
+    
+            circle_marker_fff1eb8bb86689603cbcd01199f55678.bindTooltip(
+                `<div>
+                     Canopus (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1a2d1cd54786615dddb07b9a5f40e45a = L.circleMarker(
+                [31.2886, 30.0159],
+                {"bubblingMouseEvents": true, "color": "#777777", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#777777", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6);
+        
+    
+        var popup_dd39689a98ba50d03a0f109e9ddef432 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_aa474abfa4f17d57bfe710f9d4a0dab7 = $(`<div id="html_aa474abfa4f17d57bfe710f9d4a0dab7" style="width: 100.0%; height: 100.0%;"><b>Montaza Palace (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Noise / isolated<br>Top recommendation: No</div>`)[0];
+                popup_dd39689a98ba50d03a0f109e9ddef432.setContent(html_aa474abfa4f17d57bfe710f9d4a0dab7);
+            
+        
+
+        circle_marker_1a2d1cd54786615dddb07b9a5f40e45a.bindPopup(popup_dd39689a98ba50d03a0f109e9ddef432)
+        ;
+
+        
+    
+    
+            circle_marker_1a2d1cd54786615dddb07b9a5f40e45a.bindTooltip(
+                `<div>
+                     Montaza Palace (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_012e2f4b0a17b0abceac1cf01cbaa0f6 = L.circleMarker(
+                [31.24079, 29.96313],
+                {"bubblingMouseEvents": true, "color": "#777777", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#777777", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6);
+        
+    
+        var popup_4c7967db11fbaa81be0c17809785b1e5 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0fbf9871c089e9b26b3fb146c39e262c = $(`<div id="html_0fbf9871c089e9b26b3fb146c39e262c" style="width: 100.0%; height: 100.0%;"><b>Royal Jewellery Museum (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Noise / isolated<br>Top recommendation: No</div>`)[0];
+                popup_4c7967db11fbaa81be0c17809785b1e5.setContent(html_0fbf9871c089e9b26b3fb146c39e262c);
+            
+        
+
+        circle_marker_012e2f4b0a17b0abceac1cf01cbaa0f6.bindPopup(popup_4c7967db11fbaa81be0c17809785b1e5)
+        ;
+
+        
+    
+    
+            circle_marker_012e2f4b0a17b0abceac1cf01cbaa0f6.bindTooltip(
+                `<div>
+                     Royal Jewellery Museum (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9a1a29ca4373976a1f8084110bfad12e = L.circleMarker(
+                [25.6167, 32.5333],
+                {"bubblingMouseEvents": true, "color": "#777777", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#777777", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6);
+        
+    
+        var popup_b0a26e7a804d46db5b387968e6558a3b = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_fdbf6a10c0e90a763869368881caf837 = $(`<div id="html_fdbf6a10c0e90a763869368881caf837" style="width: 100.0%; height: 100.0%;"><b>Hermonthis (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Noise / isolated<br>Top recommendation: No</div>`)[0];
+                popup_b0a26e7a804d46db5b387968e6558a3b.setContent(html_fdbf6a10c0e90a763869368881caf837);
+            
+        
+
+        circle_marker_9a1a29ca4373976a1f8084110bfad12e.bindPopup(popup_b0a26e7a804d46db5b387968e6558a3b)
+        ;
+
+        
+    
+    
+            circle_marker_9a1a29ca4373976a1f8084110bfad12e.bindTooltip(
+                `<div>
+                     Hermonthis (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7ddd0f9c600e411839127e935df9ab2e = L.circleMarker(
+                [23.96101, 32.86669],
+                {"bubblingMouseEvents": true, "color": "#111111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#777777", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 3}
+            ).addTo(feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6);
+        
+    
+        var popup_7a98bb0599f7741f9c5dcde5a268e7b9 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ccb089c0abea68e220e6f52d081cfd7f = $(`<div id="html_ccb089c0abea68e220e6f52d081cfd7f" style="width: 100.0%; height: 100.0%;"><b>New Kalabsha (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Noise / isolated<br>Top recommendation: Yes</div>`)[0];
+                popup_7a98bb0599f7741f9c5dcde5a268e7b9.setContent(html_ccb089c0abea68e220e6f52d081cfd7f);
+            
+        
+
+        circle_marker_7ddd0f9c600e411839127e935df9ab2e.bindPopup(popup_7a98bb0599f7741f9c5dcde5a268e7b9)
+        ;
+
+        
+    
+    
+            circle_marker_7ddd0f9c600e411839127e935df9ab2e.bindTooltip(
+                `<div>
+                     New Kalabsha (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_978bd59fe867e5015c41e388608dcb0c = L.circleMarker(
+                [23.96194, 32.86639],
+                {"bubblingMouseEvents": true, "color": "#777777", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#777777", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6);
+        
+    
+        var popup_9717828726062d90227d8a31a5fd416e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_78c47ccc397a32851cabbbf29a6b8f76 = $(`<div id="html_78c47ccc397a32851cabbbf29a6b8f76" style="width: 100.0%; height: 100.0%;"><b>Temple of Beit el-Wali (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Noise / isolated<br>Top recommendation: No</div>`)[0];
+                popup_9717828726062d90227d8a31a5fd416e.setContent(html_78c47ccc397a32851cabbbf29a6b8f76);
+            
+        
+
+        circle_marker_978bd59fe867e5015c41e388608dcb0c.bindPopup(popup_9717828726062d90227d8a31a5fd416e)
+        ;
+
+        
+    
+    
+            circle_marker_978bd59fe867e5015c41e388608dcb0c.bindTooltip(
+                `<div>
+                     Temple of Beit el-Wali (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_541331100485cd7a9a014f8a764b1163 = L.circleMarker(
+                [23.96153, 33.13133],
+                {"bubblingMouseEvents": true, "color": "#777777", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#777777", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6);
+        
+    
+        var popup_e40eaa8048f60b680d45c2f941991b01 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_93febf6e32ab960dcfacf8b69ff99644 = $(`<div id="html_93febf6e32ab960dcfacf8b69ff99644" style="width: 100.0%; height: 100.0%;"><b>Wadi el-Hudi (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Noise / isolated<br>Top recommendation: No</div>`)[0];
+                popup_e40eaa8048f60b680d45c2f941991b01.setContent(html_93febf6e32ab960dcfacf8b69ff99644);
+            
+        
+
+        circle_marker_541331100485cd7a9a014f8a764b1163.bindPopup(popup_e40eaa8048f60b680d45c2f941991b01)
+        ;
+
+        
+    
+    
+            circle_marker_541331100485cd7a9a014f8a764b1163.bindTooltip(
+                `<div>
+                     Wadi el-Hudi (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6.addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+        
+    
+            var feature_group_409df7500d875e9368154c5acae0c88c = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_30385809ba3eee66871d5d59d3e43c48 = L.circleMarker(
+                [30.04778, 31.23333],
+                {"bubblingMouseEvents": true, "color": "#d84141", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d84141", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_409df7500d875e9368154c5acae0c88c);
+        
+    
+        var popup_24f124329e974459c663ddda5b4532be = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b3e3d6f80012bbcafdd85a89262b6f6b = $(`<div id="html_b3e3d6f80012bbcafdd85a89262b6f6b" style="width: 100.0%; height: 100.0%;"><b>Egyptian Museum (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 0<br>Top recommendation: No</div>`)[0];
+                popup_24f124329e974459c663ddda5b4532be.setContent(html_b3e3d6f80012bbcafdd85a89262b6f6b);
+            
+        
+
+        circle_marker_30385809ba3eee66871d5d59d3e43c48.bindPopup(popup_24f124329e974459c663ddda5b4532be)
+        ;
+
+        
+    
+    
+            circle_marker_30385809ba3eee66871d5d59d3e43c48.bindTooltip(
+                `<div>
+                     Egyptian Museum (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c644dc2145f407d00b5fe693a7d0056a = L.circleMarker(
+                [30.02882, 31.24952],
+                {"bubblingMouseEvents": true, "color": "#d84141", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d84141", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_409df7500d875e9368154c5acae0c88c);
+        
+    
+        var popup_92a45dba5f2ada9d8a667e4fc0c8fb04 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_f3bc913f850f58e0ecf4e567695aa858 = $(`<div id="html_f3bc913f850f58e0ecf4e567695aa858" style="width: 100.0%; height: 100.0%;"><b>Mosque of Ibn Tulun (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 0<br>Top recommendation: No</div>`)[0];
+                popup_92a45dba5f2ada9d8a667e4fc0c8fb04.setContent(html_f3bc913f850f58e0ecf4e567695aa858);
+            
+        
+
+        circle_marker_c644dc2145f407d00b5fe693a7d0056a.bindPopup(popup_92a45dba5f2ada9d8a667e4fc0c8fb04)
+        ;
+
+        
+    
+    
+            circle_marker_c644dc2145f407d00b5fe693a7d0056a.bindTooltip(
+                `<div>
+                     Mosque of Ibn Tulun (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_39e63470aee939d3e1b375218e652741 = L.circleMarker(
+                [30.005, 31.2375],
+                {"bubblingMouseEvents": true, "color": "#d84141", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d84141", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_409df7500d875e9368154c5acae0c88c);
+        
+    
+        var popup_6a2de7bdf937a7b631b2be7355348348 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_d6adca03b3a09ab331a2553acf9e9c4b = $(`<div id="html_d6adca03b3a09ab331a2553acf9e9c4b" style="width: 100.0%; height: 100.0%;"><b>El-Fustat (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 0<br>Top recommendation: No</div>`)[0];
+                popup_6a2de7bdf937a7b631b2be7355348348.setContent(html_d6adca03b3a09ab331a2553acf9e9c4b);
+            
+        
+
+        circle_marker_39e63470aee939d3e1b375218e652741.bindPopup(popup_6a2de7bdf937a7b631b2be7355348348)
+        ;
+
+        
+    
+    
+            circle_marker_39e63470aee939d3e1b375218e652741.bindTooltip(
+                `<div>
+                     El-Fustat (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9925f278cbc859021c59135dbf1217ab = L.circleMarker(
+                [30.04573, 31.2627],
+                {"bubblingMouseEvents": true, "color": "#d84141", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d84141", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_409df7500d875e9368154c5acae0c88c);
+        
+    
+        var popup_59376446aeb54d12b0b8c8d158d8766c = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_44881503bcf595f8e3f2738a54105018 = $(`<div id="html_44881503bcf595f8e3f2738a54105018" style="width: 100.0%; height: 100.0%;"><b>al-Azhar Mosque (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 0<br>Top recommendation: No</div>`)[0];
+                popup_59376446aeb54d12b0b8c8d158d8766c.setContent(html_44881503bcf595f8e3f2738a54105018);
+            
+        
+
+        circle_marker_9925f278cbc859021c59135dbf1217ab.bindPopup(popup_59376446aeb54d12b0b8c8d158d8766c)
+        ;
+
+        
+    
+    
+            circle_marker_9925f278cbc859021c59135dbf1217ab.bindTooltip(
+                `<div>
+                     al-Azhar Mosque (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1cd7ddcbb2c9761d6ed6b813141a3b67 = L.circleMarker(
+                [30.01014, 31.23316],
+                {"bubblingMouseEvents": true, "color": "#d84141", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d84141", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_409df7500d875e9368154c5acae0c88c);
+        
+    
+        var popup_b2e45f531d389d66fc3d2cc3bf01de60 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_7bf62ab66ff78ec51f21cb56bf0b189e = $(`<div id="html_7bf62ab66ff78ec51f21cb56bf0b189e" style="width: 100.0%; height: 100.0%;"><b>Mosque of Amr ibn al-As (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 0<br>Top recommendation: No</div>`)[0];
+                popup_b2e45f531d389d66fc3d2cc3bf01de60.setContent(html_7bf62ab66ff78ec51f21cb56bf0b189e);
+            
+        
+
+        circle_marker_1cd7ddcbb2c9761d6ed6b813141a3b67.bindPopup(popup_b2e45f531d389d66fc3d2cc3bf01de60)
+        ;
+
+        
+    
+    
+            circle_marker_1cd7ddcbb2c9761d6ed6b813141a3b67.bindTooltip(
+                `<div>
+                     Mosque of Amr ibn al-As (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_92cd48ecdae6472390a0b5a362de5888 = L.circleMarker(
+                [30.02861, 31.25972],
+                {"bubblingMouseEvents": true, "color": "#d84141", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d84141", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_409df7500d875e9368154c5acae0c88c);
+        
+    
+        var popup_c359b928405e54aba546b4390dab759b = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_a8b045f17a7ff15468849f2c05e8b651 = $(`<div id="html_a8b045f17a7ff15468849f2c05e8b651" style="width: 100.0%; height: 100.0%;"><b>Muhammad Ali Mosque (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 0<br>Top recommendation: No</div>`)[0];
+                popup_c359b928405e54aba546b4390dab759b.setContent(html_a8b045f17a7ff15468849f2c05e8b651);
+            
+        
+
+        circle_marker_92cd48ecdae6472390a0b5a362de5888.bindPopup(popup_c359b928405e54aba546b4390dab759b)
+        ;
+
+        
+    
+    
+            circle_marker_92cd48ecdae6472390a0b5a362de5888.bindTooltip(
+                `<div>
+                     Muhammad Ali Mosque (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_409df7500d875e9368154c5acae0c88c.addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+        
+    
+            var feature_group_14fb17ce467dbb3c4a24262658510df8 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_060cdfd86968921fac65a983376725b2 = L.circleMarker(
+                [29.8, 31.23333],
+                {"bubblingMouseEvents": true, "color": "#d841c5", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d841c5", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_14fb17ce467dbb3c4a24262658510df8);
+        
+    
+        var popup_42393c7b0635e5be59726f67b692923f = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_97b4a3374df51a95f79cbe724f2e1b96 = $(`<div id="html_97b4a3374df51a95f79cbe724f2e1b96" style="width: 100.0%; height: 100.0%;"><b>Dahshur (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 3<br>Top recommendation: No</div>`)[0];
+                popup_42393c7b0635e5be59726f67b692923f.setContent(html_97b4a3374df51a95f79cbe724f2e1b96);
+            
+        
+
+        circle_marker_060cdfd86968921fac65a983376725b2.bindPopup(popup_42393c7b0635e5be59726f67b692923f)
+        ;
+
+        
+    
+    
+            circle_marker_060cdfd86968921fac65a983376725b2.bindTooltip(
+                `<div>
+                     Dahshur (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_82e688ee85a7a476f55bb2fd50176bfe = L.circleMarker(
+                [29.79028, 31.20917],
+                {"bubblingMouseEvents": true, "color": "#d841c5", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d841c5", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_14fb17ce467dbb3c4a24262658510df8);
+        
+    
+        var popup_e127ca4f959fe0dd7164d93d6b682a5b = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b223fa33eee1b6a7725997b6beaeaf82 = $(`<div id="html_b223fa33eee1b6a7725997b6beaeaf82" style="width: 100.0%; height: 100.0%;"><b>Bent Pyramid (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 3<br>Top recommendation: No</div>`)[0];
+                popup_e127ca4f959fe0dd7164d93d6b682a5b.setContent(html_b223fa33eee1b6a7725997b6beaeaf82);
+            
+        
+
+        circle_marker_82e688ee85a7a476f55bb2fd50176bfe.bindPopup(popup_e127ca4f959fe0dd7164d93d6b682a5b)
+        ;
+
+        
+    
+    
+            circle_marker_82e688ee85a7a476f55bb2fd50176bfe.bindTooltip(
+                `<div>
+                     Bent Pyramid (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_9ddf97432fd6ae789966f07d737b712b = L.circleMarker(
+                [29.80833, 31.20583],
+                {"bubblingMouseEvents": true, "color": "#d841c5", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d841c5", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_14fb17ce467dbb3c4a24262658510df8);
+        
+    
+        var popup_849550670f28596d5f1b9f3b077c072d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_2b5a366925ba04681b75c1155595b4ed = $(`<div id="html_2b5a366925ba04681b75c1155595b4ed" style="width: 100.0%; height: 100.0%;"><b>Red Pyramid (Cairo)</b><br>City: Cairo<br>Predicted city TCI: 73.9<br>Historical hit rate (±10 points): 85.6%<br>Cluster 3<br>Top recommendation: No</div>`)[0];
+                popup_849550670f28596d5f1b9f3b077c072d.setContent(html_2b5a366925ba04681b75c1155595b4ed);
+            
+        
+
+        circle_marker_9ddf97432fd6ae789966f07d737b712b.bindPopup(popup_849550670f28596d5f1b9f3b077c072d)
+        ;
+
+        
+    
+    
+            circle_marker_9ddf97432fd6ae789966f07d737b712b.bindTooltip(
+                `<div>
+                     Red Pyramid (Cairo)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_14fb17ce467dbb3c4a24262658510df8.addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+        
+    
+            var feature_group_3be142d31fb13b9debbfef42040dca7b = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_cc63939b88044f72aa38d8a7ab3742ab = L.circleMarker(
+                [31.20889, 29.90917],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_29dae5ab67d0a318286a0f94b739a8b5 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_11947f562e4dc096e5a9d4d8c2aa1ad7 = $(`<div id="html_11947f562e4dc096e5a9d4d8c2aa1ad7" style="width: 100.0%; height: 100.0%;"><b>Bibliotheca Alexandrina (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_29dae5ab67d0a318286a0f94b739a8b5.setContent(html_11947f562e4dc096e5a9d4d8c2aa1ad7);
+            
+        
+
+        circle_marker_cc63939b88044f72aa38d8a7ab3742ab.bindPopup(popup_29dae5ab67d0a318286a0f94b739a8b5)
+        ;
+
+        
+    
+    
+            circle_marker_cc63939b88044f72aa38d8a7ab3742ab.bindTooltip(
+                `<div>
+                     Bibliotheca Alexandrina (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_cdf9d1d6627257c0aa677bab151bfb1e = L.circleMarker(
+                [31.20561, 29.88225],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_9b242763b10e14a6e92843724ed783b6 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ac509f8a615ddc25fccafb9e7d741da4 = $(`<div id="html_ac509f8a615ddc25fccafb9e7d741da4" style="width: 100.0%; height: 100.0%;"><b>El-Mursi Abul Abbas Mosque (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_9b242763b10e14a6e92843724ed783b6.setContent(html_ac509f8a615ddc25fccafb9e7d741da4);
+            
+        
+
+        circle_marker_cdf9d1d6627257c0aa677bab151bfb1e.bindPopup(popup_9b242763b10e14a6e92843724ed783b6)
+        ;
+
+        
+    
+    
+            circle_marker_cdf9d1d6627257c0aa677bab151bfb1e.bindTooltip(
+                `<div>
+                     El-Mursi Abul Abbas Mosque (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1cf26542cc1e5b512424414eab67021b = L.circleMarker(
+                [31.18194, 29.89694],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_dd3cc8ef1dee07b44cb36c1a8408fad3 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_5e5d63f5bdd607c7ed818d413cf0e155 = $(`<div id="html_5e5d63f5bdd607c7ed818d413cf0e155" style="width: 100.0%; height: 100.0%;"><b>Serapeum of Alexandria (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_dd3cc8ef1dee07b44cb36c1a8408fad3.setContent(html_5e5d63f5bdd607c7ed818d413cf0e155);
+            
+        
+
+        circle_marker_1cf26542cc1e5b512424414eab67021b.bindPopup(popup_dd3cc8ef1dee07b44cb36c1a8408fad3)
+        ;
+
+        
+    
+    
+            circle_marker_1cf26542cc1e5b512424414eab67021b.bindTooltip(
+                `<div>
+                     Serapeum of Alexandria (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_61ce7804ee678b7a2b4128bd72d60e76 = L.circleMarker(
+                [31.1825, 29.89639],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_facd3c4211dd6f914194e181e8b43a7d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_95c4b7c50c4d8fdf25531b07dca4f2b6 = $(`<div id="html_95c4b7c50c4d8fdf25531b07dca4f2b6" style="width: 100.0%; height: 100.0%;"><b>Pompey&#x27;s Pillar (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_facd3c4211dd6f914194e181e8b43a7d.setContent(html_95c4b7c50c4d8fdf25531b07dca4f2b6);
+            
+        
+
+        circle_marker_61ce7804ee678b7a2b4128bd72d60e76.bindPopup(popup_facd3c4211dd6f914194e181e8b43a7d)
+        ;
+
+        
+    
+    
+            circle_marker_61ce7804ee678b7a2b4128bd72d60e76.bindTooltip(
+                `<div>
+                     Pompey&#x27;s Pillar (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_803300ef3817775f02afa4327186fa3e = L.circleMarker(
+                [31.18694, 29.90472],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_4f85174ca620b44be937a01bedcfeecd = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_da2e88fecbf41015a4dfe8be7c528ade = $(`<div id="html_da2e88fecbf41015a4dfe8be7c528ade" style="width: 100.0%; height: 100.0%;"><b>Catacombs of Kom el Shoqafa (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_4f85174ca620b44be937a01bedcfeecd.setContent(html_da2e88fecbf41015a4dfe8be7c528ade);
+            
+        
+
+        circle_marker_803300ef3817775f02afa4327186fa3e.bindPopup(popup_4f85174ca620b44be937a01bedcfeecd)
+        ;
+
+        
+    
+    
+            circle_marker_803300ef3817775f02afa4327186fa3e.bindTooltip(
+                `<div>
+                     Catacombs of Kom el Shoqafa (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d2d9d9ac5107e28080c981770b3ebe12 = L.circleMarker(
+                [31.21417, 29.885],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_09568037b3537c220bb867ca4fafa169 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_26b9c62b2f8c391517308be6ed8e4b36 = $(`<div id="html_26b9c62b2f8c391517308be6ed8e4b36" style="width: 100.0%; height: 100.0%;"><b>Pharos (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_09568037b3537c220bb867ca4fafa169.setContent(html_26b9c62b2f8c391517308be6ed8e4b36);
+            
+        
+
+        circle_marker_d2d9d9ac5107e28080c981770b3ebe12.bindPopup(popup_09568037b3537c220bb867ca4fafa169)
+        ;
+
+        
+    
+    
+            circle_marker_d2d9d9ac5107e28080c981770b3ebe12.bindTooltip(
+                `<div>
+                     Pharos (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_cff54c32a0196ad445e560fdcd0c3a27 = L.circleMarker(
+                [31.19829, 29.8994],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_2d82a84904b5fed53702fb0612420825 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_cbeae3ba319c60f4d1f6a1557adf77f0 = $(`<div id="html_cbeae3ba319c60f4d1f6a1557adf77f0" style="width: 100.0%; height: 100.0%;"><b>Saint Mark&#x27;s Coptic Orthodox Cathedral (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_2d82a84904b5fed53702fb0612420825.setContent(html_cbeae3ba319c60f4d1f6a1557adf77f0);
+            
+        
+
+        circle_marker_cff54c32a0196ad445e560fdcd0c3a27.bindPopup(popup_2d82a84904b5fed53702fb0612420825)
+        ;
+
+        
+    
+    
+            circle_marker_cff54c32a0196ad445e560fdcd0c3a27.bindTooltip(
+                `<div>
+                     Saint Mark&#x27;s Coptic Orthodox Cathedral (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1f2a8fb34f244bfe87092330431fb8c5 = L.circleMarker(
+                [31.2011, 29.9132],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_8ea425c7e97ee6e6ca055958a27e487e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_6788afa07fd98c090a97ef3ad5f8f225 = $(`<div id="html_6788afa07fd98c090a97ef3ad5f8f225" style="width: 100.0%; height: 100.0%;"><b>Alexandria National Museum (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_8ea425c7e97ee6e6ca055958a27e487e.setContent(html_6788afa07fd98c090a97ef3ad5f8f225);
+            
+        
+
+        circle_marker_1f2a8fb34f244bfe87092330431fb8c5.bindPopup(popup_8ea425c7e97ee6e6ca055958a27e487e)
+        ;
+
+        
+    
+    
+            circle_marker_1f2a8fb34f244bfe87092330431fb8c5.bindTooltip(
+                `<div>
+                     Alexandria National Museum (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7c5b4f58d29d9ad337082e705b866707 = L.circleMarker(
+                [31.19925, 29.90661],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_9bcfe86d14649dc16d5e5ff7a66b831d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_65a8419d73733474f96f7a85233a2b3a = $(`<div id="html_65a8419d73733474f96f7a85233a2b3a" style="width: 100.0%; height: 100.0%;"><b>Graeco-Roman Museum (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_9bcfe86d14649dc16d5e5ff7a66b831d.setContent(html_65a8419d73733474f96f7a85233a2b3a);
+            
+        
+
+        circle_marker_7c5b4f58d29d9ad337082e705b866707.bindPopup(popup_9bcfe86d14649dc16d5e5ff7a66b831d)
+        ;
+
+        
+    
+    
+            circle_marker_7c5b4f58d29d9ad337082e705b866707.bindTooltip(
+                `<div>
+                     Graeco-Roman Museum (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dba0227002c0d99b5d0e7ae3471a0e47 = L.circleMarker(
+                [31.2009, 29.8994],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_9557de196adc7bfc887aada9d3c6ff96 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_8bdb305bfc659389ea94afb908b94406 = $(`<div id="html_8bdb305bfc659389ea94afb908b94406" style="width: 100.0%; height: 100.0%;"><b>Caesareum of Alexandria (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_9557de196adc7bfc887aada9d3c6ff96.setContent(html_8bdb305bfc659389ea94afb908b94406);
+            
+        
+
+        circle_marker_dba0227002c0d99b5d0e7ae3471a0e47.bindPopup(popup_9557de196adc7bfc887aada9d3c6ff96)
+        ;
+
+        
+    
+    
+            circle_marker_dba0227002c0d99b5d0e7ae3471a0e47.bindTooltip(
+                `<div>
+                     Caesareum of Alexandria (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0920c85aa79eafab994c42349a33903a = L.circleMarker(
+                [31.19964, 29.86883],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_655a79eca82cbb2be57985106264d00f = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_edccc8a320440d3951566c400519ddd9 = $(`<div id="html_edccc8a320440d3951566c400519ddd9" style="width: 100.0%; height: 100.0%;"><b>Ras el-Tin Palace (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_655a79eca82cbb2be57985106264d00f.setContent(html_edccc8a320440d3951566c400519ddd9);
+            
+        
+
+        circle_marker_0920c85aa79eafab994c42349a33903a.bindPopup(popup_655a79eca82cbb2be57985106264d00f)
+        ;
+
+        
+    
+    
+            circle_marker_0920c85aa79eafab994c42349a33903a.bindTooltip(
+                `<div>
+                     Ras el-Tin Palace (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d2ded6abc0b7e07536628348e010d7f9 = L.circleMarker(
+                [31.20072, 29.88722],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_921a4e3b98120de47b60321ea7a6419e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_1b7be55420f8677524743e3ff0a5426d = $(`<div id="html_1b7be55420f8677524743e3ff0a5426d" style="width: 100.0%; height: 100.0%;"><b>Rhacotis (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_921a4e3b98120de47b60321ea7a6419e.setContent(html_1b7be55420f8677524743e3ff0a5426d);
+            
+        
+
+        circle_marker_d2ded6abc0b7e07536628348e010d7f9.bindPopup(popup_921a4e3b98120de47b60321ea7a6419e)
+        ;
+
+        
+    
+    
+            circle_marker_d2ded6abc0b7e07536628348e010d7f9.bindTooltip(
+                `<div>
+                     Rhacotis (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1c62b1a44784275915c4aa9c9b7c8366 = L.circleMarker(
+                [31.1953, 29.896],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_0adac8edaa2f4378728688a74a672e5e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_7460c18c8b512bdae0e46cb5d80233c5 = $(`<div id="html_7460c18c8b512bdae0e46cb5d80233c5" style="width: 100.0%; height: 100.0%;"><b>Cathedral of Evangelismos (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_0adac8edaa2f4378728688a74a672e5e.setContent(html_7460c18c8b512bdae0e46cb5d80233c5);
+            
+        
+
+        circle_marker_1c62b1a44784275915c4aa9c9b7c8366.bindPopup(popup_0adac8edaa2f4378728688a74a672e5e)
+        ;
+
+        
+    
+    
+            circle_marker_1c62b1a44784275915c4aa9c9b7c8366.bindTooltip(
+                `<div>
+                     Cathedral of Evangelismos (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_529993b05bf62d2e52d7d3ba9b6db68c = L.circleMarker(
+                [31.20154, 29.90135],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_e6b7ccbff778082ff50e36dc1f480b8d = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_8b21cce8e54206248f4f0385f4a43c60 = $(`<div id="html_8b21cce8e54206248f4f0385f4a43c60" style="width: 100.0%; height: 100.0%;"><b>Mahatet El Raml (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_e6b7ccbff778082ff50e36dc1f480b8d.setContent(html_8b21cce8e54206248f4f0385f4a43c60);
+            
+        
+
+        circle_marker_529993b05bf62d2e52d7d3ba9b6db68c.bindPopup(popup_e6b7ccbff778082ff50e36dc1f480b8d)
+        ;
+
+        
+    
+    
+            circle_marker_529993b05bf62d2e52d7d3ba9b6db68c.bindTooltip(
+                `<div>
+                     Mahatet El Raml (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_612eec83b0717917ac1f5f693173567a = L.circleMarker(
+                [31.19761, 29.90123],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_f4ad1f3397c4ef3d8188731da3eb3140 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_bd3b46feccf06e909a49335d7258314d = $(`<div id="html_bd3b46feccf06e909a49335d7258314d" style="width: 100.0%; height: 100.0%;"><b>Cavafy Museum (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_f4ad1f3397c4ef3d8188731da3eb3140.setContent(html_bd3b46feccf06e909a49335d7258314d);
+            
+        
+
+        circle_marker_612eec83b0717917ac1f5f693173567a.bindPopup(popup_f4ad1f3397c4ef3d8188731da3eb3140)
+        ;
+
+        
+    
+    
+            circle_marker_612eec83b0717917ac1f5f693173567a.bindTooltip(
+                `<div>
+                     Cavafy Museum (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c5f32e5f340a54fc255818dd270e8d6f = L.circleMarker(
+                [31.19509, 29.9135],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_e10e2eaa5f3b9735dc435d02785aaf8a = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ca7ae1ef02b52bbd8b04438722d79984 = $(`<div id="html_ca7ae1ef02b52bbd8b04438722d79984" style="width: 100.0%; height: 100.0%;"><b>Museum of Fine Arts (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_e10e2eaa5f3b9735dc435d02785aaf8a.setContent(html_ca7ae1ef02b52bbd8b04438722d79984);
+            
+        
+
+        circle_marker_c5f32e5f340a54fc255818dd270e8d6f.bindPopup(popup_e10e2eaa5f3b9735dc435d02785aaf8a)
+        ;
+
+        
+    
+    
+            circle_marker_c5f32e5f340a54fc255818dd270e8d6f.bindTooltip(
+                `<div>
+                     Museum of Fine Arts (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_568afef3585d85adebf55b8cbf0e3bed = L.circleMarker(
+                [31.20214, 29.87404],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_27687192eadc40e94e943749904ed792 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_e6a88c611b89002647e4fb5d63908ef7 = $(`<div id="html_e6a88c611b89002647e4fb5d63908ef7" style="width: 100.0%; height: 100.0%;"><b>Tombs of Anfouchy (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_27687192eadc40e94e943749904ed792.setContent(html_e6a88c611b89002647e4fb5d63908ef7);
+            
+        
+
+        circle_marker_568afef3585d85adebf55b8cbf0e3bed.bindPopup(popup_27687192eadc40e94e943749904ed792)
+        ;
+
+        
+    
+    
+            circle_marker_568afef3585d85adebf55b8cbf0e3bed.bindTooltip(
+                `<div>
+                     Tombs of Anfouchy (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e3039d4e03810f3d4a4f6906441df7b5 = L.circleMarker(
+                [31.19516, 29.90425],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_768923979cd5edad661734f94b7381d7 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_afe82c1b435a9d4403d171b9976aca65 = $(`<div id="html_afe82c1b435a9d4403d171b9976aca65" style="width: 100.0%; height: 100.0%;"><b>Kom el Deka (Roman stairs) (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_768923979cd5edad661734f94b7381d7.setContent(html_afe82c1b435a9d4403d171b9976aca65);
+            
+        
+
+        circle_marker_e3039d4e03810f3d4a4f6906441df7b5.bindPopup(popup_768923979cd5edad661734f94b7381d7)
+        ;
+
+        
+    
+    
+            circle_marker_e3039d4e03810f3d4a4f6906441df7b5.bindTooltip(
+                `<div>
+                     Kom el Deka (Roman stairs) (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_1c86ea3fd9acb56a4d0b38bc6d0e708c = L.circleMarker(
+                [31.20897, 29.90814],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_7fe4b057831533d0156a1283bd6178db = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ab7243b6c92c33e65a0cfc13ffbee9aa = $(`<div id="html_ab7243b6c92c33e65a0cfc13ffbee9aa" style="width: 100.0%; height: 100.0%;"><b>Planetarium Science Center (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_7fe4b057831533d0156a1283bd6178db.setContent(html_ab7243b6c92c33e65a0cfc13ffbee9aa);
+            
+        
+
+        circle_marker_1c86ea3fd9acb56a4d0b38bc6d0e708c.bindPopup(popup_7fe4b057831533d0156a1283bd6178db)
+        ;
+
+        
+    
+    
+            circle_marker_1c86ea3fd9acb56a4d0b38bc6d0e708c.bindTooltip(
+                `<div>
+                     Planetarium Science Center (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_6b71a1936bb316cb5309efae62e2a199 = L.circleMarker(
+                [31.21138, 29.91698],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_e46a95d9b9d32941c194117a7355c647 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_6de9d5b333c59ec632de7b9657644643 = $(`<div id="html_6de9d5b333c59ec632de7b9657644643" style="width: 100.0%; height: 100.0%;"><b>Chatby Necropolis (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_e46a95d9b9d32941c194117a7355c647.setContent(html_6de9d5b333c59ec632de7b9657644643);
+            
+        
+
+        circle_marker_6b71a1936bb316cb5309efae62e2a199.bindPopup(popup_e46a95d9b9d32941c194117a7355c647)
+        ;
+
+        
+    
+    
+            circle_marker_6b71a1936bb316cb5309efae62e2a199.bindTooltip(
+                `<div>
+                     Chatby Necropolis (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_aad0b54bec23e306feb10ccadc5ce4a0 = L.circleMarker(
+                [31.2026, 29.91387],
+                {"bubblingMouseEvents": true, "color": "#41d8bf", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#41d8bf", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_3be142d31fb13b9debbfef42040dca7b);
+        
+    
+        var popup_a8c1bc4d3e10ef4b7b41d6e867834444 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_753d40af7e2749b4f8b0ef8832756769 = $(`<div id="html_753d40af7e2749b4f8b0ef8832756769" style="width: 100.0%; height: 100.0%;"><b>Ancient Town Wall of Alexandria (Alexandria)</b><br>City: Alexandria<br>Predicted city TCI: 62.3<br>Historical hit rate (±10 points): 85.6%<br>Cluster 4<br>Top recommendation: No</div>`)[0];
+                popup_a8c1bc4d3e10ef4b7b41d6e867834444.setContent(html_753d40af7e2749b4f8b0ef8832756769);
+            
+        
+
+        circle_marker_aad0b54bec23e306feb10ccadc5ce4a0.bindPopup(popup_a8c1bc4d3e10ef4b7b41d6e867834444)
+        ;
+
+        
+    
+    
+            circle_marker_aad0b54bec23e306feb10ccadc5ce4a0.bindTooltip(
+                `<div>
+                     Ancient Town Wall of Alexandria (Alexandria)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_3be142d31fb13b9debbfef42040dca7b.addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+        
+    
+            var feature_group_4e81b7e209db8fb7281caa2d3a7f2340 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_53b8e677825e80731b3b3543386bf38e = L.circleMarker(
+                [25.74025, 32.60236],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_5095bb8aca6052e3c9882321f0c79955 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ac6f65d1fd5e803c7b33b7f40215c649 = $(`<div id="html_ac6f65d1fd5e803c7b33b7f40215c649" style="width: 100.0%; height: 100.0%;"><b>Valley of the Kings (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_5095bb8aca6052e3c9882321f0c79955.setContent(html_ac6f65d1fd5e803c7b33b7f40215c649);
+            
+        
+
+        circle_marker_53b8e677825e80731b3b3543386bf38e.bindPopup(popup_5095bb8aca6052e3c9882321f0c79955)
+        ;
+
+        
+    
+    
+            circle_marker_53b8e677825e80731b3b3543386bf38e.bindTooltip(
+                `<div>
+                     Valley of the Kings (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_25f74e09c105448dab04ec85bf808184 = L.circleMarker(
+                [25.72056, 32.61028],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_df3ce3e52735a40def4b1fbee3997608 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_0e0e7357d963c3d9c25234fff91a3285 = $(`<div id="html_0e0e7357d963c3d9c25234fff91a3285" style="width: 100.0%; height: 100.0%;"><b>Thebes (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_df3ce3e52735a40def4b1fbee3997608.setContent(html_0e0e7357d963c3d9c25234fff91a3285);
+            
+        
+
+        circle_marker_25f74e09c105448dab04ec85bf808184.bindPopup(popup_df3ce3e52735a40def4b1fbee3997608)
+        ;
+
+        
+    
+    
+            circle_marker_25f74e09c105448dab04ec85bf808184.bindTooltip(
+                `<div>
+                     Thebes (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_e8c69b4b2647e89c618e9e488120898a = L.circleMarker(
+                [25.71833, 32.65833],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_03fe41c8cf1ca86f8144b09a84718f46 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_aa0ad2957071e0aff7482003554b4893 = $(`<div id="html_aa0ad2957071e0aff7482003554b4893" style="width: 100.0%; height: 100.0%;"><b>Karnak Temple Complex (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_03fe41c8cf1ca86f8144b09a84718f46.setContent(html_aa0ad2957071e0aff7482003554b4893);
+            
+        
+
+        circle_marker_e8c69b4b2647e89c618e9e488120898a.bindPopup(popup_03fe41c8cf1ca86f8144b09a84718f46)
+        ;
+
+        
+    
+    
+            circle_marker_e8c69b4b2647e89c618e9e488120898a.bindTooltip(
+                `<div>
+                     Karnak Temple Complex (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_aa16c55488e7a88065ab18915ef04566 = L.circleMarker(
+                [25.7, 32.63917],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_640f1f58af54ed6f5050d88b40f50aad = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_7fcced9b97c861f345e149b4afa66d75 = $(`<div id="html_7fcced9b97c861f345e149b4afa66d75" style="width: 100.0%; height: 100.0%;"><b>Luxor Temple (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_640f1f58af54ed6f5050d88b40f50aad.setContent(html_7fcced9b97c861f345e149b4afa66d75);
+            
+        
+
+        circle_marker_aa16c55488e7a88065ab18915ef04566.bindPopup(popup_640f1f58af54ed6f5050d88b40f50aad)
+        ;
+
+        
+    
+    
+            circle_marker_aa16c55488e7a88065ab18915ef04566.bindTooltip(
+                `<div>
+                     Luxor Temple (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_93574231e7c76501211743954539ad76 = L.circleMarker(
+                [25.7275, 32.59306],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_23696bc158640c85bbae6ab223c5f101 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_8e9d721ec9a9e90d3dfadf31488f58cd = $(`<div id="html_8e9d721ec9a9e90d3dfadf31488f58cd" style="width: 100.0%; height: 100.0%;"><b>Valley of the Queens (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_23696bc158640c85bbae6ab223c5f101.setContent(html_8e9d721ec9a9e90d3dfadf31488f58cd);
+            
+        
+
+        circle_marker_93574231e7c76501211743954539ad76.bindPopup(popup_23696bc158640c85bbae6ab223c5f101)
+        ;
+
+        
+    
+    
+            circle_marker_93574231e7c76501211743954539ad76.bindTooltip(
+                `<div>
+                     Valley of the Queens (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_da3d418f38bbb895872e2b02fa28eea5 = L.circleMarker(
+                [25.74036, 32.60144],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_cf55df58e79a2c0a84a5dee72a8de0cb = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_e73da821c529cd8a5ff25ff9b67911f6 = $(`<div id="html_e73da821c529cd8a5ff25ff9b67911f6" style="width: 100.0%; height: 100.0%;"><b>tomb of Tutankhamun (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_cf55df58e79a2c0a84a5dee72a8de0cb.setContent(html_e73da821c529cd8a5ff25ff9b67911f6);
+            
+        
+
+        circle_marker_da3d418f38bbb895872e2b02fa28eea5.bindPopup(popup_cf55df58e79a2c0a84a5dee72a8de0cb)
+        ;
+
+        
+    
+    
+            circle_marker_da3d418f38bbb895872e2b02fa28eea5.bindTooltip(
+                `<div>
+                     tomb of Tutankhamun (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_af05cfcbdf4ab4752f690d0b61440395 = L.circleMarker(
+                [25.7375, 32.6075],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_c4ad2c6836ecafc36bf9920f2c982d5a = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_38bf1b4c9902ce779f82c0748db7eaf2 = $(`<div id="html_38bf1b4c9902ce779f82c0748db7eaf2" style="width: 100.0%; height: 100.0%;"><b>Deir el-Bahari (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_c4ad2c6836ecafc36bf9920f2c982d5a.setContent(html_38bf1b4c9902ce779f82c0748db7eaf2);
+            
+        
+
+        circle_marker_af05cfcbdf4ab4752f690d0b61440395.bindPopup(popup_c4ad2c6836ecafc36bf9920f2c982d5a)
+        ;
+
+        
+    
+    
+            circle_marker_af05cfcbdf4ab4752f690d0b61440395.bindTooltip(
+                `<div>
+                     Deir el-Bahari (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_dbd5f42f17161b6fe6a315bd0b988619 = L.circleMarker(
+                [25.72056, 32.61056],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_5b161f6e0b8ca3ae5b8c11bb4caa8b28 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_7cde147bdd8784c359bba3fe62d27699 = $(`<div id="html_7cde147bdd8784c359bba3fe62d27699" style="width: 100.0%; height: 100.0%;"><b>Colossi of Memnon (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_5b161f6e0b8ca3ae5b8c11bb4caa8b28.setContent(html_7cde147bdd8784c359bba3fe62d27699);
+            
+        
+
+        circle_marker_dbd5f42f17161b6fe6a315bd0b988619.bindPopup(popup_5b161f6e0b8ca3ae5b8c11bb4caa8b28)
+        ;
+
+        
+    
+    
+            circle_marker_dbd5f42f17161b6fe6a315bd0b988619.bindTooltip(
+                `<div>
+                     Colossi of Memnon (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_8fbdfb7492b893c65bcc6059a0a46e31 = L.circleMarker(
+                [25.73333, 32.6],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_72316644575b2922672fb92d9c25a282 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_6cdd18a7a3eb40f2b5488d660e80a1c3 = $(`<div id="html_6cdd18a7a3eb40f2b5488d660e80a1c3" style="width: 100.0%; height: 100.0%;"><b>Theban Necropolis (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_72316644575b2922672fb92d9c25a282.setContent(html_6cdd18a7a3eb40f2b5488d660e80a1c3);
+            
+        
+
+        circle_marker_8fbdfb7492b893c65bcc6059a0a46e31.bindPopup(popup_72316644575b2922672fb92d9c25a282)
+        ;
+
+        
+    
+    
+            circle_marker_8fbdfb7492b893c65bcc6059a0a46e31.bindTooltip(
+                `<div>
+                     Theban Necropolis (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_199757ae02c4d55a9fefd8117022544c = L.circleMarker(
+                [25.72778, 32.61056],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_8d7ed8982ab899ccbc4d714a075e6f08 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_3bbcd21c3afdcbd9e92b2b8f1f9c1a4f = $(`<div id="html_3bbcd21c3afdcbd9e92b2b8f1f9c1a4f" style="width: 100.0%; height: 100.0%;"><b>Ramesseum (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_8d7ed8982ab899ccbc4d714a075e6f08.setContent(html_3bbcd21c3afdcbd9e92b2b8f1f9c1a4f);
+            
+        
+
+        circle_marker_199757ae02c4d55a9fefd8117022544c.bindPopup(popup_8d7ed8982ab899ccbc4d714a075e6f08)
+        ;
+
+        
+    
+    
+            circle_marker_199757ae02c4d55a9fefd8117022544c.bindTooltip(
+                `<div>
+                     Ramesseum (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d4f3edb8de6052082b684c785004cdb0 = L.circleMarker(
+                [25.72833, 32.60139],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_972f3e56cbd3770168650957a6fbf981 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_db0fb0ac9570e063ee1e7645a5cbe7c9 = $(`<div id="html_db0fb0ac9570e063ee1e7645a5cbe7c9" style="width: 100.0%; height: 100.0%;"><b>Deir el-Medina (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_972f3e56cbd3770168650957a6fbf981.setContent(html_db0fb0ac9570e063ee1e7645a5cbe7c9);
+            
+        
+
+        circle_marker_d4f3edb8de6052082b684c785004cdb0.bindPopup(popup_972f3e56cbd3770168650957a6fbf981)
+        ;
+
+        
+    
+    
+            circle_marker_d4f3edb8de6052082b684c785004cdb0.bindTooltip(
+                `<div>
+                     Deir el-Medina (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_69273795e9149e71d02a68481d75642b = L.circleMarker(
+                [25.72, 32.61],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_e79d0438acb87017e9263e652a9df5b5 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_d8974f0a03f3acbd6db2efb957b0ba78 = $(`<div id="html_d8974f0a03f3acbd6db2efb957b0ba78" style="width: 100.0%; height: 100.0%;"><b>Merneptah Stele (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_e79d0438acb87017e9263e652a9df5b5.setContent(html_d8974f0a03f3acbd6db2efb957b0ba78);
+            
+        
+
+        circle_marker_69273795e9149e71d02a68481d75642b.bindPopup(popup_e79d0438acb87017e9263e652a9df5b5)
+        ;
+
+        
+    
+    
+            circle_marker_69273795e9149e71d02a68481d75642b.bindTooltip(
+                `<div>
+                     Merneptah Stele (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_fc9d9ee7b8e93436f885c2cdb370b84d = L.circleMarker(
+                [25.73806, 32.60694],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_8b63a1fb98fa5c75fb5780e082504d01 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_24c683f63277cbea25ecfb2e8a0d21e6 = $(`<div id="html_24c683f63277cbea25ecfb2e8a0d21e6" style="width: 100.0%; height: 100.0%;"><b>mortuary temple of Hatshepsut (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_8b63a1fb98fa5c75fb5780e082504d01.setContent(html_24c683f63277cbea25ecfb2e8a0d21e6);
+            
+        
+
+        circle_marker_fc9d9ee7b8e93436f885c2cdb370b84d.bindPopup(popup_8b63a1fb98fa5c75fb5780e082504d01)
+        ;
+
+        
+    
+    
+            circle_marker_fc9d9ee7b8e93436f885c2cdb370b84d.bindTooltip(
+                `<div>
+                     mortuary temple of Hatshepsut (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c0f7119bae5fc87fbf809c28d3b20997 = L.circleMarker(
+                [25.7425, 32.60194],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_1f8d2d9173dd361cd628e27f796dfb2e = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_919290c9068c638909a57735fb9c5609 = $(`<div id="html_919290c9068c638909a57735fb9c5609" style="width: 100.0%; height: 100.0%;"><b>KV1 (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_1f8d2d9173dd361cd628e27f796dfb2e.setContent(html_919290c9068c638909a57735fb9c5609);
+            
+        
+
+        circle_marker_c0f7119bae5fc87fbf809c28d3b20997.bindPopup(popup_1f8d2d9173dd361cd628e27f796dfb2e)
+        ;
+
+        
+    
+    
+            circle_marker_c0f7119bae5fc87fbf809c28d3b20997.bindTooltip(
+                `<div>
+                     KV1 (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0e7839632dd833926c1827bf63789eb0 = L.circleMarker(
+                [25.74071, 32.60206],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_1cffde4ad07a76ac95fcce950a8affc9 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_e2743319652e9bd2ec0a2efe6f873973 = $(`<div id="html_e2743319652e9bd2ec0a2efe6f873973" style="width: 100.0%; height: 100.0%;"><b>KV5 (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_1cffde4ad07a76ac95fcce950a8affc9.setContent(html_e2743319652e9bd2ec0a2efe6f873973);
+            
+        
+
+        circle_marker_0e7839632dd833926c1827bf63789eb0.bindPopup(popup_1cffde4ad07a76ac95fcce950a8affc9)
+        ;
+
+        
+    
+    
+            circle_marker_0e7839632dd833926c1827bf63789eb0.bindTooltip(
+                `<div>
+                     KV5 (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_79b7b37a6cd38cf02b06c81528ea9dfb = L.circleMarker(
+                [25.74083, 32.60111],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_812b4b6fd757c37886165276df6fbceb = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_39e406469ad42c3f6680a4fb40cf0a83 = $(`<div id="html_39e406469ad42c3f6680a4fb40cf0a83" style="width: 100.0%; height: 100.0%;"><b>KV8 (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_812b4b6fd757c37886165276df6fbceb.setContent(html_39e406469ad42c3f6680a4fb40cf0a83);
+            
+        
+
+        circle_marker_79b7b37a6cd38cf02b06c81528ea9dfb.bindPopup(popup_812b4b6fd757c37886165276df6fbceb)
+        ;
+
+        
+    
+    
+            circle_marker_79b7b37a6cd38cf02b06c81528ea9dfb.bindTooltip(
+                `<div>
+                     KV8 (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ef8c706e00ea588e8df5a68c612809a8 = L.circleMarker(
+                [25.72, 32.60083],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_e10da9dc7690155e7ab7d0264bde045c = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_7aa4ce36b58bcd194091168ee9f0807f = $(`<div id="html_7aa4ce36b58bcd194091168ee9f0807f" style="width: 100.0%; height: 100.0%;"><b>Medinet Habu (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_e10da9dc7690155e7ab7d0264bde045c.setContent(html_7aa4ce36b58bcd194091168ee9f0807f);
+            
+        
+
+        circle_marker_ef8c706e00ea588e8df5a68c612809a8.bindPopup(popup_e10da9dc7690155e7ab7d0264bde045c)
+        ;
+
+        
+    
+    
+            circle_marker_ef8c706e00ea588e8df5a68c612809a8.bindTooltip(
+                `<div>
+                     Medinet Habu (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_b2a84e9ce40449b688e2983e655f0289 = L.circleMarker(
+                [25.74105, 32.60269],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_9dc2c264a255d5d06c0cdbeeef68eb12 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_330cb7e9df4e9361af24f8ec337bce1a = $(`<div id="html_330cb7e9df4e9361af24f8ec337bce1a" style="width: 100.0%; height: 100.0%;"><b>KV3 (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_9dc2c264a255d5d06c0cdbeeef68eb12.setContent(html_330cb7e9df4e9361af24f8ec337bce1a);
+            
+        
+
+        circle_marker_b2a84e9ce40449b688e2983e655f0289.bindPopup(popup_9dc2c264a255d5d06c0cdbeeef68eb12)
+        ;
+
+        
+    
+    
+            circle_marker_b2a84e9ce40449b688e2983e655f0289.bindTooltip(
+                `<div>
+                     KV3 (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bce51f5eb79d4dc3052fad6fd51bbc28 = L.circleMarker(
+                [25.75, 32.6143],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_2401f5c0c04edfec0f38b413ff5d02d8 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_d44eb22b65140c7e69ec1e6192672842 = $(`<div id="html_d44eb22b65140c7e69ec1e6192672842" style="width: 100.0%; height: 100.0%;"><b>KV17 (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_2401f5c0c04edfec0f38b413ff5d02d8.setContent(html_d44eb22b65140c7e69ec1e6192672842);
+            
+        
+
+        circle_marker_bce51f5eb79d4dc3052fad6fd51bbc28.bindPopup(popup_2401f5c0c04edfec0f38b413ff5d02d8)
+        ;
+
+        
+    
+    
+            circle_marker_bce51f5eb79d4dc3052fad6fd51bbc28.bindTooltip(
+                `<div>
+                     KV17 (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_05c77393db6ce1c475b90e305655c79b = L.circleMarker(
+                [25.70772, 32.64449],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_260f47ca6a82a50a9c6ba8d2a4453f76 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_8aa4a8d2a30fbf2240ef714c2ee8f1f3 = $(`<div id="html_8aa4a8d2a30fbf2240ef714c2ee8f1f3" style="width: 100.0%; height: 100.0%;"><b>Luxor Museum (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_260f47ca6a82a50a9c6ba8d2a4453f76.setContent(html_8aa4a8d2a30fbf2240ef714c2ee8f1f3);
+            
+        
+
+        circle_marker_05c77393db6ce1c475b90e305655c79b.bindPopup(popup_260f47ca6a82a50a9c6ba8d2a4453f76)
+        ;
+
+        
+    
+    
+            circle_marker_05c77393db6ce1c475b90e305655c79b.bindTooltip(
+                `<div>
+                     Luxor Museum (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_3fda4d188c5818b6f89138fdf8df6093 = L.circleMarker(
+                [25.73278, 32.62806],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_61830fa852acfa70f3cb2ba5073834c9 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_8500e126d20fbe0fd959ae86abbda8dc = $(`<div id="html_8500e126d20fbe0fd959ae86abbda8dc" style="width: 100.0%; height: 100.0%;"><b>Mortuary Temple of Seti I (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_61830fa852acfa70f3cb2ba5073834c9.setContent(html_8500e126d20fbe0fd959ae86abbda8dc);
+            
+        
+
+        circle_marker_3fda4d188c5818b6f89138fdf8df6093.bindPopup(popup_61830fa852acfa70f3cb2ba5073834c9)
+        ;
+
+        
+    
+    
+            circle_marker_3fda4d188c5818b6f89138fdf8df6093.bindTooltip(
+                `<div>
+                     Mortuary Temple of Seti I (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c2c320bbc2e1a75669ac1d35b9be99ed = L.circleMarker(
+                [25.71528, 32.59111],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_1d2a6dcc086a705acd021cf8f2b0cb55 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_de3dbc8a35292bb7db723fb3d370e59b = $(`<div id="html_de3dbc8a35292bb7db723fb3d370e59b" style="width: 100.0%; height: 100.0%;"><b>Malkata (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_1d2a6dcc086a705acd021cf8f2b0cb55.setContent(html_de3dbc8a35292bb7db723fb3d370e59b);
+            
+        
+
+        circle_marker_c2c320bbc2e1a75669ac1d35b9be99ed.bindPopup(popup_1d2a6dcc086a705acd021cf8f2b0cb55)
+        ;
+
+        
+    
+    
+            circle_marker_c2c320bbc2e1a75669ac1d35b9be99ed.bindTooltip(
+                `<div>
+                     Malkata (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_d0a8bc9bc45b13c2121f0bc6f747c1cf = L.circleMarker(
+                [25.73528, 32.62056],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_bd01e1ddca62d3fd628be9374be195a7 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_f54bae110e2ccf03236256220ae1c852 = $(`<div id="html_f54bae110e2ccf03236256220ae1c852" style="width: 100.0%; height: 100.0%;"><b>Dra&#x27; Abu el-Naga (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_bd01e1ddca62d3fd628be9374be195a7.setContent(html_f54bae110e2ccf03236256220ae1c852);
+            
+        
+
+        circle_marker_d0a8bc9bc45b13c2121f0bc6f747c1cf.bindPopup(popup_bd01e1ddca62d3fd628be9374be195a7)
+        ;
+
+        
+    
+    
+            circle_marker_d0a8bc9bc45b13c2121f0bc6f747c1cf.bindTooltip(
+                `<div>
+                     Dra&#x27; Abu el-Naga (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_bc21d075e903413f5aa03ef1ae85fa3e = L.circleMarker(
+                [25.73806, 32.60083],
+                {"bubblingMouseEvents": true, "color": "#d89341", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#d89341", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_4e81b7e209db8fb7281caa2d3a7f2340);
+        
+    
+        var popup_cf27ca44a53521414fcfe156d4ebccec = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_4523043ef419e5034d4a9d1e6191e9a6 = $(`<div id="html_4523043ef419e5034d4a9d1e6191e9a6" style="width: 100.0%; height: 100.0%;"><b>KV33 (Luxor)</b><br>City: Luxor<br>Predicted city TCI: 79.2<br>Historical hit rate (±10 points): 85.6%<br>Cluster 5<br>Top recommendation: No</div>`)[0];
+                popup_cf27ca44a53521414fcfe156d4ebccec.setContent(html_4523043ef419e5034d4a9d1e6191e9a6);
+            
+        
+
+        circle_marker_bc21d075e903413f5aa03ef1ae85fa3e.bindPopup(popup_cf27ca44a53521414fcfe156d4ebccec)
+        ;
+
+        
+    
+    
+            circle_marker_bc21d075e903413f5aa03ef1ae85fa3e.bindTooltip(
+                `<div>
+                     KV33 (Luxor)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_4e81b7e209db8fb7281caa2d3a7f2340.addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+        
+    
+            var feature_group_613d6fd150e2091cf1712772788f94b6 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_37afd9b1c58dd1e4470ab5be8b15be54 = L.circleMarker(
+                [24.06, 32.87111],
+                {"bubblingMouseEvents": true, "color": "#111111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 3}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_dc7a769fd1655afc4a608bbeb4fd8e82 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ec1744385e0ea530d9416e1901c5ea07 = $(`<div id="html_ec1744385e0ea530d9416e1901c5ea07" style="width: 100.0%; height: 100.0%;"><b>Sehel Island (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: Yes</div>`)[0];
+                popup_dc7a769fd1655afc4a608bbeb4fd8e82.setContent(html_ec1744385e0ea530d9416e1901c5ea07);
+            
+        
+
+        circle_marker_37afd9b1c58dd1e4470ab5be8b15be54.bindPopup(popup_dc7a769fd1655afc4a608bbeb4fd8e82)
+        ;
+
+        
+    
+    
+            circle_marker_37afd9b1c58dd1e4470ab5be8b15be54.bindTooltip(
+                `<div>
+                     Sehel Island (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ad70af24d312d65d8bd763aa73bae8c9 = L.circleMarker(
+                [24.05751, 32.874],
+                {"bubblingMouseEvents": true, "color": "#111111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 3}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_725906165886ac1bbfde56fd88353bf7 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_cf27f87a6531a44fee919ee3989b2c02 = $(`<div id="html_cf27f87a6531a44fee919ee3989b2c02" style="width: 100.0%; height: 100.0%;"><b>Famine Stela (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: Yes</div>`)[0];
+                popup_725906165886ac1bbfde56fd88353bf7.setContent(html_cf27f87a6531a44fee919ee3989b2c02);
+            
+        
+
+        circle_marker_ad70af24d312d65d8bd763aa73bae8c9.bindPopup(popup_725906165886ac1bbfde56fd88353bf7)
+        ;
+
+        
+    
+    
+            circle_marker_ad70af24d312d65d8bd763aa73bae8c9.bindTooltip(
+                `<div>
+                     Famine Stela (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_fa6bdbff4f78fa9dc04bb78b00f6b5d9 = L.circleMarker(
+                [24.07689, 32.89544],
+                {"bubblingMouseEvents": true, "color": "#111111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 3}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_6c7874b140a7f4ca58725745b36cefab = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_8d81d31e6330a7a2bbc020e5300c28fe = $(`<div id="html_8d81d31e6330a7a2bbc020e5300c28fe" style="width: 100.0%; height: 100.0%;"><b>unfinished obelisk (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: Yes</div>`)[0];
+                popup_6c7874b140a7f4ca58725745b36cefab.setContent(html_8d81d31e6330a7a2bbc020e5300c28fe);
+            
+        
+
+        circle_marker_fa6bdbff4f78fa9dc04bb78b00f6b5d9.bindPopup(popup_6c7874b140a7f4ca58725745b36cefab)
+        ;
+
+        
+    
+    
+            circle_marker_fa6bdbff4f78fa9dc04bb78b00f6b5d9.bindTooltip(
+                `<div>
+                     unfinished obelisk (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_4a5e48651ab67aa8779d8b893f7e3084 = L.circleMarker(
+                [24.02576, 32.8842],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_07e499f01d2b3b3145b5465f0783e51f = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_ec2bd25a40d62fe4aa0d70898701b6c6 = $(`<div id="html_ec2bd25a40d62fe4aa0d70898701b6c6" style="width: 100.0%; height: 100.0%;"><b>Temple of Isis in Philae (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_07e499f01d2b3b3145b5465f0783e51f.setContent(html_ec2bd25a40d62fe4aa0d70898701b6c6);
+            
+        
+
+        circle_marker_4a5e48651ab67aa8779d8b893f7e3084.bindPopup(popup_07e499f01d2b3b3145b5465f0783e51f)
+        ;
+
+        
+    
+    
+            circle_marker_4a5e48651ab67aa8779d8b893f7e3084.bindTooltip(
+                `<div>
+                     Temple of Isis in Philae (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_65b6a1c9b8b842f314ea0c6f2e9a52a9 = L.circleMarker(
+                [24.02521, 32.88427],
+                {"bubblingMouseEvents": true, "color": "#111111", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 8, "stroke": true, "weight": 3}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_2f8200e3fbe9fd974e190ba9000c3abe = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_2574a306e19ffaa1a7c3f36c33f2ff8f = $(`<div id="html_2574a306e19ffaa1a7c3f36c33f2ff8f" style="width: 100.0%; height: 100.0%;"><b>Agilkia island (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: Yes</div>`)[0];
+                popup_2f8200e3fbe9fd974e190ba9000c3abe.setContent(html_2574a306e19ffaa1a7c3f36c33f2ff8f);
+            
+        
+
+        circle_marker_65b6a1c9b8b842f314ea0c6f2e9a52a9.bindPopup(popup_2f8200e3fbe9fd974e190ba9000c3abe)
+        ;
+
+        
+    
+    
+            circle_marker_65b6a1c9b8b842f314ea0c6f2e9a52a9.bindTooltip(
+                `<div>
+                     Agilkia island (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_ddb797dcd6c579d0a49072b978bbc4d9 = L.circleMarker(
+                [24.103, 32.8903],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_ffc3d6b3ad94f758735a633e2d7efd2a = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_856a2ac605f067c003ae06a5eafae4fc = $(`<div id="html_856a2ac605f067c003ae06a5eafae4fc" style="width: 100.0%; height: 100.0%;"><b>Qubbet el-Hawa (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_ffc3d6b3ad94f758735a633e2d7efd2a.setContent(html_856a2ac605f067c003ae06a5eafae4fc);
+            
+        
+
+        circle_marker_ddb797dcd6c579d0a49072b978bbc4d9.bindPopup(popup_ffc3d6b3ad94f758735a633e2d7efd2a)
+        ;
+
+        
+    
+    
+            circle_marker_ddb797dcd6c579d0a49072b978bbc4d9.bindTooltip(
+                `<div>
+                     Qubbet el-Hawa (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_7f511d9c0ae9ed6b6c40bfd310a8a2ef = L.circleMarker(
+                [24.0251, 32.8846],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_e5f35f2c64c692581a2ca4a92c46bf18 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_5194859384aa531ead5c402e76de1508 = $(`<div id="html_5194859384aa531ead5c402e76de1508" style="width: 100.0%; height: 100.0%;"><b>Trajan&#x27;s Kiosk (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_e5f35f2c64c692581a2ca4a92c46bf18.setContent(html_5194859384aa531ead5c402e76de1508);
+            
+        
+
+        circle_marker_7f511d9c0ae9ed6b6c40bfd310a8a2ef.bindPopup(popup_e5f35f2c64c692581a2ca4a92c46bf18)
+        ;
+
+        
+    
+    
+            circle_marker_7f511d9c0ae9ed6b6c40bfd310a8a2ef.bindTooltip(
+                `<div>
+                     Trajan&#x27;s Kiosk (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_75899a46d935ff43ed0b6bfb6fd97600 = L.circleMarker(
+                [24.07958, 32.88931],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_39317997167d6f06d29fe138e2c412b2 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_d796248ae290a13b60f8fdece4e88f39 = $(`<div id="html_d796248ae290a13b60f8fdece4e88f39" style="width: 100.0%; height: 100.0%;"><b>International Museum of Nubia (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_39317997167d6f06d29fe138e2c412b2.setContent(html_d796248ae290a13b60f8fdece4e88f39);
+            
+        
+
+        circle_marker_75899a46d935ff43ed0b6bfb6fd97600.bindPopup(popup_39317997167d6f06d29fe138e2c412b2)
+        ;
+
+        
+    
+    
+            circle_marker_75899a46d935ff43ed0b6bfb6fd97600.bindTooltip(
+                `<div>
+                     International Museum of Nubia (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2ec2eacba32eb1dfdfe3fda026d20898 = L.circleMarker(
+                [24.08828, 32.87884],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_9a53018e5d94e48df522ebf90e2120d2 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_6356274cc9b6c90afa3791f53afb5c2a = $(`<div id="html_6356274cc9b6c90afa3791f53afb5c2a" style="width: 100.0%; height: 100.0%;"><b>Agha Khan Tomb (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_9a53018e5d94e48df522ebf90e2120d2.setContent(html_6356274cc9b6c90afa3791f53afb5c2a);
+            
+        
+
+        circle_marker_2ec2eacba32eb1dfdfe3fda026d20898.bindPopup(popup_9a53018e5d94e48df522ebf90e2120d2)
+        ;
+
+        
+    
+    
+            circle_marker_2ec2eacba32eb1dfdfe3fda026d20898.bindTooltip(
+                `<div>
+                     Agha Khan Tomb (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_f54f89bd69b240501d4bc139befb7752 = L.circleMarker(
+                [24.02097, 32.88963],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_61b0a647e3fd438dc6f73eb85f2e2a05 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_11cb36872bf06fee6216b7118a73dd6d = $(`<div id="html_11cb36872bf06fee6216b7118a73dd6d" style="width: 100.0%; height: 100.0%;"><b>Philae (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_61b0a647e3fd438dc6f73eb85f2e2a05.setContent(html_11cb36872bf06fee6216b7118a73dd6d);
+            
+        
+
+        circle_marker_f54f89bd69b240501d4bc139befb7752.bindPopup(popup_61b0a647e3fd438dc6f73eb85f2e2a05)
+        ;
+
+        
+    
+    
+            circle_marker_f54f89bd69b240501d4bc139befb7752.bindTooltip(
+                `<div>
+                     Philae (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_c0e4e417be495eb3b1139dc2bcf8aefb = L.circleMarker(
+                [24.09377, 32.88703],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_7bbf1ab25f5a2fc0880e931a1417413f = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_5bacc216196562612aae980091a60aaf = $(`<div id="html_5bacc216196562612aae980091a60aaf" style="width: 100.0%; height: 100.0%;"><b>Aswan Botanical Garden (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_7bbf1ab25f5a2fc0880e931a1417413f.setContent(html_5bacc216196562612aae980091a60aaf);
+            
+        
+
+        circle_marker_c0e4e417be495eb3b1139dc2bcf8aefb.bindPopup(popup_7bbf1ab25f5a2fc0880e931a1417413f)
+        ;
+
+        
+    
+    
+            circle_marker_c0e4e417be495eb3b1139dc2bcf8aefb.bindTooltip(
+                `<div>
+                     Aswan Botanical Garden (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_37681cb077c3eb8ed76a9ff95d4d4b29 = L.circleMarker(
+                [24.09471, 32.87577],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_bf770be3c3ed1e369fefc1ff50db5198 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_607a25bad8da30aaae056d1fff68bcd1 = $(`<div id="html_607a25bad8da30aaae056d1fff68bcd1" style="width: 100.0%; height: 100.0%;"><b>Saint Simeon Monastery (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_bf770be3c3ed1e369fefc1ff50db5198.setContent(html_607a25bad8da30aaae056d1fff68bcd1);
+            
+        
+
+        circle_marker_37681cb077c3eb8ed76a9ff95d4d4b29.bindPopup(popup_bf770be3c3ed1e369fefc1ff50db5198)
+        ;
+
+        
+    
+    
+            circle_marker_37681cb077c3eb8ed76a9ff95d4d4b29.bindTooltip(
+                `<div>
+                     Saint Simeon Monastery (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_0e7ad27e92682772a2a49b901c5d82cc = L.circleMarker(
+                [24.0829, 32.89051],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_bd884a5493edd31fae231ff472eeb019 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_3234cccde26270af53572c1a88570887 = $(`<div id="html_3234cccde26270af53572c1a88570887" style="width: 100.0%; height: 100.0%;"><b>Archangel Michael Cathedral for Coptic Orthodox (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_bd884a5493edd31fae231ff472eeb019.setContent(html_3234cccde26270af53572c1a88570887);
+            
+        
+
+        circle_marker_0e7ad27e92682772a2a49b901c5d82cc.bindPopup(popup_bd884a5493edd31fae231ff472eeb019)
+        ;
+
+        
+    
+    
+            circle_marker_0e7ad27e92682772a2a49b901c5d82cc.bindTooltip(
+                `<div>
+                     Archangel Michael Cathedral for Coptic Orthodox (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_2beb3014f2a8a2236943ed7c4fb00a27 = L.circleMarker(
+                [24.08566, 32.88558],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_219ff5956975716942bfa0a93bff8428 = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_3c2c678f938f0a5ba1eaf7d79a3fcb68 = $(`<div id="html_3c2c678f938f0a5ba1eaf7d79a3fcb68" style="width: 100.0%; height: 100.0%;"><b>Pyramid of Elefantine (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_219ff5956975716942bfa0a93bff8428.setContent(html_3c2c678f938f0a5ba1eaf7d79a3fcb68);
+            
+        
+
+        circle_marker_2beb3014f2a8a2236943ed7c4fb00a27.bindPopup(popup_219ff5956975716942bfa0a93bff8428)
+        ;
+
+        
+    
+    
+            circle_marker_2beb3014f2a8a2236943ed7c4fb00a27.bindTooltip(
+                `<div>
+                     Pyramid of Elefantine (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_811aea062fcf3a4e0c92ac9479afd403 = L.circleMarker(
+                [24.08498, 32.88699],
+                {"bubblingMouseEvents": true, "color": "#6641d8", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#6641d8", "fillOpacity": 0.9, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 4, "stroke": true, "weight": 1}
+            ).addTo(feature_group_613d6fd150e2091cf1712772788f94b6);
+        
+    
+        var popup_b8569e1a59fe0c1c83ae31225c6f109a = L.popup({
+  "maxWidth": 350,
+});
+
+        
+            
+                var html_b4b6139a4b16f94aaffbbea563fb429a = $(`<div id="html_b4b6139a4b16f94aaffbbea563fb429a" style="width: 100.0%; height: 100.0%;"><b>Aswan Museum (Aswan)</b><br>City: Aswan<br>Predicted city TCI: 79.8<br>Historical hit rate (±10 points): 85.6%<br>Cluster 6<br>Top recommendation: No</div>`)[0];
+                popup_b8569e1a59fe0c1c83ae31225c6f109a.setContent(html_b4b6139a4b16f94aaffbbea563fb429a);
+            
+        
+
+        circle_marker_811aea062fcf3a4e0c92ac9479afd403.bindPopup(popup_b8569e1a59fe0c1c83ae31225c6f109a)
+        ;
+
+        
+    
+    
+            circle_marker_811aea062fcf3a4e0c92ac9479afd403.bindTooltip(
+                `<div>
+                     Aswan Museum (Aswan)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_613d6fd150e2091cf1712772788f94b6.addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+        
+    
+            var layer_control_ffc2ea51fa49c612382eb474966d74cb_layers = {
+                base_layers : {
+                    "openstreetmap" : tile_layer_f204640d36358898e246a8d3e4ad8bed,
+                },
+                overlays :  {
+                    "Cluster 1" : feature_group_d2a592aeca01b63457e2367576af40e3,
+                    "Cluster 2" : feature_group_d2ce4e85e48bdc457eb6922be1a088b2,
+                    "Noise / isolated" : feature_group_89681c9b7e4f1f0b94528fb2a1b69ba6,
+                    "Cluster 0" : feature_group_409df7500d875e9368154c5acae0c88c,
+                    "Cluster 3" : feature_group_14fb17ce467dbb3c4a24262658510df8,
+                    "Cluster 4" : feature_group_3be142d31fb13b9debbfef42040dca7b,
+                    "Cluster 5" : feature_group_4e81b7e209db8fb7281caa2d3a7f2340,
+                    "Cluster 6" : feature_group_613d6fd150e2091cf1712772788f94b6,
+                },
+            };
+            let layer_control_ffc2ea51fa49c612382eb474966d74cb = L.control.layers(
+                layer_control_ffc2ea51fa49c612382eb474966d74cb_layers.base_layers,
+                layer_control_ffc2ea51fa49c612382eb474966d74cb_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_cd4caefccb05e8d6d7ff83a2eb080e0d);
+
+        
+    
+            map_cd4caefccb05e8d6d7ff83a2eb080e0d.fitBounds(
+                [[23.96101, 29.86883], [31.3, 33.13133]],
+                {}
+            );
+        
+</script>
+</html>
