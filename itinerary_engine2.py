@@ -165,19 +165,27 @@ def build_day(city_places, day_type, used, n_stops=4):
     # fallback: not enough places of the wanted type -> fill from the other type
     short = n_stops - len(morning) - len(afternoon)
     if day_type == "indoor":
-        # bad weather: stay indoors, borrow outdoor places only to reach 2 stops (never an empty day)
-        short = max(0, min(short, min(n_stops, 2) - len(afternoon)))
+        # Do not force outdoor activities in unsuitable weather.
+        short = 0
     if short > 0:
         rest = avail[~avail["Destination Name"].isin(pd.concat([morning, afternoon])["Destination Name"])]
         extra = pick_nearby(rest, short, anchor)
         morning = pd.concat([morning, extra[extra.Category == "Outdoor"]])
         afternoon = pd.concat([afternoon, extra[extra.Category == "Indoor"]])
     parts = []
-    if len(morning):   parts.append(order_route(morning).assign(slot="morning"))
-    if len(afternoon): parts.append(order_route(afternoon).assign(slot="afternoon"))
-    if not parts:      # no places left -> empty day, but keep the 'slot' column
+    if len(morning):   parts.append(order_route(morning))
+    if len(afternoon): parts.append(order_route(afternoon))
+    if not parts:
         return avail.head(0).assign(slot=pd.Series(dtype="object"))
-    return pd.concat(parts)
+    # Indoor/outdoor is a category, not a time of day. Split the ordered
+    # stops into two balanced visit slots, including all-indoor days.
+    day = pd.concat(parts).copy()
+    if len(day)>1:
+        split=(len(day)+1)//2
+        day["slot"]=["morning"]*split+["afternoon"]*(len(day)-split)
+    else:
+        day["slot"]="morning"
+    return day
 
 
 PRIORITY = {"indoor": 0, "mixed": 1, "outdoor": 2}   # scarce indoor places go to indoor days first
