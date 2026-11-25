@@ -10,10 +10,10 @@ import numpy as np
 import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from forecast_service import predict_tci, forecast_info, catalog, history
-from tci_scoring import verify_original
-from weather_forecast import predict_weather, TARGETS
-from itinerary_engine2 import build_day
+from backend.forecast_service import predict_tci, forecast_info, catalog, history
+from backend.tci_scoring import verify_original
+from backend.weather_forecast import predict_weather, TARGETS
+from backend.itinerary_engine2 import build_day
 from web_server import app
 from fastapi.testclient import TestClient
 

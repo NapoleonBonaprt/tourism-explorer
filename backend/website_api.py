@@ -16,16 +16,16 @@ import pandas as pd
 from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel, Field
 
-from itinerary_engine2 import (
+from backend.itinerary_engine2 import (
     add_day_type, build_itinerary, get_daily_weather,
     prepare_city, replan,
 )
 
-from forecast_service import forecast_info, predict_tci, recommend, tci_label, catalog
-from weather_forecast import predict_weather
+from backend.forecast_service import forecast_info, predict_tci, recommend, tci_label, catalog
+from backend.weather_forecast import predict_weather
 
 router = APIRouter(prefix="/website", tags=["Website dashboard"])
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 MONTHS = ["January", "February", "March", "April", "May", "June",
           "July", "August", "September", "October", "November", "December"]
 
@@ -607,7 +607,7 @@ class ExportRequest(BaseModel):
 def guide_cover(city: str = Query(..., min_length=1, max_length=100)):
     """Small same-origin cover JPEG; never fetch arbitrary external URLs."""
     from fastapi.responses import Response
-    from guide_cover import city_cover, RequiredPhotoUnavailable
+    from backend.guide_cover import city_cover, RequiredPhotoUnavailable
     canonical = next((name for name in _destination_city_coordinates()
                       if name.casefold() == city.strip().casefold()), None)
     if canonical is None:
@@ -626,8 +626,8 @@ def export_adaptive_pdf(request: ExportRequest):
     """A short, readable travel guide from the current itinerary."""
     import re
     from fastapi.responses import Response
-    from trip_guide import make_guide
-    from guide_cover import RequiredPhotoUnavailable
+    from backend.trip_guide import make_guide
+    from backend.guide_cover import RequiredPhotoUnavailable
     slug = re.sub(r"[^a-zA-Z0-9_-]+", "-", request.city).strip("-")[:65] or "Trip"
     try:
         guide = make_guide(request.model_dump())

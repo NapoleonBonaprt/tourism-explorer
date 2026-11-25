@@ -1,12 +1,12 @@
 """Adaptive Daily Itinerary - a section you can plug into the team's Streamlit app.
 
 Use it from app.py:
-    from itinerary_page import render as render_itinerary
+    from streamlit_ui.itinerary_page import render as render_itinerary
     ...
     elif page == "Adaptive Daily Itinerary":
         render_itinerary()
 
-Needs (same folder): itinerary_engine.py (or itinerary_engine2.py) and places_with_clusters.csv
+Uses backend.itinerary_engine2 and the repository's places_with_clusters.csv.
 """
 import sys
 from html import escape as esc
@@ -17,19 +17,13 @@ import pandas as pd
 import streamlit as st
 from streamlit_folium import st_folium
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-try:
-    from itinerary_engine import (  # noqa: E402
-        add_day_type, build_itinerary, get_daily_weather,
-        plan_to_frame, prepare_city, replan,
-    )
-except ModuleNotFoundError:
-    from itinerary_engine2 import (  # noqa: E402
-        add_day_type, build_itinerary, get_daily_weather,
-        plan_to_frame, prepare_city, replan,
-    )
+from backend.itinerary_engine2 import (
+    add_day_type, build_itinerary, get_daily_weather,
+    plan_to_frame, prepare_city, replan,
+)
 
 ICONS = {"outdoor": "☀️", "mixed": "⛅", "indoor": "🌧️"}
 COLORS = ["#E8742C", "#2F80B7", "#2E9E6B", "#D6457A", "#7B5CC4", "#0F9DA0", "#8B5A2B"]

@@ -14,7 +14,7 @@ from sklearn.linear_model import Ridge
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 from fastapi import HTTPException
-from forecast_service import history, KEY, WEATHER, MAX_HORIZON
+from backend.forecast_service import history, KEY, WEATHER, MAX_HORIZON
 
 TARGETS = {
     "Temp_Mean": ("Mean temperature", "°C", 2.0, -100., 65.),
@@ -29,7 +29,7 @@ TOL=np.array([v[2] for v in TARGETS.values()])
 LOW=np.array([v[3] for v in TARGETS.values()])
 HIGH=np.array([v[4] for v in TARGETS.values()])
 LOCK=Lock()
-ROOT=Path(__file__).resolve().parent
+ROOT=Path(__file__).resolve().parents[1]
 ARTIFACTS=ROOT/'python files'/'monthly_weather_results'
 SCHEMA_VERSION=1
 

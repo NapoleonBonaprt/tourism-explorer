@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from fastapi import HTTPException
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "python files" / "forecast_results"
 MAX_HORIZON = 24
 _EXTENDED_LOCK = Lock()

@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit.components.v1 as components
-from itinerary_page import render as render_itinerary
+from streamlit_ui.itinerary_page import render as render_itinerary
 
 # --- Page Configuration ---
 st.set_page_config(

@@ -1,34 +1,24 @@
 name: Forecast integration checks
 on:
   push:
-    branches: [forecast-development]
+    branches: [main, forecast-development, repository-organization]
     paths:
-      - 'forecast_service.py'
-      - 'weather_forecast.py'
-      - 'tci_scoring.py'
-      - 'itinerary_engine2.py'
-      - 'scripts/refresh_climate.py'
-      - 'scripts/train_weather_models.py'
-      - 'website_api.py'
-      - 'dashboard-site.js'
-      - 'travel-calendar.js'
-      - 'travel-calendar.css'
-      - 'trip-pdf.js'
-      - 'trip_guide.py'
-      - 'guide_cover.py'
-      - 'assets/cities/**'
-      - 'index.html'
-      - '*.html'
-      - '*.css'
-      - 'theme.js'
-      - 'discovery-map.js'
-      - 'experience-v4.js'
+      - 'backend/**'
+      - 'frontend/**'
+      - 'streamlit_ui/**'
+      - 'assets/**'
+      - 'scripts/**'
+      - 'tests/**'
       - 'api.py'
       - 'web_server.py'
-      - 'scripts/test_site_full.py'
-      - 'scripts/test_forecast*.py'
+      - 'dashboard.py'
       - 'requirements-deploy.txt'
+      - 'cleaned_data/**'
+      - 'python files/forecast_results/**'
+      - 'python files/monthly_weather_results/**'
       - '.github/workflows/forecast-checks.yml'
+  pull_request:
+    branches: [main, forecast-development]
   workflow_dispatch:
 concurrency:
   group: forecast-checks-${{ github.ref }}
@@ -45,13 +35,13 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -r requirements-deploy.txt httpx playwright pypdf
-      - run: python -m compileall -q forecast_service.py weather_forecast.py tci_scoring.py website_api.py itinerary_engine2.py trip_guide.py guide_cover.py scripts
+      - run: python -m compileall -q backend frontend streamlit_ui scripts tests api.py web_server.py dashboard.py
       - run: python scripts/train_weather_models.py
       - uses: actions/upload-artifact@v4
         with:
           name: monthly-weather-results
           path: python files/monthly_weather_results/
-      - run: python scripts/test_forecast.py
+      - run: python tests/test_forecast.py
       - run: python -m playwright install --with-deps chromium
       - name: Start website and test browser
         run: |
@@ -62,8 +52,8 @@ jobs:
             if curl --fail --silent http://127.0.0.1:8000/health; then break; fi
             sleep 1
           done
-          python scripts/test_forecast_browser.py
-          python scripts/test_site_full.py
+          python tests/test_forecast_browser.py
+          python tests/test_site_full.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:

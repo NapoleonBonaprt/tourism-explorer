@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 from PIL import Image, ImageDraw, ImageOps
 
-ROOT = Path(__file__).resolve().parent / "assets" / "cities"
+ROOT = Path(__file__).resolve().parents[1] / "assets" / "cities"
 SIZE = (900, 560)
 # Madrid and Barcelona intentionally share the current local photograph.
 REQUIRED_PHOTOS = {"cairo", "lisbon", "paris", "rome", "tokyo", "madrid", "barcelona"}

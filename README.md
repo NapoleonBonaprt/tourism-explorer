@@ -6,7 +6,7 @@ WanderClimate is the traveler-facing website of Tourism Explorer, a collaborativ
 
 [Website](https://mahmoudkh6.pythonanywhere.com/) · [Streamlit dashboard](https://tourism-explorer-eacdqv7bn7sw97tuhoyt.streamlit.app/) · [Development branch](https://github.com/NapoleonBonaprt/tourism-explorer/tree/forecast-development) · [Automated checks](https://github.com/NapoleonBonaprt/tourism-explorer/actions/workflows/forecast-checks.yml) · [EDA notebook](python%20files/EDA_Notebook.ipynb)
 
-> **Version note:** This document describes the latest implementation on `forecast-development`. The default branch and the deployed website may lag behind it. Verify the deployed revision and the latest integration checks before treating a feature as live.
+> **Version note:** This document describes the organized implementation. Verify that your checkout contains `frontend/`, `backend/` and `tests/` before using these instructions, and verify the deployed revision and latest integration checks before treating a feature as live.
 
 ## What the website does
 
@@ -51,11 +51,11 @@ The Tourism Climate Index combines daytime comfort (CID), daily comfort (CIA), p
 TCI = 2 × (4 × CID + CIA + 2 × P_score + 2 × S_score + W_score)
 ```
 
-[`tci_scoring.py`](tci_scoring.py) reconstructs and verifies the component scores and TCI categories against the original historical observations. Rules for previously unobserved extreme temperature or wind conditions are explicit assumptions, not recovered original source code.
+[`tci_scoring.py`](backend/tci_scoring.py) reconstructs and verifies the component scores and TCI categories against the original historical observations. Rules for previously unobserved extreme temperature or wind conditions are explicit assumptions, not recovered original source code.
 
 ### Future TCI forecasting
 
-[`forecast_service.py`](forecast_service.py) performs request-time prediction using city coordinates, seasonal features, lagged TCI and historical weather summaries. It does not serve precomputed values from `future_predictions.csv`.
+[`forecast_service.py`](backend/forecast_service.py) performs request-time prediction using city coordinates, seasonal features, lagged TCI and historical weather summaries. It does not serve precomputed values from `future_predictions.csv`.
 
 - **Residual XGBoost** was selected using the lowest mean validation MAE across the original 12 monthly horizons, without selecting on the final test results.
 - Horizons 1–12 load saved models. Horizons 13–24 use direct long-lead fitting and separately evaluated 2025 backtests.
@@ -83,7 +83,7 @@ See [forecast results](python%20files/forecast_results/) for model artifacts, ho
 
 ### Separate monthly weather models
 
-[`weather_forecast.py`](weather_forecast.py) uses direct residual Ridge regression models for each of 24 horizons. The model estimates deviations from historical monthly weather averages, with per-variable regularization chosen on 2023 validation data and a temporally separated 2025 test.
+[`weather_forecast.py`](backend/weather_forecast.py) uses direct residual Ridge regression models for each of 24 horizons. The model estimates deviations from historical monthly weather averages, with per-variable regularization chosen on 2023 validation data and a temporally separated 2025 test.
 
 | Variable | Error tolerance | Test MAE | Test RMSE | Within tolerance | Baseline MAE |
 | --- | --- | ---: | ---: | ---: | ---: |
@@ -111,7 +111,7 @@ python scripts/train_weather_models.py
 
 ## Adaptive itinerary planning
 
-The adaptive planner combines [`itinerary_engine2.py`](itinerary_engine2.py), [`website_api.py`](website_api.py) and the website UI.
+The adaptive planner combines [`itinerary_engine2.py`](backend/itinerary_engine2.py), [`website_api.py`](backend/website_api.py) and the website UI.
 
 1. Choose the destination, start date, trip length and requested stops per day.
 2. For a trip entirely inside the supported daily weather window, retrieve Open-Meteo forecasts for its actual travel dates.
@@ -138,7 +138,7 @@ The PDF cover pipeline uses local JPEGs in [`assets/cities/`](assets/cities/), n
 
 The browser can use the local static image directly, with the same-origin cover endpoint as a fallback. A versioned URL avoids stale cached cover responses. PDF generation still requires access to the necessary image bytes and PDF library or server; it is not guaranteed to be fully offline.
 
-See [`trip-pdf.js`](trip-pdf.js), [`trip_guide.py`](trip_guide.py) and [`guide_cover.py`](guide_cover.py).
+See [`trip-pdf.js`](frontend/trip-pdf.js), [`trip_guide.py`](backend/trip_guide.py) and [`guide_cover.py`](backend/guide_cover.py).
 
 ## API and architecture
 
@@ -167,42 +167,45 @@ Legacy historical REST routes in `api.py` include `/overview/summary`, `/overvie
 
 ```text
 tourism-explorer/
-├── index.html                    # Home and city discovery
-├── overview.html                  # Executive overview
-├── climate.html                   # Historical and forecast analytics
-├── explorer.html                  # Map and recommendations
-├── planner.html                   # Interactive planner
-├── adaptive.html                  # Adaptive trip planner
-├── dashboard-site.js / .css       # Shared website UI
-├── travel-calendar.js / .css      # Shared date picker
-├── discovery-map.js / .css        # Destination discovery map
-├── theme.js                       # Light/dark preferences
-├── assets/cities/                 # Local city photographs
-├── web_server.py                  # Same-origin website and ASGI service
-├── api.py / website_api.py        # REST APIs
-├── forecast_service.py            # Direct monthly TCI inference
-├── weather_forecast.py            # Monthly weather prediction
-├── tci_scoring.py                 # Historical TCI reconstruction
-├── itinerary_engine2.py           # Trip selection and ordering
-├── trip-pdf.js / trip_guide.py     # Browser/server PDF rendering
-├── guide_cover.py                 # City cover preparation
-├── dashboard.py / itinerary_page.py # Integrated Streamlit UI
-├── app.py                         # Original standalone Streamlit app
-├── cleaned_data/
-│   ├── city_month_features.csv
-│   └── tourism_final_clean.csv
-├── full.csv
-├── places_with_clusters.csv
-├── python files/
+├── frontend/                      # HTML pages, styles and browser scripts
+│   ├── index.html
+│   ├── overview.html / climate.html / explorer.html
+│   ├── planner.html / adaptive.html
+│   ├── dashboard-site.js / .css
+│   ├── travel-calendar.js / .css
+│   ├── discovery-map.js / .css
+│   ├── landing.css / experience-v4.js / .css
+│   └── theme.js / trip-pdf.js
+├── backend/                       # Application services
+│   ├── website_api.py
+│   ├── forecast_service.py
+│   ├── weather_forecast.py
+│   ├── tci_scoring.py
+│   ├── itinerary_engine2.py
+│   └── trip_guide.py / guide_cover.py
+├── streamlit_ui/                  # Reusable Streamlit components
+│   └── itinerary_page.py
+├── assets/                        # City photos and brand assets
+├── cleaned_data/                  # Canonical cleaned climate data
+├── raw_data/                      # Original source data
+├── python files/                   # Research notebook and its output artifacts
 │   ├── EDA_Notebook.ipynb
-│   ├── forecast_results/
-│   ├── monthly_weather_results/
-│   └── processed_data/
-├── scripts/                       # Refresh, training and testing utilities
-├── .github/workflows/             # CI and image caching
+│   ├── forecast_results/           # TCI models, evaluation and plots
+│   ├── monthly_weather_results/    # 24 weather-model bundles and metrics
+│   └── processed_data/             # Spatial clustering outputs
+├── scripts/                        # Data refresh, training and image utilities
+├── tests/                          # API, model, browser and PDF tests
+├── archive/                        # Historical backups and migration scripts
+├── .github/workflows/              # Automated integration checks
+├── web_server.py / api.py          # Stable ASGI entry points
+├── dashboard.py / app.py           # Stable Streamlit entry points
+├── full.csv / places_with_clusters.csv # Legacy dataset entry points
+├── render.yaml
 ├── requirements.txt
 └── requirements-deploy.txt
 ```
+
+Public page and API URLs are unchanged: the ASGI server explicitly maps the original URL paths to files in `frontend/`. The root ASGI and Streamlit entry points are retained for deployment compatibility. Legacy dataset and notebook paths are intentionally preserved to avoid invalidating research outputs or saved model artifacts. Run archived utilities only in the context of their original historical revision.
 
 ## Run locally
 
@@ -211,7 +214,7 @@ Python 3.12 is recommended for the deployment environment and saved XGBoost 3.4.
 ```bash
 git clone https://github.com/NapoleonBonaprt/tourism-explorer.git
 cd tourism-explorer
-git switch forecast-development
+# Use the branch containing the organized layout (repository-organization during review).
 python -m venv .venv
 # Linux/macOS:
 source .venv/bin/activate
@@ -261,10 +264,10 @@ The [Forecast integration checks](https://github.com/NapoleonBonaprt/tourism-exp
 python -m pip install -r requirements-deploy.txt httpx playwright pypdf
 python -m playwright install chromium
 python scripts/train_weather_models.py
-python scripts/test_forecast.py
+python tests/test_forecast.py
 # Start uvicorn web_server:app on port 8000 in another terminal:
-python scripts/test_forecast_browser.py
-python scripts/test_site_full.py
+python tests/test_forecast_browser.py
+python tests/test_site_full.py
 ```
 
 Tests cover historical and forecast data, city pages, date limits, daily and month-crossing trips, map interactions, calendar accessibility and PDF output, including cover images and server fallback. Check the actual workflow result before deploying.
@@ -278,7 +281,7 @@ The deployment should use the repository working directory, its Python virtual e
 ```bash
 git status --short
 git branch --show-current
-git pull --ff-only origin forecast-development
+git pull --ff-only
 ```
 
 Install changed deployment dependencies in the existing virtual environment if necessary, then reload the configured ASGI website with PythonAnywhere's website management tools. If the deployed checkout uses another branch, review and merge/switch as appropriate rather than pulling a different branch blindly.
