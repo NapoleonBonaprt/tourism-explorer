@@ -694,9 +694,9 @@
       ${d.warning?`<p class="status warning">${safe(d.warning)}</p>`:""}
       ${(d.monthly_forecasts||[]).map(f=>`<section class="card section-gap"><h2>${safe(f.target_month)} · Predicted monthly TCI</h2><div class="summary-grid">${metric("Predicted monthly TCI",pretty(f.predicted_tci,2)+" / 100")}${metric("Suitability",f.tci_category)}</div>${weatherSummary(f.monthly_weather)}${forecastSummary(f)}</section>`).join("")}
       <section class="card itinerary-actions-card"><div class="itinerary-actions-head">
-        <div><h2>Save or Print Your Itinerary</h2><p class="note">Keep the full daily plan, forecast and all numbered attractions.</p></div>
+        <div><h2>Save or Print Your Itinerary</h2><p class="note">Take a simple travel guide with your daily visits, weather tips and map links.</p></div>
         <div class="export-buttons">
-          <button type="button" class="btn" id="downloadItineraryPdf">Download PDF</button>
+          <button type="button" class="btn" id="downloadItineraryPdf">Download travel guide</button>
           <button type="button" class="btn secondary" id="printItinerary">Print / Save as PDF</button>
         </div>
       </div><p class="route-disclaimer"><strong>Route information:</strong> Lines connect stops in geographic order (straight-line distance). They are not actual driving, walking, public transport or turn-by-turn routes. The itinerary does not account for travel time, roads, traffic or attraction opening hours.</p>
@@ -756,7 +756,7 @@
     }
     const button=$("downloadItineraryPdf");
     busy(button,true);
-    status("Preparing your complete itinerary PDF...");
+    status("Preparing your travel guide...");
     if(window.WanderClimatePDF?.available()){
       try {
         window.WanderClimatePDF.download(adaptiveState);
@@ -793,7 +793,7 @@
       const anchor=document.createElement("a");
       anchor.href=objectUrl;
       const cityslug=adaptiveState.city.replace(/[^a-z0-9_-]+/gi,"-").replace(/^-|-$/g,"");
-      anchor.download=`WanderClimate-${cityslug}-Itinerary.pdf`;
+      anchor.download=`WanderClimate-${cityslug}-Travel-Guide.pdf`;
       document.body.appendChild(anchor);
       anchor.click();
       anchor.remove();

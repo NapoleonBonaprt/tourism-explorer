@@ -137,11 +137,15 @@ class API(unittest.TestCase):
         raw=self.post("/website/adaptive/export-pdf",plan)
         self.assertIn("application/pdf",raw.headers["content-type"])
         content=pdf_text(raw.content).lower()
-        for term in ["london",start.isoformat(),"predicted monthly tci","monthly rainfall","mean temperature","historical success"]:
+        for term in ["discover london",start.strftime("%d %b %Y").lstrip("0").lower(),"what to expect","monthly estimates","morning","afternoon"]:
             self.assertIn(term,content)
         for day in plan["days"]:
             for stop in day["stops"]:
                 self.assertIn(" ".join(stop["name"].lower().split()),content)
+        for term in ["historical success","predicted monthly tci","mae","rmse","coordinates:"]:
+            self.assertNotIn(term,content)
+        doc=PdfReader(BytesIO(raw.content))
+        self.assertGreaterEqual(sum(len(p.get("/Annots",[])) for p in doc.pages),sum(len(d["stops"]) for d in plan["days"]))
         (OUT/"monthly-server.pdf").write_bytes(raw.content)
 
 class Browser(unittest.TestCase):
@@ -325,14 +329,14 @@ class Browser(unittest.TestCase):
             p.locator("#downloadItineraryPdf").click()
         raw=Path(d.value.path()).read_bytes()
         content=pdf_text(raw)
-        self.assertIn(start,content)
+        self.assertIn(date.fromisoformat(start).strftime("%d %b %Y").lstrip("0"),content)
         self.assertIn("Cairo",content)
         (OUT/"daily-browser.pdf").write_bytes(raw)
         p.evaluate("window.WanderClimatePDF={available:()=>false}")
         with p.expect_download() as fallback:
             p.locator("#downloadItineraryPdf").click()
         raw2=Path(fallback.value.path()).read_bytes()
-        self.assertIn(start,pdf_text(raw2))
+        self.assertIn(date.fromisoformat(start).strftime("%d %b %Y").lstrip("0"),pdf_text(raw2))
         (OUT/"daily-fallback.pdf").write_bytes(raw2)
         p.evaluate("window.print=()=>{window.__printCalled=true}")
         p.locator("#printItinerary").click()
@@ -356,9 +360,12 @@ class Browser(unittest.TestCase):
             p.locator("#downloadItineraryPdf").click()
         raw=Path(download.value.path()).read_bytes()
         content=pdf_text(raw).lower()
-        self.assertIn("predicted monthly tci",content)
-        self.assertIn("monthly rainfall",content)
-        self.assertIn(start,content)
+        self.assertIn("what to expect",content)
+        self.assertIn("monthly estimates",content)
+        self.assertIn(date.fromisoformat(start).strftime("%d %b %Y").lstrip("0").lower(),content)
+        for term in ["historical success","predicted monthly tci","mae","rmse","coordinates:"]:
+            self.assertNotIn(term,content)
+        self.assertTrue(any(p.get("/Annots") for p in PdfReader(BytesIO(raw)).pages))
         (OUT/"monthly-browser.pdf").write_bytes(raw)
         p.locator("#adaptiveStartDate").fill(end)
         p.locator("#adaptiveDays").select_option("7")

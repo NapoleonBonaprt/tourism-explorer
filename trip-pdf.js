@@ -1,211 +1,116 @@
-/* Client-side PDF writer for WanderClimate Adaptive Itinerary.
- * Uses the plan already loaded on the page, so a user can download it even
- * if the backend becomes unreachable after the itinerary was built.
- */
+/* Offline-capable traveller-facing guide. Matches the server's trip_guide.py. */
 (() => {
   "use strict";
-
-  function plain(value) {
-    return String(value === null || value === undefined ? "" : value)
-      .replace(/[\u2013\u2014]/g, "-")
-      .replace(/[\u2018\u2019]/g, "'")
-      .replace(/[\u201C\u201D]/g, '"')
-      .replace(/\u2022/g, "-")
-      .replace(/\s+/g, " ").trim();
+  const C={ink:"#203B35",green:"#315C4D",muted:"#53665D",paper:"#F8F6EF",white:"#FFFFFF",gold:"#E7B96B",soft:"#E8EFE6",pale:"#DCE8D8"};
+  const plain=v=>String(v??"").replace(/[\u2013\u2014]/g,"-").replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"').replace(/\s+/g," ").trim();
+  const finite=v=>typeof v==="number"&&Number.isFinite(v);
+  const approx=v=>Math.floor(v+.5)+"°C";
+  const dateText=(v,weekday=false,monthOnly=false)=>{
+    const d=new Date(v+"T12:00:00Z");
+    if(!Number.isFinite(d.getTime()))return plain(v);
+    return d.toLocaleDateString("en-GB",{timeZone:"UTC",year:"numeric",month:monthOnly?"long":"short",...(monthOnly?{}:{day:"numeric"}),...(weekday?{weekday:"short"}:{})});
+  };
+  const preference=k=>({indoor:"Indoor escapes",outdoor:"Outdoor discoveries",mixed:"Flexible sightseeing"}[k]||"Explore at your pace");
+  function monthlySummary(f){
+    const vals=Object.fromEntries((f.monthly_weather?.variables||[]).map(v=>[v.label,v.prediction]));
+    const t=vals["Mean temperature"],rain=vals["Monthly rainfall"],score=f.predicted_tci;
+    const mood=score>=70?"Great for sightseeing":score>=50?"A good time to explore":"Plan for indoor breaks";
+    let tip=finite(t)&&t<15?"Bring warm layers.":finite(t)&&t>=28?"Pack light clothes and sun protection.":"Pack light layers.";
+    if(finite(rain)&&rain>=60)tip+=" Consider a compact umbrella.";
+    return [mood+(finite(t)?" | Around "+approx(t)+" on average":""),tip];
   }
-
-  function fileSlug(value) {
-    return plain(value).replace(/[^a-z0-9_-]+/gi, "-").replace(/^-|-$/g, "").slice(0,65) || "Trip";
+  function dailySummary(w){
+    const parts=[];
+    if(finite(w.temperature_2m_max))parts.push("High near "+approx(w.temperature_2m_max));
+    if(finite(w.precipitation_sum))parts.push(w.precipitation_sum>=3?"Rain expected":w.precipitation_sum>=.5?"Possible light rain":"Little rain expected");
+    if(finite(w.wind_speed_10m_max)&&w.wind_speed_10m_max>=30)parts.push("Windy");
+    return parts.join(" | ")||"Check local weather before heading out";
   }
-
-  function available() {
-    return Boolean(window.jspdf && typeof window.jspdf.jsPDF === "function");
-  }
-
-  function download(plan) {
-    if (!available()) {
-      throw new Error("The browser PDF library is unavailable.");
+  const available=()=>Boolean(window.jspdf&&typeof window.jspdf.jsPDF==="function");
+  function download(plan){
+    if(!available()||!plan?.days?.length)throw new Error("Build a trip before exporting.");
+    const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"pt",format:"a4",compress:true});
+    const W=pdf.internal.pageSize.getWidth(),H=pdf.internal.pageSize.getHeight(),M=38,CW=W-2*M,bottom=H-54;
+    const days=plan.days,monthly=plan.monthly_forecasts||[],changed=new Set((plan.changes||[]).map(c=>String(c.date)));
+    let page=0,y=0;
+    pdf.setProperties({title:"WanderClimate | "+plain(plan.city)+" travel guide",author:"WanderClimate"});
+    function rect(x,t,w,h,color,r=0){pdf.setFillColor(color);if(r)pdf.roundedRect(x,t,w,h,r,r,"F");else pdf.rect(x,t,w,h,"F");}
+    function font(size,bold=false){pdf.setFont("helvetica",bold?"bold":"normal");pdf.setFontSize(size);}
+    function text(v,x,t,size=11,color=C.ink,bold=false){font(size,bold);pdf.setTextColor(color);pdf.text(plain(v),x,t+size);}
+    function wrap(v,width,size=11,bold=false){font(size,bold);return pdf.splitTextToSize(plain(v),width);}
+    function lines(v,x,t,width,size=11,color=C.ink,bold=false,leading=15){
+      const rows=wrap(v,width,size,bold);rows.forEach((l,i)=>text(l,x,t+i*leading,size,color,bold));return rows.length*leading;
     }
-    if (!plan || !Array.isArray(plan.days) || !plan.days.length) {
-      throw new Error("Build an itinerary before downloading it.");
+    function circle(x,t,r,color){pdf.setFillColor(color);pdf.circle(x,t,r,"F");}
+    function footer(){text("Check opening hours, local weather and travel times before you go.",M,H-39,8.5,C.muted);font(8.5);pdf.setTextColor(C.muted);pdf.text(String(page).padStart(2,"0"),W-M,H-29,{align:"right"});}
+    function newPage(){
+      if(page){footer();pdf.addPage();}
+      page++;
+      rect(0,0,W,H,C.paper);
+      rect(0,0,W,page===1?145:87,C.ink);
+      circle(W-77,50,27,C.gold);
+      if(page===1){pdf.setFillColor(C.green);pdf.triangle(W-205,145,W-110,78,W-38,145,"F");}
+      text("WANDERCLIMATE  /  YOUR TRAVEL GUIDE",M,23,9,C.pale,true);
+      const title=page===1?"Discover "+plain(plan.city):plain(plan.city)+" | Your itinerary";
+      let size=page===1?32:19;font(size,true);
+      while(pdf.getTextWidth(title)>CW-88&&size>10){size--;font(size,true);}
+      text(title,M,43,size,C.white,true);
+      if(page===1){
+        text(dateText(days[0].date)+" - "+dateText(days[days.length-1].date),M,89,12,C.white);
+        const count=days.reduce((n,d)=>n+d.stops.length,0);
+        text(days.length+(days.length===1?" day":" days")+"  /  "+count+" places to discover",M,111,10,C.pale);
+        y=159;
+      }else y=103;
     }
-
-    const pdf = new window.jspdf.jsPDF({
-      orientation: "portrait", unit: "mm", format: "a4", compress: true
-    });
-    const PAGE_WIDTH = 210;
-    const PAGE_HEIGHT = 297;
-    const MARGIN = 17;
-    const CONTENT_WIDTH = PAGE_WIDTH - 2 * MARGIN;
-    const BOTTOM = PAGE_HEIGHT - 24;
-    const colors = {
-      dark: [30, 43, 34],
-      green: [63, 107, 74],
-      teal: [65, 124, 130],
-      muted: [83, 102, 90],
-      cream: [241, 246, 240],
-      white: [255, 255, 255],
-      line: [217, 231, 220],
-      amber: [196, 146, 59],
-    };
-    const paint = (rgb, method) => pdf[method](...rgb);
-    let y = 0;
-
-    function header() {
-      paint(colors.dark, "setFillColor");
-      pdf.rect(0, 0, PAGE_WIDTH, 35, "F");
-      paint(colors.white, "setTextColor");
-      pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(16);
-      pdf.text("WANDERCLIMATE", MARGIN, 19);
-      pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(8);
-      pdf.text("CLIMATE-DRIVEN TOURISM INTELLIGENCE", MARGIN, 26);
-      y = 47;
-    }
-
-    function page() {
-      pdf.addPage();
-      header();
-    }
-
-    function room(height) {
-      if (y + height > BOTTOM) page();
-    }
-
-    function paragraph(text, x=MARGIN, width=CONTENT_WIDTH, fontSize=10,
-                       color=colors.dark, lineHeight=5) {
-      pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(fontSize);
-      paint(color, "setTextColor");
-      const lines = pdf.splitTextToSize(plain(text), width);
-      if (!lines.length) return;
-      for (const line of lines) {
-        room(lineHeight + 2);
-        pdf.text(String(line), x, y);
-        y += lineHeight;
+    function room(h){if(y+h>bottom)newPage();}
+    newPage();
+    if(monthly.length){
+      for(const f of monthly){
+        const [headline,tip]=monthlySummary(f);
+        const month=dateText(f.target_month+"-01",false,true);
+        const h=66+Math.max(0,wrap(headline,CW-28,13,true).length-1)*16+Math.max(0,wrap(tip,CW-28,10).length-1)*14;
+        room(h+12);rect(M,y,CW,h,C.soft,10);
+        text("WHAT TO EXPECT  /  "+month.toUpperCase(),M+14,y+10,8.5,C.green,true);
+        const n=lines(headline,M+14,y+25,CW-28,13,C.ink,true,16);
+        lines(tip,M+14,y+30+n,CW-28,10,C.muted,false,14);y+=h+10;
       }
     }
-
-    function heading(text) {
-      const lines = pdf.splitTextToSize(plain(text), CONTENT_WIDTH);
-      const height = Math.max(1, lines.length) * 9 + 6;
-      room(height + 6);
-      paint(colors.cream, "setFillColor");
-      pdf.roundedRect(MARGIN, y - 7, CONTENT_WIDTH, height, 2.5, 2.5, "F");
-      paint(colors.green, "setTextColor");
-      pdf.setFont("helvetica", "bold");
-      pdf.setFontSize(13);
-      for (const line of lines) {
-        pdf.text(String(line), MARGIN + 4, y);
-        y += 9;
-      }
-      y += 3;
-    }
-
-    function note(text) {
-      y += 1;
-      paragraph(text, MARGIN, CONTENT_WIDTH, 9, colors.muted, 4.6);
-      y += 3;
-    }
-
-    header();
-    paint(colors.dark, "setTextColor");
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(22);
-    const tripName = `Your trip to ${plain(plan.city || "your destination")}`;
-    const tripLines = pdf.splitTextToSize(tripName, CONTENT_WIDTH);
-    tripLines.forEach(line => { room(11); pdf.text(line, MARGIN, y); y += 11; });
-    note(`${plan.days.length} day(s) - weather-aware travel plan`);
-    note(`Downloaded ${new Date().toLocaleDateString("en-GB", {day:"numeric",month:"long",year:"numeric"})}`);
-    if (plan.warning) {
-      note("Planning note: " + plan.warning);
-    }
-
-    for (const forecast of plan.monthly_forecasts || []) {
-      y += 6;
-      heading("MONTHLY FORECAST: " + plain(forecast.target_month));
-      note("Predicted monthly TCI: " + Number(forecast.predicted_tci).toFixed(2) + "/100 | " +
-        plain(forecast.tci_category) + " | Historical success within +/-10 TCI: " +
-        Number(forecast.within_10_pct).toFixed(1) + "% | MAE: " + Number(forecast.mae).toFixed(2));
-      for (const variable of forecast.monthly_weather?.variables || []) {
-        const unit = plain(variable.unit);
-        note(plain(variable.label) + ": " + Number(variable.prediction).toFixed(2) + " " + unit +
-          "; MAE " + Number(variable.mae).toFixed(2) + " " + unit +
-          "; historical success " + Number(variable.within_tolerance_pct).toFixed(1) +
-          "% within +/-" + variable.tolerance + " " + unit);
-      }
-      note("Monthly estimates only; no daily forecast. Historical hit rates are not individual probabilities.");
-    }
-
-    for (const day of plan.days) {
-      y += 7;
-      heading(`DAY ${day.number}  |  ${day.date}  |  ${plain(day.day_type).toUpperCase()}`);
-      const weather = day.weather || {};
-      note([
-        `Temperature: ${weather.temperature_2m_max === null || weather.temperature_2m_max === undefined ? "N/A" : Number(weather.temperature_2m_max).toFixed(1) + " C"}`,
-        `Rain: ${weather.precipitation_sum === null || weather.precipitation_sum === undefined ? "N/A" : Number(weather.precipitation_sum).toFixed(1) + " mm"}`,
-        `Wind: ${weather.wind_speed_10m_max === null || weather.wind_speed_10m_max === undefined ? "N/A" : Number(weather.wind_speed_10m_max).toFixed(1) + " km/h"}`,
-      ].join("     |     "));
-
-      if (!Array.isArray(day.stops) || !day.stops.length) {
-        paragraph("No attractions available for this day.");
-        continue;
-      }
-      for (const stop of day.stops) {
-        room(18);
-        paint(colors.green, "setTextColor");
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(10.5);
-        const lines = pdf.splitTextToSize(
-          `${stop.order}. ${plain(stop.name)}`, CONTENT_WIDTH - 8);
-        for (const line of lines) {
-          room(5.5);
-          pdf.text(String(line), MARGIN + 2, y);
-          y += 5.5;
+    y+=lines(monthly.length?"Early trip plan: monthly estimates, not daily weather. Rebuild within seven days of travel.":"Weather-aware plan: check the latest forecast before each day out.",M,y,CW,9.5,C.muted,false,13)+9;
+    if(changed.size)y+=lines("Your itinerary was adjusted after a weather re-check.",M,y,CW,10,C.green,true,14)+8;
+    for(const day of days){
+      const stops=day.stops||[];
+      const groups=["morning","afternoon"].map(slot=>[slot,stops.filter(s=>s.slot===slot)]);
+      const extra=stops.filter(s=>!["morning","afternoon"].includes(s.slot));if(extra.length)groups.push(["explore",extra]);
+      let sub=preference(day.day_type)+(changed.has(day.date)?" | Updated":"");
+      if(!monthly.length)sub+=" | "+dailySummary(day.weather||{});
+      const subH=wrap(sub,CW-28,10).length*13;
+      const rowsH=groups.filter(([,ss])=>ss.length).reduce((n,[,ss])=>n+14+ss.reduce((m,s)=>m+Math.max(1,wrap(s.name,CW-69,11,true).length)*14+2,0),0);
+      const h=40+subH+rowsH+(stops.length?0:22)+10;
+      room(h+11);
+      const start=y;
+      rect(M,start,CW,h,C.white,10);rect(M+12,start+12,35,25,C.green,6);
+      text("DAY "+day.number,M+17,start+18,9,C.white,true);
+      text(dateText(day.date,true),M+58,start+12,15,C.ink,true);
+      y=start+38;y+=lines(sub,M+14,y,CW-28,10,C.muted,false,13)+3;
+      for(const [slot,ss] of groups){
+        if(!ss.length)continue;
+        text(slot.toUpperCase(),M+14,y,8.5,C.green,true);y+=14;
+        for(const stop of ss){
+          circle(M+19,y+7,3,C.gold);
+          const n=lines(stop.name,M+30,y,CW-69,11,C.ink,true,14);
+          if(finite(stop.lat)&&finite(stop.lon))pdf.link(M+28,y,CW-40,n,{url:"https://www.google.com/maps/search/?api=1&query="+stop.lat+","+stop.lon});
+          y+=n+2;
         }
-        paragraph(`${plain(stop.category)} | ${plain(stop.slot)}`,
-                  MARGIN + 4, CONTENT_WIDTH - 8, 9, colors.muted, 4.5);
-        if (Number.isFinite(Number(stop.lat)) && Number.isFinite(Number(stop.lon))) {
-          paragraph(`Coordinates: ${Number(stop.lat).toFixed(5)}, ${Number(stop.lon).toFixed(5)}`,
-                    MARGIN + 4, CONTENT_WIDTH - 8, 8.3, colors.muted, 4.3);
-        }
-        y += 3;
       }
+      if(!stops.length)y+=lines("Free time to explore at your own pace.",M+14,y,CW-28,11,C.muted,false,15);
+      y=start+h+11;
     }
-
-    if (Array.isArray(plan.changes) && plan.changes.length) {
-      y += 7;
-      heading("FORECAST RECHECK: CHANGES TO THE PLAN");
-      for (const change of plan.changes) {
-        paragraph(`${plain(change.date)}: ${plain(change.from)} to ${plain(change.to)}. ${plain(change.reason)}`,
-                  MARGIN + 2, CONTENT_WIDTH - 4, 9.2, colors.dark, 4.7);
-      }
-    }
-
-    y += 7;
-    heading("ROUTE INFORMATION");
-    paragraph("The map connects attractions with straight lines to show stop order. These are not driving, walking or public transport directions, and do not represent travel time, road access or traffic.",
-              MARGIN + 2, CONTENT_WIDTH - 4, 9.4, colors.dark, 5);
-    y += 3;
-    paragraph("Weather forecasts can change. Check current conditions and attraction opening hours before travel.",
-              MARGIN + 2, CONTENT_WIDTH - 4, 9, colors.muted, 5);
-
-    const total = pdf.internal.getNumberOfPages();
-    for (let number=1; number<=total; number++) {
-      pdf.setPage(number);
-      paint(colors.line, "setDrawColor");
-      pdf.line(MARGIN, PAGE_HEIGHT - 16, PAGE_WIDTH - MARGIN, PAGE_HEIGHT - 16);
-      pdf.setFont("helvetica", "normal");
-      pdf.setFontSize(8);
-      paint(colors.muted, "setTextColor");
-      pdf.text("WanderClimate | Forecast-informed travel plan", MARGIN, PAGE_HEIGHT - 10);
-      pdf.text(`Page ${number} of ${total}`, PAGE_WIDTH - MARGIN, PAGE_HEIGHT - 10,
-               {align:"right"});
-    }
-
-    pdf.save(`WanderClimate-${fileSlug(plan.city)}-Itinerary.pdf`);
+    room(29);
+    const linkNote=days.some(d=>d.stops.some(s=>finite(s.lat)&&finite(s.lon)))?"Tap a place name to open it on the map. ":"";
+    lines(linkNote+"Visit order is a guide, not turn-by-turn directions.",M,y,CW,9,C.muted,false,13);
+    footer();
+    const slug=plain(plan.city).replace(/[^a-z0-9_-]+/gi,"-").replace(/^-|-$/g,"").slice(0,65)||"Trip";
+    pdf.save("WanderClimate-"+slug+"-Travel-Guide.pdf");
   }
-
-  window.WanderClimatePDF = {available, download};
+  window.WanderClimatePDF={available,download};
 })();

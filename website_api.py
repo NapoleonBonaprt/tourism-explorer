@@ -570,7 +570,7 @@ class ExportDay(BaseModel):
     date: str = Field(min_length=4, max_length=32)
     day_type: str = Field(min_length=1, max_length=32)
     weather: ExportWeather
-    stops: list[ExportStop] = Field(max_length=100)
+    stops: list[ExportStop] = Field(max_length=5)
 
 
 class ExportMonthlyVariable(BaseModel):
@@ -605,113 +605,10 @@ class ExportRequest(BaseModel):
 
 @router.post("/adaptive/export-pdf")
 def export_adaptive_pdf(request: ExportRequest):
-    """A print-ready PDF made from the itinerary currently shown to the user."""
-    import io
-    from datetime import datetime, timezone
-
+    """A short, readable travel guide from the current itinerary."""
+    import re
     from fastapi.responses import Response
-    from reportlab.lib import colors
-    from reportlab.lib.enums import TA_LEFT
-    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-    from reportlab.lib.units import inch
-    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, KeepTogether
-    from xml.sax.saxutils import escape as xml_escape
-
-    buffer = io.BytesIO()
-    doc = SimpleDocTemplate(buffer, pagesize=(595.28, 841.89),
-                            rightMargin=45, leftMargin=45, topMargin=52, bottomMargin=50)
-    palette = {
-        "ink": colors.HexColor("#24352B"),
-        "green": colors.HexColor("#3F6B4A"),
-        "muted": colors.HexColor("#617268"),
-        "line": colors.HexColor("#DDE7DE"),
-        "paper": colors.HexColor("#F2F6F1")
-    }
-    styles = getSampleStyleSheet()
-    styles.add(ParagraphStyle(name="WCBrand", parent=styles["Normal"], fontSize=12,
-                              leading=17, textColor=palette["green"], spaceAfter=12))
-    styles.add(ParagraphStyle(name="WCTitle", parent=styles["Heading1"], fontSize=25,
-                              leading=31, textColor=palette["ink"], spaceAfter=6))
-    styles.add(ParagraphStyle(name="WCDay", parent=styles["Heading2"], fontSize=15,
-                              leading=21, textColor=palette["green"], spaceBefore=16, spaceAfter=8))
-    styles.add(ParagraphStyle(name="WCBody", parent=styles["Normal"], fontSize=10.5,
-                              leading=16, textColor=palette["ink"], spaceAfter=7,
-                              alignment=TA_LEFT, wordWrap="CJK"))
-    styles.add(ParagraphStyle(name="WCNote", parent=styles["Normal"], fontSize=9,
-                              leading=14, textColor=palette["muted"], spaceAfter=8))
-    story = [
-        Paragraph("WANDERCLIMATE", styles["WCBrand"]),
-        Paragraph(f"Your trip to {xml_escape(request.city)}", styles["WCTitle"]),
-        Paragraph(f"{len(request.days)} day(s) - forecast-informed itinerary", styles["WCNote"]),
-        Paragraph("Saved on " + datetime.now(timezone.utc).strftime("%d %B %Y %H:%M UTC"), styles["WCNote"]),
-        Spacer(1, 10),
-    ]
-    if request.warning:
-        story.append(Paragraph(xml_escape(request.warning), styles["WCNote"]))
-    for forecast in request.monthly_forecasts:
-        story.append(Paragraph("Monthly forecast: " + xml_escape(forecast.target_month), styles["WCDay"]))
-        story.append(Paragraph(
-            f"Predicted monthly TCI: {forecast.predicted_tci:.2f}/100 | "
-            f"{xml_escape(forecast.tci_category)} | Historical success within +/-10 TCI: "
-            f"{forecast.within_10_pct:.1f}% | MAE: {forecast.mae:.2f}", styles["WCBody"]))
-        for variable in forecast.monthly_weather.variables:
-            unit = xml_escape(variable.unit)
-            story.append(Paragraph(
-                f"{xml_escape(variable.label)}: {variable.prediction:.2f} {unit}; "
-                f"MAE {variable.mae:.2f} {unit}; historical success "
-                f"{variable.within_tolerance_pct:.1f}% within +/-{variable.tolerance:g} {unit}.", styles["WCNote"]))
-        story.append(Paragraph("Monthly estimates only; no daily forecast. Historical hit rates are not individual probabilities.", styles["WCNote"]))
-    for day in request.days:
-        wx = day.weather
-        def temp(v, unit):
-            return f"{v:.1f} {unit}" if v is not None else "N/A"
-        cells = [
-            ["Temperature", temp(wx.temperature_2m_max, "C")],
-            ["Rainfall", temp(wx.precipitation_sum, "mm")],
-            ["Wind", temp(wx.wind_speed_10m_max, "km/h")],
-        ]
-        table = Table(cells, colWidths=[100, 125], hAlign="LEFT")
-        table.setStyle(TableStyle([
-            ("BACKGROUND", (0,0), (-1,-1), palette["paper"]),
-            ("TEXTCOLOR", (0,0), (-1,-1), palette["ink"]),
-            ("FONTSIZE", (0,0), (-1,-1), 9),
-            ("BOTTOMPADDING", (0,0), (-1,-1), 6),
-            ("TOPPADDING", (0,0), (-1,-1), 6),
-            ("LINEBELOW", (0,-1), (-1,-1), 0.5, palette["line"])
-        ]))
-        block = [
-            Paragraph(f"Day {day.number} | {xml_escape(day.date)} | {xml_escape(day.day_type.title())}", styles["WCDay"]),
-            table, Spacer(1, 8)
-        ]
-        if not day.stops:
-            block.append(Paragraph("No attractions were available for this day.", styles["WCBody"]))
-        for stop in day.stops:
-            name = xml_escape(stop.name)
-            category = xml_escape(stop.category)
-            slot = xml_escape(stop.slot)
-            block.append(Paragraph(f"<b>{stop.order}. {name}</b> | {category} | {slot}", styles["WCBody"]))
-            block.append(Paragraph(f"Coordinates: {stop.lat:.5f}, {stop.lon:.5f}", styles["WCNote"]))
-        story.append(KeepTogether(block[:2]))
-        story.extend(block[2:])
-    if request.changes:
-        story.append(Paragraph("Weather re-check changes", styles["WCDay"]))
-        for change in request.changes[:7]:
-            label = f"{change.get('date','')} | {change.get('from','')} to {change.get('to','')}: {change.get('reason','')}"
-            story.append(Paragraph(xml_escape(label), styles["WCNote"]))
-    story.append(Spacer(1, 10))
-    story.append(Paragraph("ROUTE NOTE: Connecting lines on the map are straight-line visual guides between attractions, not driving, walking, or turn-by-turn directions.", styles["WCNote"]))
-    story.append(Paragraph("Forecasts can change. Verify local weather, access and opening hours before travel.", styles["WCNote"]))
-
-    def page_footer(canvas, pdf):
-        canvas.saveState()
-        canvas.setStrokeColor(palette["line"])
-        canvas.line(45, 37, 550, 37)
-        canvas.setFont("Helvetica", 8)
-        canvas.setFillColor(palette["muted"])
-        canvas.drawString(45, 24, "WanderClimate - Climate-driven tourism intelligence")
-        canvas.drawRightString(550, 24, f"Page {pdf.page}")
-        canvas.restoreState()
-    doc.build(story, onFirstPage=page_footer, onLaterPages=page_footer)
-    cityslug = "".join(c if c.isalnum() or c in "-_" else "-" for c in request.city).strip("-")[:65] or "trip"
-    return Response(buffer.getvalue(), media_type="application/pdf",
-                    headers={"Content-Disposition": f'attachment; filename="WanderClimate-{cityslug}-Itinerary.pdf"'})
+    from trip_guide import make_guide
+    slug = re.sub(r"[^a-zA-Z0-9_-]+", "-", request.city).strip("-")[:65] or "Trip"
+    return Response(make_guide(request.model_dump()), media_type="application/pdf",
+                    headers={"Content-Disposition": f'attachment; filename="WanderClimate-{slug}-Travel-Guide.pdf"'})
