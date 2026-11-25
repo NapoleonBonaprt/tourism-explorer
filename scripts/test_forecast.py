@@ -10,7 +10,10 @@ import numpy as np
 import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
-from forecast_service import predict_tci, forecast_info, catalog
+from forecast_service import predict_tci, forecast_info, catalog, history
+from tci_scoring import verify_original
+from weather_forecast import predict_weather, TARGETS
+from itinerary_engine2 import build_day
 from web_server import app
 from fastapi.testclient import TestClient
 
@@ -116,10 +119,36 @@ class ForecastTests(unittest.TestCase):
         result=response.json()
         self.assertEqual(result["mode"],"monthly")
         self.assertEqual(len(result["monthly_forecasts"]),2)
+        self.assertTrue(all(len(m["monthly_weather"]["variables"])==5 for m in result["monthly_forecasts"]))
         self.assertEqual([d["date"] for d in result["days"]],[(start+timedelta(days=i)).isoformat() for i in range(4)])
         self.assertTrue(all(all(v is None for v in d["weather"].values()) for d in result["days"]))
         self.assertTrue(all(d["monthly_forecast"]["training_mode"]=="direct_long_lead_fit" for d in result["days"]))
         self.assertTrue(all(d["monthly_forecast"]["target_month"]==d["date"][:7] for d in result["days"]))
+
+    def test_tci_scoring_matches_original(self):
+        self.assertTrue(all(v==0 for v in verify_original(history()).values()))
+
+    def test_weather_variables_and_reliability(self):
+        origin=pd.Period(self.info["origin"],"M")
+        for lead in (1,12,24):
+            target=str((origin+lead).start_time.date())
+            with self.subTest(lead=lead):
+                data=predict_weather("UK","London",target)
+                self.assertEqual(data["horizon_months"],lead)
+                self.assertEqual({v["field"] for v in data["variables"]},set(TARGETS))
+                for v in data["variables"]:
+                    self.assertTrue(np.isfinite(v["prediction"]))
+                    self.assertTrue(0<=v["within_tolerance_pct"]<=100)
+                    self.assertTrue(v["mae"]>=0 and v["baseline_mae"]>=0)
+                    self.assertEqual(v["test_n"],492)
+
+    def test_indoor_visit_slots(self):
+        data=catalog()
+        city=data.loc[data.City.eq("London")]
+        plan=build_day(city,"indoor",set(),3)
+        self.assertEqual(len(plan),3)
+        self.assertEqual(set(plan.slot),{"morning","afternoon"})
+        self.assertTrue(plan.Category.eq("Indoor").all())
 
     def test_folium_html_structure(self):
         import re
