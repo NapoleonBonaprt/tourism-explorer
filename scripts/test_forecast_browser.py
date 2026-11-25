@@ -83,16 +83,30 @@ def main():
         expect(page.locator(".leaflet-interactive").first).to_be_visible(timeout=60000)
         before=page.locator(".leaflet-interactive").count()
         assert before>0
-        page.locator(".leaflet-interactive").first.click()
+        # Dense attractions overlap at the initial zoom. Select an actual exposed
+        # SVG marker and click its visible centre rather than an obscured path.
+        page.wait_for_function("""() => [...document.querySelectorAll('path.leaflet-interactive')].some(el => {
+            const r=el.getBoundingClientRect(), x=r.left+r.width/2, y=r.top+r.height/2;
+            return r.width>0 && r.height>0 && document.elementFromPoint(x,y)===el;
+        })""")
+        point=page.evaluate("""() => {
+            for(const el of [...document.querySelectorAll('path.leaflet-interactive')].reverse()){
+                const r=el.getBoundingClientRect(), x=r.left+r.width/2, y=r.top+r.height/2;
+                if(r.width>0 && r.height>0 && document.elementFromPoint(x,y)===el) return {x,y};
+            }
+            return null;
+        }""")
+        assert point is not None, "No clickable Folium marker found"
+        page.mouse.click(point["x"],point["y"])
         expect(page.locator(".leaflet-popup-content")).to_contain_text("TCI")
         page.locator(".leaflet-popup-close-button").click()
         page.locator(".leaflet-control-zoom-in").click()
         layer=page.locator(".leaflet-control-layers-overlays input").first
         layer.uncheck()
         expect(layer).not_to_be_checked()
-        assert page.locator(".leaflet-interactive").count()<before
+        page.wait_for_function("(n) => document.querySelectorAll(\x27.leaflet-interactive\x27).length < n",arg=before)
         layer.check()
-        assert page.locator(".leaflet-interactive").count()==before
+        expect(page.locator(".leaflet-interactive")).to_have_count(before)
         browser.close()
         assert not errors, errors
         print("PASS: date-based website inference and interactive Leaflet/Folium smoke tests")
