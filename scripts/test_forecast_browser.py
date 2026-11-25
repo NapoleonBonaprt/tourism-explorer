@@ -42,7 +42,9 @@ def main():
         expect(page.locator(".leaflet-popup-content")).to_contain_text("Historical success")
         expect(page.locator(".leaflet-popup-content a")).to_have_attribute("href",re.compile(r"https://www.google.com/maps/"))
         page.locator("#attractionSearch").fill("")
-        page.locator("#mapLocation").select_option("Cairo")
+        with page.expect_response(lambda r:"/website/explorer?" in r.url and "location=Cairo" in r.url and r.status==200, timeout=60000) as city_response:
+            page.locator("#mapLocation").select_option("Cairo")
+        assert all(p["city"]=="Cairo" for p in city_response.value.json()["points"])
         expect(page.locator("#explorerResults h2").first).to_contain_text("Monthly ML forecast reliability",timeout=60000)
         expect(page.locator("#explorerMap .leaflet-interactive").first).to_be_visible(timeout=60000)
         # Change date and wait for the corresponding API response and new result.
