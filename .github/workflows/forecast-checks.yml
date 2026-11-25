@@ -4,12 +4,19 @@ on:
     branches: [forecast-development]
     paths:
       - 'forecast_service.py'
+      - 'weather_forecast.py'
+      - 'tci_scoring.py'
+      - 'itinerary_engine2.py'
+      - 'scripts/refresh_climate.py'
       - 'website_api.py'
       - 'dashboard-site.js'
       - 'scripts/test_forecast*.py'
       - 'requirements-deploy.txt'
       - '.github/workflows/forecast-checks.yml'
   workflow_dispatch:
+concurrency:
+  group: forecast-checks-${{ github.ref }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
@@ -22,7 +29,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -r requirements-deploy.txt httpx playwright
-      - run: python -m compileall -q forecast_service.py website_api.py scripts
+      - run: python -m compileall -q forecast_service.py weather_forecast.py tci_scoring.py website_api.py itinerary_engine2.py scripts
       - run: python scripts/test_forecast.py
       - run: python -m playwright install --with-deps chromium
       - name: Start website and test browser
