@@ -1,0 +1,97 @@
+"""Stage complete new climate months; never invent TCI or replace training data.
+
+Run from repo root: python scripts/refresh_climate.py
+The original TCI scoring implementation must calculate the target columns before
+the staged observations can be appended and the notebook retrained.
+"""
+from pathlib import Path
+from datetime import date, timedelta
+import argparse
+import importlib.util
+import time
+import pandas as pd
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[1]
+HISTORY = ROOT / "cleaned_data" / "city_month_features.csv"
+STAGING = ROOT / "cleaned_data" / "climate_refresh"
+KEY = ["Country_dest","City"]
+COORDS = ["City_Center_Lat","City_Center_Lon"]
+WEATHER = ["Temp_Max_Mean","Temp_Min_Mean","Temp_Mean","RH_Mean","RH_Min_Mean",
+           "Precip_Total_mm","Sunshine_h_per_day","Wind_Mean_ms"]
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--through", help="Last complete month YYYY-MM (default: latest safely available)")
+    args = parser.parse_args()
+    history = pd.read_csv(HISTORY)
+    observed = pd.to_datetime(dict(year=history.Year,month=history.Month,day=1)).dt.to_period("M")
+    origin = observed.max()
+    safe = pd.Period(date.today()-timedelta(days=7),"M")-1
+    through = pd.Period(args.through,"M") if args.through else safe
+    if through > safe:
+        raise SystemExit(f"Archive may be incomplete. Last safely available month: {safe}")
+    if through <= origin:
+        print(f"No new complete months after {origin}.")
+        return
+    months = pd.period_range(origin+1,through,freq="M")
+    spec = importlib.util.spec_from_file_location("weather_source",ROOT/"python files"/"weather_py.file.py")
+    source = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(source)
+    source.START_DATE = str(months[0].start_time.date())
+    source.END_DATE = str(months[-1].end_time.date())
+    folder = STAGING / f"{months[0]}_to_{months[-1]}"
+    folder.mkdir(parents=True,exist_ok=True)
+    cities = history[KEY+COORDS].drop_duplicates()
+    if cities.duplicated(KEY).any():
+        raise ValueError("City coordinates vary over history; resolve before download.")
+    parts = []
+    failed = []
+    for i,row in enumerate(cities.itertuples(index=False),1):
+        path = folder / f"city_{i:03d}.csv"
+        try:
+            if path.exists():
+                monthly = pd.read_csv(path)
+            else:
+                payload = source.api_get(row.City_Center_Lat,row.City_Center_Lon)
+                if not payload:
+                    raise ValueError("No archive response")
+                # Check all daily and hourly values; do not accept partial climate history.
+                for field in source.DAILY_VARS:
+                    if pd.Series(payload["daily"][field]).isna().any():
+                        raise ValueError(f"Missing daily {field}")
+                for field in source.HOURLY_VARS:
+                    if pd.Series(payload["hourly"][field]).isna().any():
+                        raise ValueError(f"Missing hourly {field}")
+                monthly = source.to_monthly(payload)
+                monthly["Country_dest"] = row.Country_dest
+                monthly["City"] = row.City
+                monthly["City_Center_Lat"] = row.City_Center_Lat
+                monthly["City_Center_Lon"] = row.City_Center_Lon
+            dates = pd.to_datetime(dict(year=monthly.Year,month=monthly.Month,day=1)).dt.to_period("M")
+            if (list(dates)!=list(months) or not (monthly.n_days.to_numpy()==dates.dt.days_in_month.to_numpy()).all()
+                or not (monthly.n_valid_days==monthly.n_days).all() or not np.isfinite(monthly[WEATHER]).all().all()):
+                raise ValueError("Partial or invalid month")
+            if not monthly.City.eq(row.City).all() or not monthly.Country_dest.eq(row.Country_dest).all():
+                raise ValueError("Cached city mismatch")
+            monthly.to_csv(path,index=False)
+            parts.append(monthly)
+            print(f"{i}/{len(cities)} {row.City}: {len(monthly)} complete months",flush=True)
+        except Exception as exc:
+            failed.append((row.Country_dest,row.City,str(exc)))
+            print(f"Failed: {row.City}: {exc}",flush=True)
+        time.sleep(8)
+    if failed:
+        raise SystemExit(f"Refresh incomplete; cached valid cities for rerun. Failures: {failed}")
+    staged = pd.concat(parts,ignore_index=True).sort_values(KEY+["Year","Month"])
+    assert len(staged)==len(cities)*len(months) and not staged.duplicated(KEY+["Year","Month"]).any()
+    output = folder/"new_weather_observations.csv"
+    staged.to_csv(output,index=False)
+    print(f"Staged {len(staged)} rows in {output}")
+    print("STOP: calculate CID, CIA, P_score, S_score, W_score and TCI using the original scoring method.")
+    print("Do not replace history or deploy until target scores are verified and models retrained.")
+
+
+if __name__=="__main__":
+    main()
