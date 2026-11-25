@@ -1,6 +1,7 @@
 """Request-time monthly TCI inference; never reads future_predictions.csv."""
 from functools import lru_cache
 from pathlib import Path
+from threading import Lock
 import json
 import numpy as np
 import pandas as pd
@@ -8,6 +9,8 @@ from fastapi import HTTPException
 
 ROOT = Path(__file__).resolve().parent
 RESULTS = ROOT / "python files" / "forecast_results"
+MAX_HORIZON = 24
+_EXTENDED_LOCK = Lock()
 WEATHER = ['Temp_Max_Mean','Temp_Min_Mean','Temp_Mean','RH_Mean','RH_Min_Mean',
            'Precip_Total_mm','Sunshine_h_per_day','Wind_Mean_ms']
 KEY = ['Country_dest','City']
@@ -35,7 +38,7 @@ def metadata():
     return selection, origin, pd.read_csv(RESULTS / 'horizon_metrics.csv')
 
 
-@lru_cache(maxsize=12)
+@lru_cache(maxsize=24)
 def load_model(name, horizon):
     import joblib
     # Load only trusted repository artifacts, never user-supplied paths.
@@ -45,11 +48,67 @@ def load_model(name, horizon):
     return model
 
 
+def feature_row(g, i, target):
+    """Same feature order and historical cutoff as the original notebook."""
+    g = g.iloc[:i+1]
+    y, w = g.TCI.to_numpy(float), g[WEATHER].to_numpy(float)
+    m = target.month
+    idx = np.flatnonzero(g.Month.to_numpy() == m)
+    if len(idx) < 2 or len(g) < 25:
+        return None
+    return [g.City_Center_Lat.iloc[0], g.City_Center_Lon.iloc[0],
+            np.sin(2*np.pi*m/12), np.cos(2*np.pi*m/12), y[idx[-1]], y[idx[-2]],
+            y[idx].mean(), y[idx[-3:]].mean(), y[-1], y[-3:].mean(),
+            *w[idx[-1]], *w[idx].mean(axis=0), *w[-3:].mean(axis=0)]
+
+
+@lru_cache(maxsize=12)
+def extended_model(h):
+    """Fit one direct long-lead model and its independent 2025 backtest.
+    No stored predictions, extrapolated reliability or future weather inputs.
+    """
+    if not 13 <= h <= MAX_HORIZON:
+        raise ValueError('Unsupported long lead')
+    from xgboost import XGBRegressor
+    selection, origin, _ = metadata()
+    if selection['best_climate_ml'] != 'Residual XGBoost':
+        raise ValueError('Long-lead configuration requires Residual XGBoost')
+    rows = []
+    for _, g in history().groupby(KEY, sort=True):
+        g = g.sort_values('date').reset_index(drop=True)
+        if not np.all(np.diff(g.date.astype('int64')) == 1):
+            raise ValueError('Gap in climate history')
+        for i in range(24, len(g)-h):
+            target = g.date.iloc[i+h]
+            features = feature_row(g, i, target)
+            if features is not None:
+                rows.append([g.date.iloc[i], target, float(g.TCI.iloc[i+h]), *features])
+    data = pd.DataFrame(rows, columns=['origin','target','TCI',*FEATURES])
+    test = data[data.target.dt.year.eq(2025)]
+    train = data[data.target < test.origin.min()]
+    if test.empty or train.empty or train.target.max() >= test.origin.min():
+        raise ValueError('Insufficient leakage-free training history')
+    # Fixed prior-validation hyperparameters; never tune against the test.
+    params = dict(n_estimators=100,max_depth=3,learning_rate=.03,subsample=.85,
+                  colsample_bytree=.85,reg_lambda=10,n_jobs=1,random_state=42,
+                  objective='reg:squarederror',tree_method='hist')
+    validation_model = XGBRegressor(**params)
+    validation_model.fit(train[FEATURES], train.TCI-train.season_mean)
+    pred = np.clip(validation_model.predict(test[FEATURES])+test.season_mean.to_numpy(),0,100)
+    errors = np.abs(test.TCI.to_numpy()-pred)
+    metric = dict(Within_10_pct=float(100*np.mean(errors<=10)), MAE=float(errors.mean()),
+                  Error_P90=float(np.quantile(errors,.9)), Test_n=len(test),
+                  baseline_mae=float(np.abs(test.TCI-test.season_mean).mean()))
+    final = XGBRegressor(**params)
+    final.fit(data[FEATURES], data.TCI-data.season_mean)
+    return final, metric
+
+
 def forecast_info():
     try:
         selection, origin, metrics = metadata()
         return {'origin': str(origin), 'min_date': str((origin+1).start_time.date()),
-                'max_date': str((origin+12).end_time.date()), 'model': selection['best_climate_ml'],
+                'max_date': str((origin+MAX_HORIZON).end_time.date()), 'max_horizon_months': MAX_HORIZON, 'model': selection['best_climate_ml'],
                 'resolution': 'monthly', 'baseline_test_better': bool(metrics.loc[metrics.Model.eq('Historical Mean'), 'MAE'].mean() < metrics.loc[metrics.Model.eq(selection['best_climate_ml']), 'MAE'].mean())}
     except (OSError, ValueError, KeyError, ImportError) as exc:
         raise HTTPException(503, 'Forecast artifacts unavailable or inconsistent. Retrain and deploy them together.') from exc
@@ -60,7 +119,7 @@ def predict_tci(country, travel_date, city=None):
     selection, origin, metrics = metadata()
     target = pd.Period(travel_date, 'M')
     h = target.ordinal - origin.ordinal
-    if not 1 <= h <= 12:
+    if not 1 <= h <= MAX_HORIZON:
         raise HTTPException(422, f'Choose a date from {info["min_date"]} to {info["max_date"]}.')
     name = selection['best_climate_ml']
     df = history()
@@ -70,38 +129,41 @@ def predict_tci(country, travel_date, city=None):
     keys, features = [], []
     for key, g in df.loc[mask].groupby(KEY, sort=True):
         g = g.sort_values('date')
-        y, w = g.TCI.to_numpy(float), g[WEATHER].to_numpy(float)
-        m = target.month
-        idx = np.flatnonzero(g.Month.to_numpy() == m)
-        if len(idx) < 2 or len(g) < 25 or not np.all(np.diff(g.date.astype('int64')) == 1):
+        if not np.all(np.diff(g.date.astype('int64')) == 1):
             raise HTTPException(503, 'Incomplete climate history for the selected city.')
-        x = [g.City_Center_Lat.iloc[0], g.City_Center_Lon.iloc[0],
-             np.sin(2*np.pi*m/12), np.cos(2*np.pi*m/12), y[idx[-1]], y[idx[-2]],
-             y[idx].mean(), y[idx[-3:]].mean(), y[-1], y[-3:].mean()]
-        x += list(w[idx[-1]]) + list(w[idx].mean(axis=0)) + list(w[-3:].mean(axis=0))
+        x = feature_row(g, len(g)-1, target)
+        if x is None:
+            raise HTTPException(503, 'Incomplete climate history for the selected city.')
         keys.append(key)
         features.append(x)
     if not keys:
         raise HTTPException(404, 'No climate history for this destination.')
     X = pd.DataFrame(features, columns=FEATURES)
     try:
-        bundle = load_model(name, h)
-        values = bundle['model'].predict(X)
-        if bundle['add_season_mean']:
-            values = values + X.season_mean.to_numpy()
+        if h <= 12:
+            bundle = load_model(name, h)
+            values = bundle['model'].predict(X)
+            if bundle['add_season_mean']:
+                values = values + X.season_mean.to_numpy()
+            metric = metrics.loc[metrics.Model.eq(name) & metrics.Horizon_months.eq(h)].iloc[0].to_dict()
+            baseline = metrics.loc[metrics.Model.eq('Historical Mean') & metrics.Horizon_months.eq(h)].iloc[0]
+            metric['baseline_mae'] = float(baseline.MAE)
+        else:
+            # Serialize first-use training to avoid duplicate concurrent fits.
+            with _EXTENDED_LOCK:
+                model, metric = extended_model(h)
+            values = model.predict(X) + X.season_mean.to_numpy()
         values = np.clip(values, 0, 100)
         if not np.isfinite(values).all():
             raise ValueError('Non-finite model output')
-        metric = metrics.loc[metrics.Model.eq(name) & metrics.Horizon_months.eq(h)].iloc[0]
-        baseline = metrics.loc[metrics.Model.eq('Historical Mean') & metrics.Horizon_months.eq(h)].iloc[0]
     except Exception as exc:
         raise HTTPException(503, 'Model inference unavailable. Check model files and installed dependencies.') from exc
     reliability = {'model': name, 'origin': str(origin), 'target_month': str(target),
-        'horizon_months': h, 'within_10_pct': float(metric.Within_10_pct),
-        'mae': float(metric.MAE), 'error_p90': float(metric.Error_P90), 'test_n': int(metric.Test_n),
-        'baseline_mae': float(baseline.MAE), 'resolution': 'monthly',
+        'horizon_months': h, 'within_10_pct': float(metric['Within_10_pct']),
+        'mae': float(metric['MAE']), 'error_p90': float(metric['Error_P90']), 'test_n': int(metric['Test_n']),
+        'baseline_mae': float(metric['baseline_mae']), 'training_mode': 'saved_model' if h <= 12 else 'direct_long_lead_fit', 'resolution': 'monthly',
         'definition': 'Historical 2025 test share within +/-10 TCI points across all cities; not an individual probability.',
-        'warning': ('The historical mean had lower MAE on the 2025 test for this lead. ' if float(baseline.MAE) < float(metric.MAE) else '') + 'Daily weather is not predicted by this model.'}
+        'warning': ('The historical mean had lower MAE on the 2025 test for this lead. ' if float(metric['baseline_mae']) < float(metric['MAE']) else '') + ('Long-lead model evaluated separately on 2025; not independently validated on 2027. ' if h > 12 else '') + 'Daily weather is not predicted by this model.'}
     result = pd.DataFrame(keys, columns=KEY)
     result['predicted_tci'] = values
     result['historical_mean_tci'] = X.season_mean.to_numpy()
