@@ -122,6 +122,22 @@
       note("Planning note: " + plan.warning);
     }
 
+    for (const forecast of plan.monthly_forecasts || []) {
+      y += 6;
+      heading("MONTHLY FORECAST: " + plain(forecast.target_month));
+      note("Predicted monthly TCI: " + Number(forecast.predicted_tci).toFixed(2) + "/100 | " +
+        plain(forecast.tci_category) + " | Historical success within +/-10 TCI: " +
+        Number(forecast.within_10_pct).toFixed(1) + "% | MAE: " + Number(forecast.mae).toFixed(2));
+      for (const variable of forecast.monthly_weather?.variables || []) {
+        const unit = plain(variable.unit);
+        note(plain(variable.label) + ": " + Number(variable.prediction).toFixed(2) + " " + unit +
+          "; MAE " + Number(variable.mae).toFixed(2) + " " + unit +
+          "; historical success " + Number(variable.within_tolerance_pct).toFixed(1) +
+          "% within +/-" + variable.tolerance + " " + unit);
+      }
+      note("Monthly estimates only; no daily forecast. Historical hit rates are not individual probabilities.");
+    }
+
     for (const day of plan.days) {
       y += 7;
       heading(`DAY ${day.number}  |  ${day.date}  |  ${plain(day.day_type).toUpperCase()}`);

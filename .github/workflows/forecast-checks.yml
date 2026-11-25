@@ -11,6 +11,16 @@ on:
       - 'scripts/train_weather_models.py'
       - 'website_api.py'
       - 'dashboard-site.js'
+      - 'trip-pdf.js'
+      - 'index.html'
+      - '*.html'
+      - '*.css'
+      - 'theme.js'
+      - 'discovery-map.js'
+      - 'experience-v4.js'
+      - 'api.py'
+      - 'web_server.py'
+      - 'scripts/test_site_full.py'
       - 'scripts/test_forecast*.py'
       - 'requirements-deploy.txt'
       - '.github/workflows/forecast-checks.yml'
@@ -29,7 +39,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install -r requirements-deploy.txt httpx playwright
+      - run: python -m pip install -r requirements-deploy.txt httpx playwright pypdf
       - run: python -m compileall -q forecast_service.py weather_forecast.py tci_scoring.py website_api.py itinerary_engine2.py scripts
       - run: python scripts/train_weather_models.py
       - uses: actions/upload-artifact@v4
@@ -48,3 +58,10 @@ jobs:
             sleep 1
           done
           python scripts/test_forecast_browser.py
+          python scripts/test_site_full.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: site-test-screenshots
+          path: site-test-artifacts/
+          if-no-files-found: ignore

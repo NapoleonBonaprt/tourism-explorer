@@ -206,7 +206,7 @@ const $ = id => document.getElementById(id);
 
 const colorFor = t => t >= 80 ? "#6FA876" : t >= 70 ? "#A3BF7A" : t >= 60 ? "#E0B65A" : t >= 50 ? "#D98F4E" : t >= 40 ? "#B5593A" : "#7E3B2E";
 const lightText = c => c === "#B5593A" || c === "#7E3B2E";
-const labelFor = t => t >= 80 ? "Ideal" : t >= 70 ? "Very good" : t >= 60 ? "Good" : t >= 50 ? "Fair" : t >= 40 ? "Tough" : "Avoid";
+const labelFor = t => !Number.isFinite(t) ? "N/A" : t >= 90 ? "Ideal" : t >= 80 ? "Excellent" : t >= 70 ? "Very Good" : t >= 60 ? "Good" : t >= 50 ? "Acceptable" : t >= 40 ? "Marginal" : t >= 30 ? "Unfavorable" : t >= 20 ? "Very Unfavorable" : "Extremely Unfavorable";
 const num = (v, d = 1) => typeof v === "number" && isFinite(v) ? v.toFixed(d) : "N/A";
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
 const titleCase = s => s.replace(/\b\w/g, c => c.toUpperCase());
@@ -513,7 +513,7 @@ renderBrowse();
 $("browseQuery").addEventListener("input", renderBrowse);
 document.addEventListener("wanderclimate:map-ready", renderBrowse);
 loadPlaces();
-$("key").innerHTML = [[85,"Ideal","80+"],[75,"Very good","70–79"],[65,"Good","60–69"],[55,"Fair","50–59"],[45,"Tough","40–49"],[30,"Avoid","under 40"]]
+$("key").innerHTML = [[95,"Ideal / Excellent","80+"],[75,"Very Good","70–79"],[65,"Good","60–69"],[55,"Acceptable","50–59"],[45,"Marginal","40–49"],[30,"Unfavorable ranges","under 40"]]
   .map(([v, l, r]) => `<span><i style="background:${colorFor(v)}"></i>${l} <small>${r}</small></span>`).join("");
 $("city").addEventListener("keydown", e => { if (e.key === "Enter") explore(); });
 

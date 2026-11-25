@@ -573,11 +573,34 @@ class ExportDay(BaseModel):
     stops: list[ExportStop] = Field(max_length=100)
 
 
+class ExportMonthlyVariable(BaseModel):
+    label: str = Field(min_length=1, max_length=80)
+    unit: str = Field(max_length=24)
+    prediction: float = Field(allow_inf_nan=False)
+    mae: float = Field(ge=0, allow_inf_nan=False)
+    tolerance: float = Field(gt=0, allow_inf_nan=False)
+    within_tolerance_pct: float = Field(ge=0, le=100)
+
+
+class ExportMonthlyWeather(BaseModel):
+    variables: list[ExportMonthlyVariable] = Field(min_length=1, max_length=5)
+
+
+class ExportMonthlyForecast(BaseModel):
+    target_month: str = Field(pattern=r"^\d{4}-\d{2}$")
+    predicted_tci: float = Field(ge=0, le=100)
+    tci_category: str = Field(max_length=80)
+    within_10_pct: float = Field(ge=0, le=100)
+    mae: float = Field(ge=0, allow_inf_nan=False)
+    monthly_weather: ExportMonthlyWeather
+
+
 class ExportRequest(BaseModel):
     city: str = Field(min_length=1, max_length=100)
     days: list[ExportDay] = Field(min_length=1, max_length=7)
     warning: str | None = Field(default=None, max_length=600)
     changes: list[dict] | None = None
+    monthly_forecasts: list[ExportMonthlyForecast] = Field(default_factory=list, max_length=2)
 
 
 @router.post("/adaptive/export-pdf")
@@ -625,6 +648,19 @@ def export_adaptive_pdf(request: ExportRequest):
     ]
     if request.warning:
         story.append(Paragraph(xml_escape(request.warning), styles["WCNote"]))
+    for forecast in request.monthly_forecasts:
+        story.append(Paragraph("Monthly forecast: " + xml_escape(forecast.target_month), styles["WCDay"]))
+        story.append(Paragraph(
+            f"Predicted monthly TCI: {forecast.predicted_tci:.2f}/100 | "
+            f"{xml_escape(forecast.tci_category)} | Historical success within +/-10 TCI: "
+            f"{forecast.within_10_pct:.1f}% | MAE: {forecast.mae:.2f}", styles["WCBody"]))
+        for variable in forecast.monthly_weather.variables:
+            unit = xml_escape(variable.unit)
+            story.append(Paragraph(
+                f"{xml_escape(variable.label)}: {variable.prediction:.2f} {unit}; "
+                f"MAE {variable.mae:.2f} {unit}; historical success "
+                f"{variable.within_tolerance_pct:.1f}% within +/-{variable.tolerance:g} {unit}.", styles["WCNote"]))
+        story.append(Paragraph("Monthly estimates only; no daily forecast. Historical hit rates are not individual probabilities.", styles["WCNote"]))
     for day in request.days:
         wx = day.weather
         def temp(v, unit):

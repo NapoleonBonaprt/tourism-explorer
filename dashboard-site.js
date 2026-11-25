@@ -106,7 +106,7 @@
       </div>
     </div>`;
     $("siteFooter").innerHTML = `<div class="footer-inner"><span>WanderClimate · Tourism Climate Index and spatial analytics</span>
-       <span>Monthly model predictions estimate TCI, not daily weather. Adaptive planning uses short-range weather forecasts.</span></div>`;
+       <span>Monthly models estimate TCI and monthly climate, not daily weather. Short-range plans use daily forecasts.</span></div>`;
     const actionText = {
       overview: "Explore the overview",
       climate: "Explore climate data",
@@ -634,14 +634,14 @@
   }
   const buildPayload=()=>({city:$("adaptiveCity").value,start_date:$("adaptiveStartDate").value,days:+$("adaptiveDays").value,stops:+$("adaptiveStops").value});
   const weatherCache=new Map();
-  async function browserForecast(city, days, startDate) {
+  async function browserForecast(city, days, startDate, force=false) {
     const filters=await getFilters();
     const point=filters.adaptive_coordinates?.[city];
     if(!point || !Number.isFinite(point.latitude) || !Number.isFinite(point.longitude))
       throw new Error("Cannot locate the selected city for live forecast. Refresh the page and try again.");
     const key=city+"|"+startDate+"|"+days;
     const cached=weatherCache.get(key);
-    if(cached && Date.now()-cached.time<10*60*1000) return cached.forecast;
+    if(!force && cached && Date.now()-cached.time<10*60*1000) return cached.forecast;
     const url=new URL("https://api.open-meteo.com/v1/forecast");
     Object.entries({
       latitude:point.latitude,longitude:point.longitude,start_date:startDate,end_date:addDateDays(startDate,days-1),
@@ -665,11 +665,11 @@
       return forecast;
     } finally {clearTimeout(timeout);}
   }
-  async function adaptivePayload(payload) {
+  async function adaptivePayload(payload, force=false) {
     // The hosted server shares a rate-limited outbound proxy on free hosting.
     // Show the original browser error rather than silently retrying via that proxy.
     if(addDateDays(payload.start_date,payload.days-1)>addDateDays(localISODate(),6)) return payload;
-    const forecast=await browserForecast(payload.city,payload.days,payload.start_date);
+    const forecast=await browserForecast(payload.city,payload.days,payload.start_date,force);
     return {...payload,forecast};
   }
   async function buildAdaptive(){
@@ -779,7 +779,8 @@
       const response=await fetch(query("adaptive/export-pdf"),{
         method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({city:adaptiveState.city,days,
-          warning:adaptiveState.warning||null,changes:adaptiveState.changes||null})
+          warning:adaptiveState.warning||null,changes:adaptiveState.changes||null,
+          monthly_forecasts:adaptiveState.monthly_forecasts||[]})
       });
       if(!response.ok){
         const body=await response.json().catch(()=>({}));
@@ -849,7 +850,7 @@
     }));
     try{
       const payload=await adaptivePayload({city:adaptiveState.city,start_date:adaptiveState.days[0].date,days:adaptiveState.days.length,
-        stops:adaptiveState.requested_stops,previous,simulate_storm:storm,storm_date:storm?weatherDate:null,rain_mm:rain});
+        stops:adaptiveState.requested_stops,previous,simulate_storm:storm,storm_date:storm?weatherDate:null,rain_mm:rain},true);
       const d=await request("adaptive/recheck",{},{
         method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify(payload)
