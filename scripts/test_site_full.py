@@ -393,6 +393,65 @@ class Browser(unittest.TestCase):
         p.locator("#adaptiveBuild").click()
         expect(p.locator("#pageStatus")).to_contain_text("entire trip must fit")
 
+
+    def test_07_shared_date_calendar(self):
+        p=self.page
+        from calendar import monthrange
+        minimum=date.fromisoformat(self.info["min_date"])
+        maximum=date.fromisoformat(self.info["max_date"])
+        target=maximum.replace(day=15)
+        for route,field in [("climate","climateTravelDate"),("explorer","mapMonth"),
+                            ("planner","planMonth"),("adaptive","adaptiveStartDate")]:
+            with self.subTest(page=route):
+                self.goto("/"+route+".html?country=Egypt&city=Cairo&date="+target.isoformat())
+                expect(p.locator("#"+field)).to_have_value(target.isoformat(),timeout=60000)
+                trigger=p.locator(".wc-date-trigger")
+                dialog=p.locator("#"+field+"Calendar")
+                expect(trigger).to_be_visible()
+                trigger.click()
+                expect(dialog).to_be_visible()
+                expect(dialog.locator(".wc-cal-month")).to_have_value(str(target.month-1))
+                expect(dialog.locator(".wc-cal-year")).to_have_value(str(target.year))
+                expect(dialog.locator(".wc-cal-next")).to_be_disabled()
+                selected=dialog.locator("[data-date='"+target.isoformat()+"']")
+                expect(selected).to_have_attribute("aria-pressed","true")
+                selected.press("ArrowRight")
+                chosen=target+timedelta(days=1)
+                expect(dialog.locator("[data-date='"+chosen.isoformat()+"']")).to_be_focused()
+                dialog.locator("[data-date='"+chosen.isoformat()+"']").press("Enter")
+                expect(p.locator("#"+field)).to_have_value(chosen.isoformat())
+                expect(dialog).to_be_hidden()
+                trigger.click()
+                p.keyboard.press("Escape")
+                expect(dialog).to_be_hidden()
+                expect(trigger).to_be_focused()
+                trigger.click()
+                # Jump directly to the earliest available year/month.
+                low=date.fromisoformat(p.locator("#"+field).get_attribute("min"))
+                dialog.locator(".wc-cal-year").select_option(str(low.year))
+                dialog.locator(".wc-cal-month").select_option(str(low.month-1))
+                expect(dialog.locator(".wc-cal-prev")).to_be_disabled()
+                if low.day>1:
+                    expect(dialog.locator("[data-date='"+low.replace(day=1).isoformat()+"']")).to_be_disabled()
+                dialog.locator("[data-date='"+low.isoformat()+"']").click()
+                expect(p.locator("#"+field)).to_have_value(low.isoformat())
+                expect(dialog).to_be_hidden()
+        # Mobile and dark mode: calendar stays entirely inside the viewport.
+        p.set_viewport_size({"width":390,"height":844})
+        p.evaluate("document.documentElement.dataset.theme='dark'")
+        trigger=p.locator(".wc-date-trigger")
+        trigger.click()
+        dialog=p.locator("#adaptiveStartDateCalendar")
+        expect(dialog).to_be_visible()
+        box=dialog.bounding_box()
+        self.assertGreaterEqual(box["x"],0)
+        self.assertGreaterEqual(box["y"],0)
+        self.assertLessEqual(box["x"]+box["width"],391)
+        self.assertLessEqual(box["y"]+box["height"],845)
+        p.screenshot(path=str(OUT/"calendar-mobile-dark.png"),full_page=False)
+        dialog.locator(".wc-cal-close").click()
+        expect(dialog).to_be_hidden()
+
     def test_06_weather_provider_error(self):
         p=self.page
         p.route("https://api.open-meteo.com/v1/forecast**",
