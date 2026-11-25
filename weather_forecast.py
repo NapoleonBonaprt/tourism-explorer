@@ -5,6 +5,9 @@ separate. No daily values are fabricated from monthly estimates.
 """
 from functools import lru_cache
 from threading import Lock
+from pathlib import Path
+import hashlib
+import joblib
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import Ridge
@@ -26,6 +29,9 @@ TOL=np.array([v[2] for v in TARGETS.values()])
 LOW=np.array([v[3] for v in TARGETS.values()])
 HIGH=np.array([v[4] for v in TARGETS.values()])
 LOCK=Lock()
+ROOT=Path(__file__).resolve().parent
+ARTIFACTS=ROOT/'python files'/'monthly_weather_results'
+SCHEMA_VERSION=1
 
 
 def features(w, months, lat, lon, i, target_month):
@@ -92,6 +98,22 @@ def train_weather(h):
     return models,metrics
 
 
+@lru_cache(maxsize=1)
+def history_fingerprint():
+    return hashlib.sha256((ROOT/'cleaned_data'/'city_month_features.csv').read_bytes()).hexdigest()
+
+
+@lru_cache(maxsize=24)
+def weather_bundle(h):
+    path=ARTIFACTS/f'weather_{h:02d}m.joblib'
+    if path.is_file():
+        bundle=joblib.load(path)
+        if (bundle.get('schema')==SCHEMA_VERSION and bundle.get('horizon')==h
+                and bundle.get('history_sha256')==history_fingerprint()):
+            return bundle['models'],bundle['metrics']
+    return train_weather(h)
+
+
 def predict_weather(country,city,travel_date):
     df=history()
     target=pd.Period(travel_date,"M"); origin=df.date.max(); h=target.ordinal-origin.ordinal
@@ -102,7 +124,7 @@ def predict_weather(country,city,travel_date):
     if g.empty: raise HTTPException(404,"No observations for this city.")
     try:
         with LOCK:
-            models,metrics=train_weather(h)
+            models,metrics=weather_bundle(h)
         row=features(g[WEATHER].to_numpy(float),g.Month.to_numpy(),g.City_Center_Lat.iloc[0],
                      g.City_Center_Lon.iloc[0],len(g)-1,target.month)
         x,b=row
