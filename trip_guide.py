@@ -74,6 +74,7 @@ def make_guide(plan):
     bottom = H - 54
     days = plan['days']
     monthly = plan.get('monthly_forecasts') or []
+    by_month = {f['target_month']: f for f in monthly}
     changed = {str(c.get('date')) for c in (plan.get('changes') or [])}
     cover_bytes, cover_kind = city_cover(plan['city'])
     page = 0
@@ -157,16 +158,6 @@ def make_guide(plan):
 
     new_page()
     if monthly:
-        for f in monthly:
-            headline, tip = monthly_summary(f)
-            month = friendly_date(f['target_month']+'-01', '%B %Y')
-            height = 66 + max(0,len(wrap(headline,CW-28,13,True))-1)*16 + max(0,len(wrap(tip,CW-28,10))-1)*14
-            room(height+12)
-            rect(M,y,CW,height,SOFT,10)
-            text('WHAT TO EXPECT  /  '+month.upper(),M+14,y+10,8.5,GREEN,True)
-            n=lines(headline,M+14,y+25,CW-28,13,INK,True,16)
-            lines(tip,M+14,y+30+n,CW-28,10,MUTED,False,14)
-            y += height+10
         msg='Early trip plan: monthly estimates, not daily weather. Rebuild within seven days of travel.'
     else:
         msg='Weather-aware plan: check the latest forecast before each day out.'
@@ -179,31 +170,54 @@ def make_guide(plan):
         groups=[(slot,[s for s in stops if s.get('slot')==slot]) for slot in ('morning','afternoon')]
         extra=[s for s in stops if s.get('slot') not in ('morning','afternoon')]
         if extra: groups.append(('explore',extra))
+        # A day inherits only its own calendar month's forecast.
+        # Adjacent months may differ, but dates within one month share the estimate.
+        month_key = d['date'][:7]
+        forecast = by_month.get(month_key)
+        side_width = 184 if monthly else 0
+        left_width = CW-side_width-(12 if monthly else 0)
+        stop_width = left_width-42
         weather = '' if monthly else daily_summary(d.get('weather') or {})
         subtitle=preference(d['day_type']) + (' | Updated' if d['date'] in changed else '')
         if weather: subtitle += ' | ' + weather
-        sub_h=len(wrap(subtitle,CW-28,10))*13
-        rows_h=sum(14+sum(max(1,len(wrap(s['name'],CW-69,11,True)))*14+2 for s in ss) for _,ss in groups if ss)
-        height=40+sub_h+rows_h+(22 if not stops else 0)+10
+        sub_h=len(wrap(subtitle,left_width-28,10))*13
+        rows_h=sum(14+sum(max(1,len(wrap(s['name'],stop_width,11,True)))*14+2 for s in ss) for _,ss in groups if ss)
+        height=40+sub_h+rows_h+(len(wrap('Free time to explore at your own pace.',left_width-28,11))*15+7 if not stops else 0)+10
+        if monthly:
+            month = friendly_date(month_key+'-01', '%B %Y')
+            headline, tip = monthly_summary(forecast) if forecast else ('Monthly outlook unavailable', 'Check the weather closer to your trip.')
+            headline = headline.replace(' | ', '\n')
+            side_w = side_width-24
+            side_rows = sum(len(wrap(part,side_w,12,True)) for part in headline.split('\n'))
+            height=max(height,66+side_rows*15+len(wrap(tip,side_w,10))*13)
         room(height+11)
         start=y
         rect(M,start,CW,height,WHITE,10)
         rect(M+12,start+12,35,25,GREEN,6)
         text(f"DAY {d['number']}",M+17,start+18,9,WHITE,True)
         text(friendly_date(d['date'],'%a, %d %b %Y'),M+58,start+12,15,INK,True)
+        if monthly:
+            sx=M+CW-side_width-9
+            rect(sx,start+12,side_width,height-24,SOFT,8)
+            text('WHAT TO EXPECT',sx+12,start+21,8.5,GREEN,True)
+            text(month.upper()+'  /  MONTHLY',sx+12,start+34,7.5,GREEN,True)
+            sy=start+49
+            for part in headline.split('\n'):
+                sy+=lines(part,sx+12,sy,side_w,12,INK,True,15)
+            lines(tip,sx+12,sy+5,side_w,10,MUTED,False,13)
         y=start+38
-        y+=lines(subtitle,M+14,y,CW-28,10,MUTED,False,13)+3
+        y+=lines(subtitle,M+14,y,left_width-28,10,MUTED,False,13)+3
         for slot, ss in groups:
             if not ss: continue
             text(slot.upper(),M+14,y,8.5,GREEN,True); y+=14
             for s in ss:
                 name=str(s['name'])
                 circle(M+19,y+7,3,GOLD)
-                h=lines(name,M+30,y,CW-69,11,INK,True,14)
+                h=lines(name,M+30,y,stop_width,11,INK,True,14)
                 if finite(s.get('lat')) and finite(s.get('lon')):
-                    pdf.linkURL(f"https://www.google.com/maps/search/?api=1&query={s['lat']},{s['lon']}",(M+28,H-y-h,W-M-12,H-y+2),relative=0)
+                    pdf.linkURL(f"https://www.google.com/maps/search/?api=1&query={s['lat']},{s['lon']}",(M+28,H-y-h,M+left_width-10,H-y+2),relative=0)
                 y+=h+2
-        if not stops: y+=lines('Free time to explore at your own pace.',M+14,y,CW-28,11,MUTED,False,15)
+        if not stops: y+=lines('Free time to explore at your own pace.',M+14,y,left_width-28,11,MUTED,False,15)
         y=start+height+11
     room(29)
     link_note = 'Tap a place name to open it on the map. ' if any(finite(s.get('lat')) and finite(s.get('lon')) for d in days for s in d['stops']) else ''

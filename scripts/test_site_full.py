@@ -148,10 +148,10 @@ class API(unittest.TestCase):
         self.assertEqual(self.get("/website/guide-cover",{"city":"Madrid"}).headers["x-guide-cover"],"illustration")
 
     def test_06_monthly_pdf_content(self):
-        start=date.fromisoformat(self.info["max_date"])-timedelta(days=3)
+        start=date.fromisoformat(self.info["max_date"]).replace(day=1)-timedelta(days=2)
         if start<=date.today()+timedelta(days=6):
             self.skipTest("Forecast fixture expired")
-        plan=self.post("/website/adaptive/build",dict(city="London",start_date=start.isoformat(),days=3,stops=3)).json()
+        plan=self.post("/website/adaptive/build",dict(city="London",start_date=start.isoformat(),days=4,stops=3)).json()
         raw=self.post("/website/adaptive/export-pdf",plan)
         self.assertIn("application/pdf",raw.headers["content-type"])
         content=pdf_text(raw.content).lower()
@@ -165,7 +165,27 @@ class API(unittest.TestCase):
         doc=PdfReader(BytesIO(raw.content))
         self.assertGreater(len(doc.pages[0].images),0)
         self.assertGreaterEqual(sum(len(p.get("/Annots",[])) for p in doc.pages),sum(len(d["stops"]) for d in plan["days"]))
+        self.assertEqual(len(plan["monthly_forecasts"]),2)
+        assert_daily_monthly_outlooks(self,raw.content,plan)
         (OUT/"monthly-server.pdf").write_bytes(raw.content)
+
+def assert_daily_monthly_outlooks(case, raw, plan):
+    # Content is emitted day-by-day, with a monthly outlook inside every card.
+    content=pdf_text(raw).lower()
+    case.assertEqual(content.count("what to expect"),len(plan["days"]))
+    blocks=re.split(r"\bday\s+(\d+)\b",content)
+    case.assertEqual(len(blocks),1+2*len(plan["days"]))
+    forecasts={f["target_month"]:f for f in plan["monthly_forecasts"]}
+    for i,day in enumerate(plan["days"]):
+        case.assertEqual(int(blocks[2*i+1]),day["number"])
+        block=blocks[2*i+2]
+        case.assertIn("what to expect",block)
+        case.assertIn(date.fromisoformat(day["date"]).strftime("%B %Y").lower(),block)
+        f=forecasts[day["date"][:7]]
+        temp=next(v["prediction"] for v in f["monthly_weather"]["variables"] if v["label"]=="Mean temperature")
+        case.assertIn(f"around {math.floor(temp+.5)}",block)
+        case.assertIn("monthly",block)
+
 
 class Browser(unittest.TestCase):
     @classmethod
@@ -365,15 +385,17 @@ class Browser(unittest.TestCase):
     def test_05_monthly_download_and_date_validation(self):
         p=self.page
         end=self.info["max_date"]
-        start=(date.fromisoformat(end)-timedelta(days=4)).isoformat()
+        start=(date.fromisoformat(end).replace(day=1)-timedelta(days=2)).isoformat()
         if date.fromisoformat(start)<=date.today()+timedelta(days=6):
             self.skipTest("Forecast fixture expired")
         self.goto("/adaptive.html?city=London&date="+start)
         expect(p.locator("#adaptiveStartDate")).to_have_value(start,timeout=60000)
-        p.locator("#adaptiveDays").select_option("3")
-        p.locator("#adaptiveBuild").click()
+        p.locator("#adaptiveDays").select_option("4")
+        with p.expect_response(lambda r:"/website/adaptive/build" in r.url and r.request.method=="POST") as built:
+            p.locator("#adaptiveBuild").click()
+        plan=built.value.json()
         expect(p.locator("#adaptiveResults")).to_contain_text("Predicted monthly weather",timeout=120000)
-        expect(p.locator("#adaptiveDayCards .day-card")).to_have_count(3)
+        expect(p.locator("#adaptiveDayCards .day-card")).to_have_count(4)
         expect(p.locator("#adaptiveRecheck")).to_have_count(0)
         p.wait_for_function("window.WanderClimatePDF && WanderClimatePDF.available()")
         with p.expect_download() as download:
@@ -387,6 +409,8 @@ class Browser(unittest.TestCase):
             self.assertNotIn(term,content)
         self.assertTrue(any(p.get("/Annots") for p in PdfReader(BytesIO(raw)).pages))
         self.assertGreater(len(PdfReader(BytesIO(raw)).pages[0].images),0)
+        self.assertEqual(len(plan["monthly_forecasts"]),2)
+        assert_daily_monthly_outlooks(self,raw,plan)
         (OUT/"monthly-browser.pdf").write_bytes(raw)
         p.locator("#adaptiveStartDate").fill(end)
         p.locator("#adaptiveDays").select_option("7")

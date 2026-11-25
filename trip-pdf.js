@@ -49,6 +49,7 @@
     const pdf=new window.jspdf.jsPDF({orientation:"portrait",unit:"pt",format:"a4",compress:true});
     const W=pdf.internal.pageSize.getWidth(),H=pdf.internal.pageSize.getHeight(),M=38,CW=W-2*M,bottom=H-54;
     const days=plan.days,monthly=plan.monthly_forecasts||[],changed=new Set((plan.changes||[]).map(c=>String(c.date)));
+    const byMonth=new Map(monthly.map(f=>[f.target_month,f]));
     let page=0,y=0;
     pdf.setProperties({title:"WanderClimate | "+plain(plan.city)+" travel guide",author:"WanderClimate"});
     function rect(x,t,w,h,color,r=0){pdf.setFillColor(color);if(r)pdf.roundedRect(x,t,w,h,r,r,"F");else pdf.rect(x,t,w,h,"F");}
@@ -92,45 +93,53 @@
     }
     function room(h){if(y+h>bottom)newPage();}
     newPage();
-    if(monthly.length){
-      for(const f of monthly){
-        const [headline,tip]=monthlySummary(f);
-        const month=dateText(f.target_month+"-01",false,true);
-        const h=66+Math.max(0,wrap(headline,CW-28,13,true).length-1)*16+Math.max(0,wrap(tip,CW-28,10).length-1)*14;
-        room(h+12);rect(M,y,CW,h,C.soft,10);
-        text("WHAT TO EXPECT  /  "+month.toUpperCase(),M+14,y+10,8.5,C.green,true);
-        const n=lines(headline,M+14,y+25,CW-28,13,C.ink,true,16);
-        lines(tip,M+14,y+30+n,CW-28,10,C.muted,false,14);y+=h+10;
-      }
-    }
     y+=lines(monthly.length?"Early trip plan: monthly estimates, not daily weather. Rebuild within seven days of travel.":"Weather-aware plan: check the latest forecast before each day out.",M,y,CW,9.5,C.muted,false,13)+9;
     if(changed.size)y+=lines("Your itinerary was adjusted after a weather re-check.",M,y,CW,10,C.green,true,14)+8;
     for(const day of days){
       const stops=day.stops||[];
       const groups=["morning","afternoon"].map(slot=>[slot,stops.filter(s=>s.slot===slot)]);
       const extra=stops.filter(s=>!["morning","afternoon"].includes(s.slot));if(extra.length)groups.push(["explore",extra]);
+      const monthKey=day.date.slice(0,7),forecast=byMonth.get(monthKey);
+      const sideWidth=monthly.length?184:0,leftWidth=CW-sideWidth-(monthly.length?12:0),stopWidth=leftWidth-42;
       let sub=preference(day.day_type)+(changed.has(day.date)?" | Updated":"");
       if(!monthly.length)sub+=" | "+dailySummary(day.weather||{});
-      const subH=wrap(sub,CW-28,10).length*13;
-      const rowsH=groups.filter(([,ss])=>ss.length).reduce((n,[,ss])=>n+14+ss.reduce((m,s)=>m+Math.max(1,wrap(s.name,CW-69,11,true).length)*14+2,0),0);
-      const h=40+subH+rowsH+(stops.length?0:22)+10;
+      const subH=wrap(sub,leftWidth-28,10).length*13;
+      const rowsH=groups.filter(([,ss])=>ss.length).reduce((n,[,ss])=>n+14+ss.reduce((m,s)=>m+Math.max(1,wrap(s.name,stopWidth,11,true).length)*14+2,0),0);
+      let h=40+subH+rowsH+(stops.length?0:wrap("Free time to explore at your own pace.",leftWidth-28,11).length*15+7)+10;
+      let month,headlineParts,tip,sideW;
+      if(monthly.length){
+        month=dateText(monthKey+"-01",false,true);
+        const [headline,clothing]=forecast?monthlySummary(forecast):["Monthly outlook unavailable","Check the weather closer to your trip."];
+        headlineParts=headline.split(" | ");tip=clothing;sideW=sideWidth-24;
+        const sideRows=headlineParts.reduce((n,p)=>n+wrap(p,sideW,12,true).length,0);
+        h=Math.max(h,66+sideRows*15+wrap(tip,sideW,10).length*13);
+      }
       room(h+11);
       const start=y;
       rect(M,start,CW,h,C.white,10);rect(M+12,start+12,35,25,C.green,6);
       text("DAY "+day.number,M+17,start+18,9,C.white,true);
       text(dateText(day.date,true),M+58,start+12,15,C.ink,true);
-      y=start+38;y+=lines(sub,M+14,y,CW-28,10,C.muted,false,13)+3;
+      if(monthly.length){
+        const sx=M+CW-sideWidth-9;
+        rect(sx,start+12,sideWidth,h-24,C.soft,8);
+        text("WHAT TO EXPECT",sx+12,start+21,8.5,C.green,true);
+        text(month.toUpperCase()+"  /  MONTHLY",sx+12,start+34,7.5,C.green,true);
+        let sy=start+49;
+        for(const part of headlineParts)sy+=lines(part,sx+12,sy,sideW,12,C.ink,true,15);
+        lines(tip,sx+12,sy+5,sideW,10,C.muted,false,13);
+      }
+      y=start+38;y+=lines(sub,M+14,y,leftWidth-28,10,C.muted,false,13)+3;
       for(const [slot,ss] of groups){
         if(!ss.length)continue;
         text(slot.toUpperCase(),M+14,y,8.5,C.green,true);y+=14;
         for(const stop of ss){
           circle(M+19,y+7,3,C.gold);
-          const n=lines(stop.name,M+30,y,CW-69,11,C.ink,true,14);
-          if(finite(stop.lat)&&finite(stop.lon))pdf.link(M+28,y,CW-40,n,{url:"https://www.google.com/maps/search/?api=1&query="+stop.lat+","+stop.lon});
+          const n=lines(stop.name,M+30,y,stopWidth,11,C.ink,true,14);
+          if(finite(stop.lat)&&finite(stop.lon))pdf.link(M+28,y,leftWidth-38,n,{url:"https://www.google.com/maps/search/?api=1&query="+stop.lat+","+stop.lon});
           y+=n+2;
         }
       }
-      if(!stops.length)y+=lines("Free time to explore at your own pace.",M+14,y,CW-28,11,C.muted,false,15);
+      if(!stops.length)y+=lines("Free time to explore at your own pace.",M+14,y,leftWidth-28,11,C.muted,false,15);
       y=start+h+11;
     }
     room(29);
