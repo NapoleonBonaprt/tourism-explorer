@@ -281,17 +281,44 @@
        <div class="field"><label for="climateCountry">Select Country</label><select id="climateCountry"></select></div>
        <div class="field"><label for="climateCity">Select City</label><select id="climateCity"></select></div>
        <button class="btn" type="submit" id="climateButton">Analyze climate</button></form>
-       <div id="climateResults"></div>`;
+       <section class="card section-gap"><h2>Predict monthly climate suitability</h2>
+        <div class="filters"><div class="field"><label for="climateTravelDate">Travel date</label><input type="date" id="climateTravelDate" required></div>
+        <button type="button" id="climateForecastButton" class="btn">Predict TCI</button></div>
+        <div id="climateForecastResult" aria-live="polite"></div></section>
+       <div id="climateResults" class="section-gap"></div>`;
     status("Loading countries and cities...");
     try {
       const f=await getFilters();
       bindCityFilter("climateCountry","climateCity",f.climate_cities);
+      try {
+        await setupForecastDate("climateTravelDate");
+        $("climateForecastButton").addEventListener("click",loadClimateForecast);
+        ["climateCountry","climateCity","climateTravelDate"].forEach(id=>$(id).addEventListener("change",loadClimateForecast));
+        loadClimateForecast();
+      } catch(e) {
+        $("climateForecastResult").textContent=e.message;
+        $("climateForecastButton").disabled=true;
+      }
       status("");
       $("climateForm").addEventListener("submit",e=>{e.preventDefault();loadClimate();});
       $("climateCountry").addEventListener("change",loadClimate);
       $("climateCity").addEventListener("change",loadClimate);
       await loadClimate();
     }catch(e){status(e.message,"error");}
+  }
+  let climateForecastSeq=0;
+  async function loadClimateForecast() {
+    const id=++climateForecastSeq;
+    const holder=$("climateForecastResult"),button=$("climateForecastButton");
+    if(!$("climateTravelDate").reportValidity()){holder.textContent="Choose a date in the forecast window.";return;}
+    busy(button,true);holder.textContent="Calculating monthly prediction...";
+    try {
+      const d=await request("forecast",{country:$("climateCountry").value,city:$("climateCity").value,travel_date:$("climateTravelDate").value});
+      if(id!==climateForecastSeq)return;
+      const row=d.predictions[0];
+      holder.innerHTML=`<div class="summary-grid">${metric("Predicted monthly TCI",pretty(row.predicted_tci,2)+" / 100")}${metric("Historical mean benchmark",pretty(row.historical_mean_tci,2)+" / 100")}</div>${forecastSummary(d.forecast)}`;
+    } catch(e) {if(id===climateForecastSeq)holder.textContent=e.message;}
+    finally {if(id===climateForecastSeq)busy(button,false);}
   }
   let climateSeq=0;
   async function loadClimate() {
@@ -338,17 +365,24 @@
     $("pageContent").innerHTML=`<form id="explorerForm" class="filters card">
         <div class="field"><label for="mapCountry">Country</label><select id="mapCountry"></select></div>
         <div class="field"><label for="mapMonth">Travel Date</label><input type="date" id="mapMonth" required></div>
-        <div class="field"><label for="mapLocation">City or governorate (optional)</label><input id="mapLocation" placeholder="Leave blank for all locations"></div>
+        <div class="field"><label for="mapLocation">City (optional)</label><select id="mapLocation"></select></div>
         <button class="btn" type="submit" id="explorerButton">Update map</button></form>
       <div id="explorerResults"></div>`;
     status("Loading spatial explorer filters...");
     try{
       const f=await getFilters();
       const params=new URLSearchParams(location.search);
-      const countries=f.map_countries;
+      const countries=pick(f.climate_cities.map(x=>x.country));
       $("mapCountry").innerHTML=options(countries,countries.includes(params.get("country"))?params.get("country"):countries[0]);
       await setupForecastDate("mapMonth");
-      if(params.has("city"))$("mapLocation").value=params.get("city");
+      const syncMapCities=()=>{
+        const cities=pick(f.climate_cities.filter(x=>x.country===$("mapCountry").value).map(x=>x.city));
+        $("mapLocation").innerHTML='<option value="">All cities</option>'+options(cities,"");
+        if(cities.includes(params.get("city"))) $("mapLocation").value=params.get("city");
+      };
+      syncMapCities();
+      $("mapCountry").addEventListener("change",syncMapCities);
+      $("mapLocation").addEventListener("change",loadExplorer);
       $("explorerForm").addEventListener("submit",e=>{e.preventDefault();loadExplorer();});
       $("mapCountry").addEventListener("change",loadExplorer);
       $("mapMonth").addEventListener("change",loadExplorer);
@@ -358,7 +392,7 @@
   }
   let explorerSeq=0;
   async function loadExplorer() {
-    if (!$("mapMonth").reportValidity()) return;
+    if (!$("mapMonth").reportValidity()) {$("explorerResults").innerHTML="";return;}
     const id=++explorerSeq; const button=$("explorerButton");busy(button,true);status("Filtering TCI rankings and mapping the DBSCAN clusters...");
     try{
       const data=await request("explorer",{country:$("mapCountry").value,travel_date:$("mapMonth").value,location:$("mapLocation").value.trim()});
@@ -412,7 +446,7 @@
       </div>`;
       setupExplorerMap(data);
       status("");
-    }catch(e){if(id===explorerSeq)status(e.message,"error");}
+    }catch(e){if(id===explorerSeq){$("explorerResults").innerHTML="";status(e.message,"error");}}
     finally{if(id===explorerSeq)busy(button,false);}
   }
 
@@ -525,7 +559,7 @@
   }
   let plannerSeq=0;
   async function loadPlanner(){
-    if (!$("planMonth").reportValidity()) return;
+    if (!$("planMonth").reportValidity()) {$("plannerResults").innerHTML="";return;}
     const id=++plannerSeq,button=$("plannerButton");busy(button,true);status("Finding matching attractions and climate information...");
     try {
       const d=await request("planner",{country:$("planCountry").value,city:$("planCity").value,
@@ -553,7 +587,7 @@
           </div></details>`).join(""):'<p>No attractions matching your filters were found for this city.</p>'}
         </div></section>`;
       status("");
-    }catch(e){if(id===plannerSeq)status(e.message,"error");}
+    }catch(e){if(id===plannerSeq){$("plannerResults").innerHTML="";status(e.message,"error");}}
     finally{if(id===plannerSeq)busy(button,false);}
   }
 
