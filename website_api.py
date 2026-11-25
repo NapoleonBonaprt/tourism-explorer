@@ -22,6 +22,7 @@ from itinerary_engine2 import (
 )
 
 from forecast_service import forecast_info, predict_tci, recommend, tci_label, catalog
+from weather_forecast import predict_weather
 
 router = APIRouter(prefix="/website", tags=["Website dashboard"])
 ROOT = Path(__file__).resolve().parent
@@ -218,7 +219,7 @@ def forecast_dates():
 @router.get("/forecast")
 def monthly_forecast(country: str, city: str, travel_date: date):
     scores, reliability = predict_tci(country, travel_date, city)
-    return {"predictions": records(scores), "forecast": reliability}
+    return {"predictions": records(scores), "forecast": reliability, "monthly_weather": predict_weather(country, city, travel_date)}
 
 
 @router.get("/explorer")
@@ -317,7 +318,7 @@ def planner(country: str = Query(..., min_length=1),
         selected, _ = recommend(country, travel_date, city, category)
         score = float(scores.iloc[0].predicted_tci)
         weather = {"TCI":round(score,2), "TCI_Category":tci_label(score),
-                   "source":"Request-time monthly ML prediction; temperature and sunshine are not predicted.",
+                   "source":"Monthly TCI from Residual XGBoost; separate monthly weather models are shown below.",
                    "historical_mean_tci":round(float(scores.iloc[0].historical_mean_tci),2)}
         attractions_list = [{"name":str(r["Destination Name"]), "type":str(r.Type),
                              "category":str(r.Category), "latitude":float(r.Latitude),
@@ -326,7 +327,7 @@ def planner(country: str = Query(..., min_length=1),
                             for _, r in selected.head(10).iterrows()]
         return {"country":country,"city":city,"month":travel_date.month,
                 "month_name":travel_date.strftime("%B %Y"),"category":category,
-                "weather":weather,"forecast":reliability,"attractions":attractions_list,
+                "weather":weather,"forecast":reliability,"monthly_weather":predict_weather(country,city,travel_date),"attractions":attractions_list,
                 "total_matching":len(selected),
                 "tip":"City-level monthly suitability; attraction popularity breaks ties. Check short-range weather before travel."}
     attractions = frame("attractions_with_clusters.csv") if (ROOT / "python files" / "processed_data" / "attractions_with_clusters.csv").exists() else frame("places_with_clusters.csv")
@@ -475,7 +476,7 @@ def serialise_plan(plan, weather, city, n_stops, places, changes=None, monthly=N
     available = len(prepare_city(places, city))
     warning = f"{city} has only {available} distinct attractions; some days have fewer stops." if len(weather) * n_stops > available else ""
     if monthly is not None:
-        warning = ("Provisional monthly TCI-based itinerary. No daily temperature, rain or wind prediction. "
+        warning = ("Provisional monthly TCI-based itinerary. Monthly temperature, rainfall, wind, humidity and sunshine are estimated separately; daily values are unavailable. "
                    "Day types are planning preferences; re-check daily weather closer to travel. " + warning).strip()
     return {"city": city, "days": output, "available": available,
             "requested_stops": n_stops, "mode": "monthly" if monthly is not None else "daily",
@@ -504,7 +505,8 @@ def adaptive_build(request: BuildRequest):
             if month not in monthly:
                 scores, reliability = predict_tci(country, day, city)
                 score = float(scores.iloc[0].predicted_tci)
-                monthly[month] = {**reliability,"predicted_tci":round(score,2),"tci_category":tci_label(score)}
+                monthly[month] = {**reliability,"predicted_tci":round(score,2),"tci_category":tci_label(score),
+                                  "monthly_weather":predict_weather(country,city,day)}
             score = monthly[month]["predicted_tci"]
             # Planning preference, not a classification of a specific day's weather.
             kind = "indoor" if score < 50 else "mixed"
