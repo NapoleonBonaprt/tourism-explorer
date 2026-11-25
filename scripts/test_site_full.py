@@ -137,7 +137,7 @@ class API(unittest.TestCase):
             with self.subTest(city=loc["city"]):
                 response = self.get("/website/guide-cover",{"city":loc["city"]})
                 self.assertEqual(response.headers["content-type"],"image/jpeg")
-                self.assertIn(response.headers["x-guide-cover"],["photo","illustration"])
+                self.assertEqual(response.headers["x-guide-cover"],"illustration" if loc["city"]=="Madrid" else "photo")
                 with Image.open(BytesIO(response.content)) as img:
                     img.load()
                     self.assertEqual(img.size,(900,560))
