@@ -28,7 +28,7 @@
   }
   const available=()=>Boolean(window.jspdf&&typeof window.jspdf.jsPDF==="function");
   const coverCache=new Map();
-  const requiredPhotos=new Set(["cairo","lisbon","paris","rome","tokyo"]);
+  const requiredPhotos=new Set(["cairo","lisbon","paris","rome","tokyo","madrid","barcelona"]);
   const cityKey=city=>plain(city).toLowerCase();
   async function fetchCover(url, localPhoto=false){
     const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
@@ -55,7 +55,7 @@
       const key=cityKey(city),required=requiredPhotos.has(key);
       const api=(window.WANDERCLIMATE_API_BASE ||
         (["localhost","127.0.0.1"].includes(location.hostname)&&location.port!=="8000"?"http://127.0.0.1:8000":location.origin)).replace(/\/$/,"");
-      const url=api+"/website/guide-cover?city="+encodeURIComponent(city)+"&v=local-photos-v5";
+      const url=api+"/website/guide-cover?city="+encodeURIComponent(city)+"&v=local-photos-v6";
       const pending=(async()=>{
         if(required){
           try{return await fetchCover(new URL("assets/cities/"+key+".jpg",location.href).href,true);}
