@@ -7,8 +7,11 @@ from PIL import Image, ImageDraw, ImageOps
 
 ROOT = Path(__file__).resolve().parent / "assets" / "cities"
 SIZE = (900, 560)
-# The existing Madrid photo is a byte-for-byte copy of Barcelona.
-ILLUSTRATED = {"cairo", "lisbon", "paris", "rome", "tokyo", "madrid"}
+# Madrid and Barcelona intentionally share the current local photograph.
+REQUIRED_PHOTOS = {"cairo", "lisbon", "paris", "rome", "tokyo", "madrid", "barcelona"}
+
+class RequiredPhotoUnavailable(OSError):
+    """A required local destination photo could not be loaded."""
 
 def slug(city):
     return re.sub(r"[^a-z0-9]+", "-", city.strip().lower()).strip("-")
@@ -92,14 +95,18 @@ def illustrate(key):
 def city_cover(city):
     key=slug(city)
     photo=ROOT / (key+".jpg")
-    if key not in ILLUSTRATED and key and photo.is_file():
+    if key and photo.is_file():
         try:
             with Image.open(photo) as img:
                 im=ImageOps.fit(ImageOps.exif_transpose(img).convert("RGB"),SIZE,Image.Resampling.LANCZOS,centering=(.5,.46))
             kind="photo"
-        except (OSError,ValueError):
+        except (OSError,ValueError) as exc:
+            if key in REQUIRED_PHOTOS:
+                raise RequiredPhotoUnavailable(f"Destination photo unavailable: {city}") from exc
             im=illustrate(key);kind="illustration"
     else:
+        if key in REQUIRED_PHOTOS:
+            raise RequiredPhotoUnavailable(f"Destination photo unavailable: {city}")
         im=illustrate(key);kind="illustration"
     out=BytesIO()
     im.save(out,format="JPEG",quality=86,optimize=True)

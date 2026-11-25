@@ -132,20 +132,24 @@ class API(unittest.TestCase):
     def test_07_destination_cover_images(self):
         import hashlib
         from PIL import Image
-        hashes = set()
+        hashes = {}
         for loc in self.filters["climate_cities"]:
             with self.subTest(city=loc["city"]):
                 response = self.get("/website/guide-cover",{"city":loc["city"]})
                 self.assertEqual(response.headers["content-type"],"image/jpeg")
-                self.assertIn(response.headers["x-guide-cover"],["photo","illustration"])
+                self.assertEqual(response.headers["x-guide-cover"],"photo")
                 with Image.open(BytesIO(response.content)) as img:
                     img.load()
                     self.assertEqual(img.size,(900,560))
-                hashes.add(hashlib.sha256(response.content).hexdigest())
-        self.assertEqual(len(hashes),len(self.filters["climate_cities"]))
+                digest = hashlib.sha256(response.content).hexdigest()
+                hashes.setdefault(digest, []).append(loc["city"])
+        duplicates = [set(cities) for cities in hashes.values() if len(cities) > 1]
+        self.assertEqual(duplicates, [{"Madrid", "Barcelona"}])
+        self.assertEqual(len(hashes), len(self.filters["climate_cities"]) - 1)
         self.get("/website/guide-cover",{"city":"../../etc/passwd"},404)
         self.assertEqual(self.get("/website/guide-cover",{"city":"London"}).headers["x-guide-cover"],"photo")
-        self.assertEqual(self.get("/website/guide-cover",{"city":"Madrid"}).headers["x-guide-cover"],"illustration")
+        self.assertEqual(self.get("/website/guide-cover",{"city":"Madrid"}).headers["x-guide-cover"],"photo")
+        self.assertEqual(self.get("/website/guide-cover",{"city":"Barcelona"}).headers["x-guide-cover"],"photo")
 
     def test_06_monthly_pdf_content(self):
         start=date.fromisoformat(self.info["max_date"]).replace(day=1)-timedelta(days=2)

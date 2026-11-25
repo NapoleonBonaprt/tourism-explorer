@@ -28,8 +28,8 @@ CITY_SLUGS = (
     "rome", "san-francisco", "seoul", "shanghai", "singapore",
     "sydney", "tokyo", "toronto", "venice", "vienna",
 )
-# The five cities below intentionally use their original remote photos.
-REMOTE_PHOTO_SLUGS = {"cairo", "lisbon", "paris", "rome", "tokyo"}
+# All original photos are now cached in the repository.
+REMOTE_PHOTO_SLUGS = set()
 ILLUSTRATED_SLUGS = set()  # All locally selected visuals use original JPEGs.
 
 
