@@ -3,7 +3,7 @@ The reference CSV is used only for offline parity testing, not by runtime infere
 """
 import sys
 from pathlib import Path
-from datetime import date
+from datetime import date, timedelta
 import unittest
 from unittest.mock import patch
 import numpy as np
@@ -68,6 +68,58 @@ class ForecastTests(unittest.TestCase):
             if category!='All':
                 self.assertTrue(all(p['category']==category for p in d['attractions']))
         self.assertEqual(data['counts']['clustered']+data['counts']['noise'],len(data['points']))
+
+    def test_extended_forecast_uses_separate_model_and_metrics(self):
+        origin = pd.Period(self.info["origin"], "M")
+        self.assertEqual(self.info["max_horizon_months"],24)
+        for lead in (13,18,24):
+            target = str((origin+lead).start_time.date())
+            with self.subTest(lead=lead):
+                response = self.client.get("/website/forecast",params={"country":"Egypt","city":"Cairo","travel_date":target})
+                self.assertEqual(response.status_code,200,response.text)
+                data = response.json()
+                forecast = data["forecast"]
+                self.assertEqual(forecast["horizon_months"],lead)
+                self.assertEqual(forecast["training_mode"],"direct_long_lead_fit")
+                self.assertEqual(forecast["test_n"],492)
+                self.assertTrue(0<=forecast["within_10_pct"]<=100)
+                self.assertTrue(0<=data["predictions"][0]["predicted_tci"]<=100)
+        outside = str((origin+25).start_time.date())
+        response = self.client.get("/website/forecast",params={"country":"Egypt","city":"Cairo","travel_date":outside})
+        self.assertEqual(response.status_code,422)
+
+    def test_adaptive_selected_live_dates(self):
+        start = date.today()+timedelta(days=1)
+        times = [(start+timedelta(days=i)).isoformat() for i in range(2)]
+        body = {"city":"Cairo","start_date":start.isoformat(),"days":2,"stops":2,
+                "forecast":{"time":times,"temperature_2m_max":[24,27],
+                            "precipitation_sum":[0,3],"wind_speed_10m_max":[10,15]}}
+        response = self.client.post("/website/adaptive/build",json=body)
+        self.assertEqual(response.status_code,200,response.text)
+        result = response.json()
+        self.assertEqual(result["mode"],"daily")
+        self.assertEqual([d["date"] for d in result["days"]],times)
+        self.assertEqual(result["days"][1]["weather"]["precipitation_sum"],3)
+        body["forecast"]["time"] = [(start+timedelta(days=i+1)).isoformat() for i in range(2)]
+        response = self.client.post("/website/adaptive/build",json=body)
+        self.assertEqual(response.status_code,422,response.text)
+
+    def test_adaptive_future_monthly_trip(self):
+        origin = pd.Period(self.info["origin"],"M")
+        start = (origin+18).end_time.date()-timedelta(days=1)
+        # Keep this test future-facing even as the fixture ages.
+        if start <= date.today()+timedelta(days=6):
+            self.skipTest("Fixture travel date no longer in long-range future")
+        response = self.client.post("/website/adaptive/build",json={
+            "city":"Cairo","start_date":start.isoformat(),"days":4,"stops":2})
+        self.assertEqual(response.status_code,200,response.text)
+        result=response.json()
+        self.assertEqual(result["mode"],"monthly")
+        self.assertEqual(len(result["monthly_forecasts"]),2)
+        self.assertEqual([d["date"] for d in result["days"]],[(start+timedelta(days=i)).isoformat() for i in range(4)])
+        self.assertTrue(all(all(v is None for v in d["weather"].values()) for d in result["days"]))
+        self.assertTrue(all(d["monthly_forecast"]["training_mode"]=="direct_long_lead_fit" for d in result["days"]))
+        self.assertTrue(all(d["monthly_forecast"]["target_month"]==d["date"][:7] for d in result["days"]))
 
     def test_folium_html_structure(self):
         import re
