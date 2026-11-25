@@ -71,6 +71,14 @@
     <p class="note">${safe(f.definition)} Test samples: ${safe(f.test_n)}. 90th percentile absolute error: ${pretty(f.error_p90,2)} points. Historical-mean benchmark MAE: ${pretty(f.baseline_mae,2)}.</p>
     <p class="note">Monthly resolution: all dates in ${safe(f.target_month)} share the same forecast. ${safe(f.warning)}</p>
   </section>` : "";
+  const weatherSummary = (w) => w ? `<section class="card section-gap">
+    <h2>Predicted monthly weather</h2>
+    <div class="summary-grid">${w.variables.map(v=>metric(v.label,pretty(v.prediction,2)+" "+v.unit)).join("")}</div>
+    <details><summary>Model reliability by weather variable</summary>
+    ${table(["Variable","MAE","Within tolerance","Tolerance","Historical mean MAE"],w.variables.map(v=>[v.label,pretty(v.mae,2)+" "+v.unit,pretty(v.within_tolerance_pct,1)+"%", "±"+v.tolerance+" "+v.unit,pretty(v.baseline_mae,2)+" "+v.unit]))}
+    <p class="note">Residual Ridge · ${safe(w.test_year)} backtest · ${safe(w.horizon_months)}-month lead. ${safe(w.definition)}</p></details>
+    <p class="note">Monthly estimates only; rainfall is the total for the month, not a daily prediction.</p>
+  </section>`:"";
   const metric = (label, value, description="") =>
     `<div class="metric"><span>${safe(label)}</span><strong>${safe(value)}</strong>${description ? `<small>${safe(description)}</small>` : ""}</div>`;
   const table = (headers, rows) =>
@@ -316,7 +324,7 @@
       const d=await request("forecast",{country:$("climateCountry").value,city:$("climateCity").value,travel_date:$("climateTravelDate").value});
       if(id!==climateForecastSeq)return;
       const row=d.predictions[0];
-      holder.innerHTML=`<div class="summary-grid">${metric("Predicted monthly TCI",pretty(row.predicted_tci,2)+" / 100")}${metric("Historical mean benchmark",pretty(row.historical_mean_tci,2)+" / 100")}</div>${forecastSummary(d.forecast)}`;
+      holder.innerHTML=`<div class="summary-grid">${metric("Predicted monthly TCI",pretty(row.predicted_tci,2)+" / 100")}${metric("Historical mean benchmark",pretty(row.historical_mean_tci,2)+" / 100")}</div>${weatherSummary(d.monthly_weather)}${forecastSummary(d.forecast)}`;
     } catch(e) {if(id===climateForecastSeq)holder.textContent=e.message;}
     finally {if(id===climateForecastSeq)busy(button,false);}
   }
@@ -575,6 +583,7 @@
         </div><p class="note">${safe(w.source)}</p>`:
         '<p class="status warning">No monthly climate records available for this selected city.</p>'}
       </section>
+      ${weatherSummary(d.monthly_weather)}
       ${forecastSummary(d.forecast)}
       <section class="card section-gap"><h2>Top Attractions to Visit</h2>
         <p class="note">${human(d.total_matching)} matching attractions; displaying ${d.attractions.length} ranked by predicted city TCI and popularity proxy.</p>
@@ -683,7 +692,7 @@
     if(!d)return;
     $("adaptiveResults").innerHTML=`
       ${d.warning?`<p class="status warning">${safe(d.warning)}</p>`:""}
-      ${(d.monthly_forecasts||[]).map(f=>`<section class="card section-gap"><h2>${safe(f.target_month)} · Predicted monthly TCI</h2><div class="summary-grid">${metric("Predicted monthly TCI",pretty(f.predicted_tci,2)+" / 100")}${metric("Suitability",f.tci_category)}</div>${forecastSummary(f)}</section>`).join("")}
+      ${(d.monthly_forecasts||[]).map(f=>`<section class="card section-gap"><h2>${safe(f.target_month)} · Predicted monthly TCI</h2><div class="summary-grid">${metric("Predicted monthly TCI",pretty(f.predicted_tci,2)+" / 100")}${metric("Suitability",f.tci_category)}</div>${weatherSummary(f.monthly_weather)}${forecastSummary(f)}</section>`).join("")}
       <section class="card itinerary-actions-card"><div class="itinerary-actions-head">
         <div><h2>Save or Print Your Itinerary</h2><p class="note">Keep the full daily plan, forecast and all numbered attractions.</p></div>
         <div class="export-buttons">
@@ -692,7 +701,7 @@
         </div>
       </div><p class="route-disclaimer"><strong>Route information:</strong> Lines connect stops in geographic order (straight-line distance). They are not actual driving, walking, public transport or turn-by-turn routes. The itinerary does not account for travel time, roads, traffic or attraction opening hours.</p>
       </section>
-      ${d.mode==="monthly"?`<section class="card itinerary-interactions"><h2>Provisional long-range trip</h2><p class="note">Daily weather and storm simulation are unavailable for these dates. Build the itinerary again when the entire trip is within the next seven days to activate daily adaptation.</p></section>`:`<section class="card itinerary-interactions"><h2>Re-check the Weather and Adapt the Plan</h2>
+      ${d.mode==="monthly"?`<section class="card itinerary-interactions"><h2>Provisional long-range trip</h2><p class="note">Rebuild within seven days of travel for live daily adaptation. Attraction categories and opening hours should be checked before visiting.</p></section>`:`<section class="card itinerary-interactions"><h2>Re-check the Weather and Adapt the Plan</h2>
         <div class="filters" style="margin-bottom:12px">
           <label class="checkline"><input type="checkbox" id="simulateStorm"> Demo: simulate a storm</label>
           <div class="field hidden" id="stormDateWrap"><label for="stormDate">Day</label>
@@ -712,7 +721,7 @@
           ${d.days.map(day=>`<article class="day-card ${safe(day.day_type)}">
             <div class="day-meta"><h3>Day ${day.number} · ${safe(day.date)}</h3>
               <span class="day-type">${safe(day.day_type)}${d.mode==="monthly"?" preference":""}</span></div>
-            <div class="day-weather">${d.mode==="monthly"?`<span>Monthly TCI: ${pretty(day.monthly_forecast.predicted_tci,2)} / 100</span><span>Daily weather unavailable</span>`:`<span>High: ${pretty(day.weather.temperature_2m_max,0)}°C</span><span>Rain: ${pretty(day.weather.precipitation_sum)} mm</span><span>Wind: ${pretty(day.weather.wind_speed_10m_max,0)} km/h</span>`}</div>
+            <div class="day-weather">${d.mode==="monthly"?`<span>Monthly TCI: ${pretty(day.monthly_forecast.predicted_tci,2)} / 100</span><span>Monthly weather above · daily weather unavailable</span>`:`<span>High: ${pretty(day.weather.temperature_2m_max,0)}°C</span><span>Rain: ${pretty(day.weather.precipitation_sum)} mm</span><span>Wind: ${pretty(day.weather.wind_speed_10m_max,0)} km/h</span>`}</div>
             ${day.stops.length?day.stops.map(stop=>`<div class="stop"><span class="stop-num">${stop.order}</span>
               <span>${safe(stop.name)}</span><span class="stop-slot">${safe(stop.slot)}</span></div>`).join(""):
               '<p class="note">No more attractions available for this day.</p>'}
