@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageOps
 ROOT = Path(__file__).resolve().parent / "assets" / "cities"
 SIZE = (900, 560)
 # The existing Madrid photo is a byte-for-byte copy of Barcelona.
-ILLUSTRATED = {"cairo", "lisbon", "paris", "rome", "tokyo", "madrid"}
+ILLUSTRATED = {"madrid"}
 
 def slug(city):
     return re.sub(r"[^a-z0-9]+", "-", city.strip().lower()).strip("-")
