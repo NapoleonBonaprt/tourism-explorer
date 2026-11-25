@@ -15,7 +15,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
-from tci_scoring import score_tci, verify_original
+from backend.tci_scoring import score_tci, verify_original
 HISTORY = ROOT / "cleaned_data" / "city_month_features.csv"
 STAGING = ROOT / "cleaned_data" / "climate_refresh"
 KEY = ["Country_dest","City"]

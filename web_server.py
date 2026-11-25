@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from api import app as analytics_app
 
 ROOT = Path(__file__).resolve().parent
+FRONTEND = ROOT / "frontend"
 
 PUBLIC_FILES = (
     "index.html",
@@ -44,7 +45,7 @@ app = FastAPI(
 
 @app.get("/", include_in_schema=False)
 async def homepage():
-    return FileResponse(ROOT / "index.html")
+    return FileResponse(FRONTEND / "index.html")
 
 
 @app.get("/health", include_in_schema=False)
@@ -54,7 +55,7 @@ async def health():
 
 def register_static_file(filename: str) -> None:
     async def static_endpoint():
-        return FileResponse(ROOT / filename)
+        return FileResponse(FRONTEND / filename)
 
     app.add_api_route("/" + filename, static_endpoint, methods=["GET"], include_in_schema=False)
 

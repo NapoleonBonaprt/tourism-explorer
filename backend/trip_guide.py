@@ -6,7 +6,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.colors import HexColor
 from reportlab.lib.utils import simpleSplit, ImageReader
-from guide_cover import city_cover
+from backend.guide_cover import city_cover
 
 INK = '#203B35'
 GREEN = '#315C4D'
