@@ -6,7 +6,7 @@ selected/aggregated data needed by the HTML pages, not the full CSV exports.
 from __future__ import annotations
 
 import json
-from datetime import date
+from datetime import date, timedelta
 import logging
 from functools import lru_cache
 from pathlib import Path
@@ -21,7 +21,7 @@ from itinerary_engine2 import (
     prepare_city, replan,
 )
 
-from forecast_service import forecast_info, predict_tci, recommend, tci_label
+from forecast_service import forecast_info, predict_tci, recommend, tci_label, catalog
 
 router = APIRouter(prefix="/website", tags=["Website dashboard"])
 ROOT = Path(__file__).resolve().parent
@@ -375,6 +375,7 @@ class BuildRequest(BaseModel):
     days: int = Field(default=5, ge=1, le=7)
     stops: int = Field(default=3, ge=2, le=5)
     forecast: BrowserForecast | None = None
+    start_date: date = Field(default_factory=date.today)
 
 
 class SavedStop(BaseModel):
@@ -399,7 +400,11 @@ class RecheckRequest(BuildRequest):
     rain_mm: float = Field(default=8, ge=0, le=50)
 
 
-def weather_for(city: str, days: int, supplied_forecast: BrowserForecast | None = None):
+def weather_for(city: str, days: int, supplied_forecast: BrowserForecast | None = None, start_date: date | None = None):
+    start_date = start_date or date.today()
+    expected = [start_date + timedelta(days=i) for i in range(days)]
+    if start_date < date.today() or expected[-1] > date.today() + timedelta(days=6):
+        raise HTTPException(422, "Live daily forecast is limited to the next seven days.")
     places = frame("places_with_clusters.csv")
     names = places["City"].dropna().astype(str).unique()
     canonical = next((x for x in names if x.casefold() == city.strip().casefold()), None)
@@ -419,15 +424,16 @@ def weather_for(city: str, days: int, supplied_forecast: BrowserForecast | None 
         try:
             from datetime import date
             parsed = [date.fromisoformat(value) for value in forecast["time"]]
-            if len(set(parsed)) != days:
-                raise ValueError("Duplicate forecast dates")
+            if parsed != expected:
+                raise ValueError("Forecast dates must exactly match the requested trip")
             data = add_day_type(pd.DataFrame(forecast))
         except (ValueError, TypeError) as exc:
             raise HTTPException(status_code=422, detail="Invalid daily forecast supplied.") from exc
     else:
         try:
-            forecast = get_daily_weather(float(lat), float(lon), days)
-            data = add_day_type(pd.DataFrame(forecast))
+            forecast = get_daily_weather(float(lat), float(lon), 7)
+            wx = pd.DataFrame(forecast)
+            data = add_day_type(wx[wx.time.isin([d.isoformat() for d in expected])].copy())
             if len(data) != days:
                 raise ValueError("Incomplete forecast")
         except Exception as exc:
@@ -439,7 +445,7 @@ def weather_for(city: str, days: int, supplied_forecast: BrowserForecast | None 
     return places, canonical, data
 
 
-def serialise_plan(plan, weather, city, n_stops, places, changes=None):
+def serialise_plan(plan, weather, city, n_stops, places, changes=None, monthly=None):
     wx = {str(r["time"]): r for _, r in weather.iterrows()}
     output = []
     for i, (date, (kind, items)) in enumerate(plan.items(), start=1):
@@ -457,22 +463,53 @@ def serialise_plan(plan, weather, city, n_stops, places, changes=None):
         w = wx[str(date)]
         output.append({
             "number": i, "date": str(date), "day_type": kind,
-            "weather": {
+            "weather": ({key: None for key in ["temperature_2m_max","precipitation_sum","wind_speed_10m_max"]} if monthly is not None else {
                 "temperature_2m_max": round(float(w["temperature_2m_max"]), 1),
                 "precipitation_sum": round(float(w["precipitation_sum"]), 1),
                 "wind_speed_10m_max": round(float(w["wind_speed_10m_max"]), 1),
-            }, "stops": day_stops,
+            }), "monthly_forecast": monthly.get(str(date)[:7]) if monthly is not None else None, "stops": day_stops,
         })
     available = len(prepare_city(places, city))
+    warning = f"{city} has only {available} distinct attractions; some days have fewer stops." if len(weather) * n_stops > available else ""
+    if monthly is not None:
+        warning = ("Provisional monthly TCI-based itinerary. No daily temperature, rain or wind prediction. "
+                   "Day types are planning preferences; re-check daily weather closer to travel. " + warning).strip()
     return {"city": city, "days": output, "available": available,
-            "requested_stops": n_stops,
-            "warning": f"{city} has only {available} distinct attractions; some days have fewer stops." if len(weather) * n_stops > available else None,
-            "changes": changes}
+            "requested_stops": n_stops, "mode": "monthly" if monthly is not None else "daily",
+            "warning": warning or None, "changes": changes,
+            "monthly_forecasts": list(monthly.values()) if monthly is not None else []}
 
 
 @router.post("/adaptive/build")
 def adaptive_build(request: BuildRequest):
-    places, city, weather = weather_for(request.city, request.days, request.forecast)
+    end = request.start_date + timedelta(days=request.days-1)
+    if request.start_date < date.today():
+        raise HTTPException(422, "Choose today or a future date.")
+    if end > date.today() + timedelta(days=6):
+        if request.forecast is not None:
+            raise HTTPException(422, "Daily forecasts cannot be used for a long-range trip.")
+        places = catalog()
+        matching = places.loc[eq(places.City, request.city)]
+        cities = matching[["Country_dest","City"]].drop_duplicates()
+        if len(cities) != 1:
+            raise HTTPException(404, "City is missing or ambiguous in the attraction catalog.")
+        country, city = cities.iloc[0].tolist()
+        monthly, rows = {}, []
+        for i in range(request.days):
+            day = request.start_date + timedelta(days=i)
+            month = day.strftime("%Y-%m")
+            if month not in monthly:
+                scores, reliability = predict_tci(country, day, city)
+                score = float(scores.iloc[0].predicted_tci)
+                monthly[month] = {**reliability,"predicted_tci":round(score,2),"tci_category":tci_label(score)}
+            score = monthly[month]["predicted_tci"]
+            # Planning preference, not a classification of a specific day's weather.
+            kind = "indoor" if score < 50 else "mixed"
+            rows.append({"time":day.isoformat(),"day_type":kind})
+        weather = pd.DataFrame(rows)
+        plan = build_itinerary(places, city, weather, request.stops)
+        return serialise_plan(plan, weather, city, request.stops, places, monthly=monthly)
+    places, city, weather = weather_for(request.city, request.days, request.forecast, request.start_date)
     try:
         plan = build_itinerary(places, city, weather, request.stops)
         return serialise_plan(plan, weather, city, request.stops, places)
@@ -482,7 +519,10 @@ def adaptive_build(request: BuildRequest):
 
 @router.post("/adaptive/recheck")
 def adaptive_recheck(request: RecheckRequest):
-    places, city, weather = weather_for(request.city, request.days, request.forecast)
+    expected = [(request.start_date + timedelta(days=i)).isoformat() for i in range(request.days)]
+    if [d.date for d in request.previous] != expected:
+        raise HTTPException(422, "Previous itinerary dates do not match the requested trip.")
+    places, city, weather = weather_for(request.city, request.days, request.forecast, request.start_date)
     if request.simulate_storm:
         if request.storm_date not in set(weather["time"].astype(str)):
             raise HTTPException(status_code=422, detail="Select a day within the current forecast.")
