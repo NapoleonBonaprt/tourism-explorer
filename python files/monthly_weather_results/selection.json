@@ -1,8 +1,8 @@
 {
-  "origin": "2026-10",
+  "origin": "2025-12",
   "model": "Residual Ridge",
   "horizons": 24,
   "test_year": 2025,
-  "history_sha256": "14664d37214523411434fcabd563aa0f1feeeac01cf24aa911eecb4ea2042c4d",
+  "history_sha256": "28a774a3b20261f5a0fe273ba61c054bd3951b5cae04ab9c17f8a78558c2530e",
   "selection": "Per-variable alpha selected only on 2023 validation with purged training"
 }
